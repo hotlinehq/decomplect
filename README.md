@@ -39,6 +39,10 @@ into the repository root and commit. Add the `ANTHROPIC_API_KEY` secret for the 
 - "Help me shape this problem with the decomplect skill" starts design mode
   (description, problem statement, use cases, decision matrix).
 
+- "What would decomplect pick: A or B?" gives one recommended option with the why and the
+  tradeoff. See [docs/advise-on-questions.md](docs/advise-on-questions.md) to have Claude
+  attach decomplect's pick to every design question it asks you.
+
 ## Pipeline
 
 The workflow posts one sticky architecture review per PR, plus inline comments for

@@ -18,4 +18,6 @@ Working rules:
   costs understanding or change, a concrete simpler alternative, and the principle and
   talk it comes from.
 - Be proportional and specific. No invented findings. Call out what is already simple.
-- Return the review in the output format defined in the skill.
+- When handed a question with options, use the skill's Advise mode and return only the
+  pick block.
+- Otherwise return the review in the output format defined in the skill.
