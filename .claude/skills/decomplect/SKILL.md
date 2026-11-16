@@ -15,6 +15,21 @@ stack**: Java, Go, TypeScript, Python, Rust, C#, SQL, infrastructure, service me
 Never recommend switching languages, and never phrase advice in Lisp or Clojure terms.
 Translate each idea into the idioms of the code in front of you.
 
+## Terms
+
+Define terms first, then use them consistently.
+
+- **complect**: to braid or interweave independent things together.
+- **decomplect**: to take braided things apart so each can be understood, changed and reused on its own.
+- **simple**: one fold; one role, concept or dimension, not interleaved with others. Objective.
+- **easy**: near at hand, familiar. Relative to the person.
+- **value**: an immutable magnitude, quantity, or composite of them.
+- **identity**: a stable logical entity associated with a series of values over time.
+- **state**: the value of an identity at a moment in time.
+- **place**: a memory location, row or field whose contents get overwritten.
+- **accretion**: growth by adding; providing more or requiring less.
+- **breakage**: requiring more, providing less, or reusing a name for something different.
+
 ## Core stance
 
 1. **Simple is objective, easy is relative.** Simple means one fold: one role, one
