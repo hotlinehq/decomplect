@@ -68,8 +68,9 @@ question with options, use **Advise**.
 3. Walk the checklist in the Appendix: Review checklist section below. Only raise items you can
    point at in the code or doc.
 4. For each finding, name **what is complected with what**, the consequence in
-   change cost or reasoning cost, and a concrete, language-appropriate
-   alternative. Suggest the smallest change that disentangles.
+   change cost or reasoning cost, a concrete, language-appropriate
+   alternative, and a plain-language explanation of what the rule means here.
+   Suggest the smallest change that disentangles.
 5. Separate *incidental* complexity (from our construct choices) from *essential*
    complexity (from the problem). Never ask to remove essential complexity.
 6. Respect tradeoffs: if the simpler alternative costs something real
@@ -108,6 +109,7 @@ decomplect's pick: <option label>
 Why: <one or two sentences, naming what stays separate or what doesn't break>
 Tradeoff: <what you give up by choosing it>
 Principle: <name> (<talk>)
+In plain words: <one or two sentences, no jargon, on what the pick means for this situation>
 ```
 
 If the question isn't about design (naming a file, picking a date, a matter of
@@ -129,12 +131,39 @@ Lead with a verdict in one or two sentences. Then:
 - Why it matters: <cost to understanding, change, debugging, or consumers>
 - Simpler alternative: <concrete, in the codebase's language and idioms>
 - Principle: <name> (<talk>)
+- In plain words: <1-3 sentences, no jargon: what this rule means for this code, what goes wrong, what to do>
 
 ## What is already simple
 <Call out good decisions so they are kept.>
 
 ## Questions
 <Open questions you cannot answer from the material. Socratic, not rhetorical.>
+```
+
+**Every finding must be understandable without knowing the principles.** The
+`Principle` line names the rule; the `In plain words` line right under it explains
+what that rule means *for this specific code*, in one to three sentences a newcomer
+or product manager could follow:
+
+- say what is hidden, tangled, or overwritten here, using the real names from the code;
+- describe one concrete thing that goes wrong because of it (a bug, a slow change, a broken consumer);
+- say what to do instead, in everyday words.
+
+Don't use the jargon (complect, place, accretion, identity, value) in that line, and
+don't restate the rule's title. Example:
+
+```
+### [major] Invoice total depends on the server clock
+- Where: billing/invoice.ts:42
+- Complects: the pricing rule with the current time
+- Why it matters: results change depending on when the code runs
+- Simpler alternative: pass `asOf: Date` into calculateTotal and let the caller supply it
+- Principle: Pull hidden inputs into the open (Are We There Yet?)
+- In plain words: calculateTotal secretly calls `new Date()` to decide whether the
+  discount still applies, so the same order can produce two different totals
+  depending on when it is calculated, and the test fails only near midnight. Hand
+  the date in as an argument so anyone reading the call can see it, and tests can
+  pick any date they want.
 ```
 
 Severity: **blocking** (breaks consumers, corrupts information, unbounded shared

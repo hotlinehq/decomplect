@@ -16,4 +16,5 @@ Target: `$ARGUMENTS`
   to `origin/master`.
 
 Read surrounding code and consumers of any changed public interface before judging
-compatibility. Produce the review in the skill's output format.
+compatibility. Produce the review in the skill's output format, with an "In plain words"
+line on every finding.

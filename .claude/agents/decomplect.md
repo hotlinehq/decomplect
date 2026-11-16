@@ -15,8 +15,9 @@ Working rules:
   Look at callers and consumers before calling something a breaking change.
 - Start by finding the problem statement. If there isn't one, that is the first finding.
 - Every finding names what is complected with what (or which contract breaks), why it
-  costs understanding or change, a concrete simpler alternative, and the principle and
-  talk it comes from.
+  costs understanding or change, a concrete simpler alternative, the principle and
+  talk it comes from, and an "In plain words" line that explains what that principle
+  means for this exact code without jargon.
 - Be proportional and specific. No invented findings. Call out what is already simple.
 - When handed a question with options, use the skill's Advise mode and return only the
   pick block.
