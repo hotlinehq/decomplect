@@ -17,14 +17,14 @@ walk a team through problem-first design.
     references/sources.md          # talks used, with links
   agents/decomplect.md       # read-only subagent that applies the skill
   commands/architect-review.md     # /architect-review [base | PR# | doc path]
-.github/workflows/architect-review.yml  # runs the review on every PR via claude-code-action
+examples/architect-review.yml      # optional GitHub Action for PR reviews (not enabled)
 transcripts/                       # COVERAGE.md + fetch.sh (downloads all available transcripts)
 ```
 
 ## Install
 
-**Per repo (team-shared):** copy `.claude/` (and optionally `.github/workflows/architect-review.yml`)
-into the repository root and commit. Add the `ANTHROPIC_API_KEY` secret for the workflow.
+**Per repo (team-shared):** copy `.claude/`
+into the repository root and commit.
 
 **Personal (all projects):** copy `.claude/skills/decomplect` to `~/.claude/skills/`,
 `.claude/agents/decomplect.md` to `~/.claude/agents/`, and
@@ -39,11 +39,16 @@ into the repository root and commit. Add the `ANTHROPIC_API_KEY` secret for the 
 - "Help me shape this problem with the decomplect skill" starts design mode
   (description, problem statement, use cases, decision matrix).
 
-## Pipeline
+- "What would decomplect pick: A or B?" gives one recommended option with the why and the
+  tradeoff. See [docs/advise-on-questions.md](docs/advise-on-questions.md) to have Claude
+  attach decomplect's pick to every design question it asks you.
 
-The workflow posts one sticky architecture review per PR, plus inline comments for
-blocking and major findings. It never approves or blocks merges; treat it as an
-advisory reviewer. To run it only on PRs labeled `architecture`, swap the `if:` line.
+## Pipeline (optional, not enabled)
+
+`examples/architect-review.yml` posts one advisory review per PR via
+claude-code-action. To enable it, copy it to `.github/workflows/` and add an
+`ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`, from `claude setup-token`) secret.
+It never approves or blocks merges.
 
 ## Notes
 

@@ -1,6 +1,6 @@
 ---
 name: decomplect
-description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, PR reviews focused on structure, API/schema/versioning changes, and when shaping a problem before building.
+description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, and when shaping a problem before building.
 ---
 
 # Decomplect
@@ -41,7 +41,8 @@ first time you use this skill in a session, and whenever a finding needs a citat
 
 ## Modes
 
-Pick the mode from the request. If unclear, use **Review**.
+Pick the mode from the request. If unclear, use **Review**. If you are handed a
+question with options, use **Advise**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -74,6 +75,30 @@ Classify every change to a published interface (function, endpoint, message,
 schema, package) as accretion, relaxation, fixation, or breakage. For breakage,
 propose how to turn it into accretion (new name, new endpoint, new field, keep the
 old one). Flag version bumps used to excuse breakage.
+
+### Advise (pick an answer to a question)
+
+Use when someone (a person or another agent) is about to ask a design question with
+options: "Postgres table or event log?", "one endpoint or two?", "add a field or a new
+message type?", or any multiple-choice question about structure, data, state, or APIs.
+
+1. Restate the decision in one line and the problem it serves.
+2. For each option, name what it complects (or keeps apart), what it does to
+   information and time, and whether it grows or breaks any consumer.
+3. Pick exactly one. If none is good, say which one is least tangled and what
+   a better option would be.
+4. Answer in this shape, so it can be pasted next to the question:
+
+```
+decomplect's pick: <option label>
+Why: <one or two sentences, naming what stays separate or what doesn't break>
+Tradeoff: <what you give up by choosing it>
+Principle: <name> (<talk>)
+```
+
+If the question isn't about design (naming a file, picking a date, a matter of
+taste), say "decomplect has no opinion here" rather than inventing one. The pick is
+advice, not the decision: the person still chooses.
 
 ## Output format
 
