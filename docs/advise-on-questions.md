@@ -7,12 +7,14 @@ answer and show it next to the options:
 > 1. Add `status` and `updated_at` columns to `orders`
 > 2. New append-only `order_events` table (**decomplect's pick**)
 >
-> decomplect's pick: 2. Status changes are facts with time; overwriting them in
-> place loses the history support will ask for. Tradeoff: one more table and a
-> view for "current status". Principle: Facts include time (The Value of Values).
+> decomplect's pick: 2.
 > In plain words: if you overwrite the status, you can never answer "when did
 > this order ship?" or "how long was it stuck in review?". Keeping every change
 > as a new row keeps those answers.
+> Principle: Facts include time (The Value of Values).
+> Why: status changes are facts with time; overwriting them in place loses the
+> history support will ask for. Tradeoff: one more table and a view for
+> "current status".
 
 You still choose. The pick is one more opinion on the card, not the decision.
 

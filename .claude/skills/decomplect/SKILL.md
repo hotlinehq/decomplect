@@ -107,10 +107,10 @@ message type?", or any multiple-choice question about structure, data, state, or
 
 ```
 decomplect's pick: <option label>
+In plain words: <one or two sentences, no jargon, on what the pick means for this situation>
+Principle: <name> (<talk>)
 Why: <one or two sentences, naming what stays separate or what doesn't break>
 Tradeoff: <what you give up by choosing it>
-Principle: <name> (<talk>)
-In plain words: <one or two sentences, no jargon, on what the pick means for this situation>
 ```
 
 If the question isn't about design (naming a file, picking a date, a matter of
@@ -127,12 +127,12 @@ Lead with a verdict in one or two sentences. Then:
 
 ## Findings
 ### [severity] <short title>
+- In plain words: <1-3 sentences, no jargon: what this rule means for this code, what goes wrong, what to do>
+- Principle: <name> (<talk>)
 - Where: <file:line or doc section>
 - Complects: <A> with <B>   (or: Breaks: <contract>, or: Missing: <problem statement/alternative>)
 - Why it matters: <cost to understanding, change, debugging, or consumers>
 - Simpler alternative: <concrete, in the codebase's language and idioms>
-- Principle: <name> (<talk>)
-- In plain words: <1-3 sentences, no jargon: what this rule means for this code, what goes wrong, what to do>
 
 ## What is already simple
 <Call out good decisions so they are kept.>
@@ -142,7 +142,7 @@ Lead with a verdict in one or two sentences. Then:
 ```
 
 **Every finding must be understandable without knowing the principles.** The
-`Principle` line names the rule; the `In plain words` line right under it explains
+`In plain words` line comes first and explains
 what that rule means *for this specific code*, in one to three sentences a newcomer
 or product manager could follow:
 
@@ -155,16 +155,16 @@ don't restate the rule's title. Example:
 
 ```
 ### [major] Invoice total depends on the server clock
-- Where: billing/invoice.ts:42
-- Complects: the pricing rule with the current time
-- Why it matters: results change depending on when the code runs
-- Simpler alternative: pass `asOf: Date` into calculateTotal and let the caller supply it
-- Principle: Pull hidden inputs into the open (Are We There Yet?)
 - In plain words: calculateTotal secretly calls `new Date()` to decide whether the
   discount still applies, so the same order can produce two different totals
   depending on when it is calculated, and the test fails only near midnight. Hand
   the date in as an argument so anyone reading the call can see it, and tests can
   pick any date they want.
+- Principle: Pull hidden inputs into the open (Are We There Yet?)
+- Where: billing/invoice.ts:42
+- Complects: the pricing rule with the current time
+- Why it matters: results change depending on when the code runs
+- Simpler alternative: pass `asOf: Date` into calculateTotal and let the caller supply it
 ```
 
 Severity: **blocking** (breaks consumers, corrupts information, unbounded shared
