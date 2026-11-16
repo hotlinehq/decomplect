@@ -1,6 +1,30 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/decomplect-lockup-dark.svg">
+    <img alt="decomplect: untangle before you build" src="assets/decomplect-lockup-light.svg" width="560">
+  </picture>
+</p>
+
 # Decomplect
 
-A language-agnostic architect for Claude Code, distilled from Rich Hickey's conference talks (credited in references/sources.md).
+> **decomplect** /ˌdiː.kəmˈplɛkt/ *verb*
+>
+> To take apart things that have been braided together, so that each can be
+> understood, changed and reused on its own.
+>
+> **Origin:** *de-* (Latin, "undo, reverse") + *complect*, an archaic English verb
+> "to interweave", from Latin *complectī* "to embrace, encircle", from *com-*
+> "together" + *plectere* "to plait, braid".
+>
+> **Related:** *simple* (*sim-* "one" + *plex* "fold": one braid, one role),
+> *complex* (many folds braided together).
+>
+> **Usage:** "Before we add the retry logic, let's decomplect the HTTP client from
+> the billing rules."
+>
+> **Antonym:** complect, the source of most incidental complexity.
+
+Decomplect is a language-agnostic architect for Claude Code. Its principles are distilled from Rich Hickey's conference talks (credited in references/sources.md).
 It reviews PRs, design docs, APIs and schemas for complecting, place-oriented data,
 hidden state and time, breaking changes, and missing problem statements, and it can
 walk a team through problem-first design.
@@ -17,6 +41,7 @@ walk a team through problem-first design.
     references/sources.md          # talks used, with links
   agents/decomplect.md       # read-only subagent that applies the skill
   commands/architect-review.md     # /architect-review [base | PR# | doc path]
+assets/                            # logo: icon, mono stamp, light/dark lockups
 examples/architect-review.yml      # optional GitHub Action for PR reviews (not enabled)
 transcripts/                       # COVERAGE.md + fetch.sh (downloads all available transcripts)
 ```
