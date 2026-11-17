@@ -1,6 +1,6 @@
 ---
 name: decomplect
-description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, and when shaping a problem before building.
+description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, when shaping a problem before building, and for writing architecture decision records (ADRs) or reviewing changes against them.
 ---
 
 # Decomplect
@@ -49,7 +49,8 @@ Define terms first, then use them consistently.
    more, require less) or breakage (require more, provide less, same name for a
    different thing). Breakage should become a new name.
 7. **Decisions are the value of design.** A design that leaves every option open
-   has avoided designing. Enumerate at least two approaches and their tradeoffs.
+   has avoided designing. Enumerate at least two approaches and their tradeoffs,
+   and record the decision once it is made (`references/adr.md`).
 
 The full principle set, with sources, is in `references/principles.md`. Read it the
 first time you use this skill in a session, and whenever a finding needs a citation.
@@ -57,12 +58,14 @@ first time you use this skill in a session, and whenever a finding needs a citat
 ## Modes
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
-question with options, use **Advise**.
+question with options, use **Advise**. If asked to record a decision, use **ADR**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
 1. Establish what the change is *for*. Find the problem statement (PR body, linked
    issue, design doc). If there is none, say so first; that is a finding.
+   If the repo keeps ADRs, read the accepted ones that touch this change (see
+   "Reviewing against ADRs" in `references/adr.md`) and flag contradictions.
 2. Read the change and its surroundings. Map the moving parts: data shapes, state
    holders, boundaries (process, network, storage), time/ordering assumptions,
    public contracts.
@@ -83,7 +86,8 @@ Follow `references/design-process.md`: Describe, Diagnose, Delimit, Direction,
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
 quo as the first column. Ask Socratic questions; do not hand over a solution on the
-same turn the problem was first described unless asked.
+same turn the problem was first described unless asked. Once a direction is chosen,
+offer to save it as an ADR.
 
 ### Compatibility / API evolution
 
@@ -115,7 +119,23 @@ Tradeoff: <what you give up by choosing it>
 
 If the question isn't about design (naming a file, picking a date, a matter of
 taste), say "decomplect has no opinion here" rather than inventing one. The pick is
-advice, not the decision: the person still chooses.
+advice, not the decision: the person still chooses. Once they have chosen, offer
+in one line: "Want this saved as an ADR?"
+
+### ADR (record a decision)
+
+Use when asked to write an ADR, when the person accepts the offer at the end of
+Advise or Design, or when a new decision reverses an accepted ADR. Follow
+`references/adr.md`:
+
+1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
+2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
+   status quo as the first column), Decision, Consequences (including "Revisit if").
+3. Write it as Proposed unless the person says it is decided.
+4. Never edit an accepted ADR's body. To change a decision, write a new ADR with
+   `Supersedes: NNNN`, starting from the old tradeoff table.
+
+Review mode does not write ADRs; it only reads them.
 
 ## Output format
 
