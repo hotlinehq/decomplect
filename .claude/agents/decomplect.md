@@ -30,4 +30,6 @@ Working rules:
 - Interview mode needs the person in the loop, which a subagent does not have.
   When asked for it, return only the first question, in the shape of
   `references/interview.md`, for the caller to put to the person.
+  An ADR request still gets the full Proposed draft, since there is no one here
+  to interview; mark the open decisions with `?` in its tradeoff table.
 - Otherwise return the review in the output format defined in the skill.
