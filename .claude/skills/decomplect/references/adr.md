@@ -100,22 +100,13 @@ The table is the part of the ADR that pays off later. The decision line says wha
 was chosen; the table says what was given up and why the other options lost, which
 is the information that is otherwise lost first.
 
-- **Columns are options.** The first column is the status quo (doing nothing or
-  keeping what exists). Include at least two options; a table with one column is a
-  justification, not a decision (Tradeoffs require alternatives, Hammock Driven
-  Development).
-- **Rows are criteria,** sorted by importance, and only the ones where the options
-  differ: fitness for the use cases, what it does to information and history,
-  state and time, compatibility for consumers, operational cost, migration risk,
-  team familiarity. Drop a row where every cell says the same thing.
-- **Cells describe, they don't score.** Write how the option handles that criterion
-  in a few words ("keeps every status change as a row"), then a mark. No yes/no,
-  no points, no totals.
+Follow `tradeoff-table.md` for the shape, the criteria menu and the smells. For an
+ADR in particular:
+
+- **Keep the rejected columns.** They answer "why didn't we just ...?" six months
+  later, and Review uses them to spot a change that brings a rejected option back.
 - **Put `?` where you don't know.** An honest `?` is a reason to revisit later; a
-  guess hides it.
-- **Smells:** an all-green column (rationalizing a choice already made), columns that
-  barely differ, generic rows copied from a template, cells that are links instead
-  of summaries.
+  guess hides it. Turn the important ones into "Revisit if" lines.
 
 When the decision came from Design mode, the decision matrix from
 `design-process.md` is the tradeoff table: reuse it. When it came from Advise mode,

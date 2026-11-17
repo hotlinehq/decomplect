@@ -37,6 +37,7 @@ walk a team through problem-first design and record the decisions as ADRs.
     SKILL.md                       # the skill: stance, modes, output format
     references/principles.md       # ~40 principles, how to spot violations, talk citations
     references/review-checklist.md # the review walk-through
+    references/tradeoff-table.md   # one table shape for Advise, Design, ADRs and Review
     references/design-process.md   # Describe → Diagnose → Delimit → Direction → Design → Dev, decision matrix
     references/adr.md              # when and how to write ADRs, template, tradeoff table, reviewing against ADRs
     references/sources.md          # talks used, with links

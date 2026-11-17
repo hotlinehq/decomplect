@@ -18,6 +18,11 @@ answer and show it next to the options:
 
 You still choose. The pick is one more opinion on the card, not the decision.
 
+With three or more options, or a close call, decomplect also returns a short
+tradeoff table under the pick (status quo first, the few criteria that decide it).
+Only the pick goes on the card; the table goes under the question, so you can see
+why the other options lost before you overrule it.
+
 ## Turn it on
 
 Add this to the `CLAUDE.md` of any repository that has the decomplect skill

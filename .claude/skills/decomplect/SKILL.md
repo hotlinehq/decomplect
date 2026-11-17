@@ -78,15 +78,18 @@ question with options, use **Advise**. If asked to record a decision, use **ADR*
 5. Separate *incidental* complexity (from our construct choices) from *essential*
    complexity (from the problem). Never ask to remove essential complexity.
 6. Respect tradeoffs: if the simpler alternative costs something real
-   (performance, migration risk, team familiarity), say so.
+   (performance, migration risk, team familiarity), say so. For a blocking or major
+   finding with two credible fixes, add a small tradeoff table under "Simpler
+   alternative" (`references/tradeoff-table.md`). Most findings need none.
 
 ### Design / shaping (before code exists)
 
 Follow `references/design-process.md`: Describe, Diagnose, Delimit, Direction,
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
-quo as the first column. Ask Socratic questions; do not hand over a solution on the
-same turn the problem was first described unless asked. Once a direction is chosen,
+quo as the first column (`references/tradeoff-table.md`). Ask Socratic questions;
+do not hand over a solution on the same turn the problem was first described unless
+asked. Once a direction is chosen,
 offer to save it as an ADR.
 
 ### Compatibility / API evolution
@@ -95,6 +98,19 @@ Classify every change to a published interface (function, endpoint, message,
 schema, package) as accretion, relaxation, fixation, or breakage. For breakage,
 propose how to turn it into accretion (new name, new endpoint, new field, keep the
 old one). Flag version bumps used to excuse breakage.
+
+When more than one published thing changes, list them in a change ledger, one row
+per change, so the reader sees at a glance who breaks:
+
+```
+| Change | Class | Who is affected | How to make it growth |
+|---|---|---|---|
+| `GET /orders` drops `total` | 🔴 breakage | billing UI, partner export | keep `total`; add `total_with_tax` |
+| `POST /orders` accepts optional `note` | 🟢 accretion | nobody | already growth |
+```
+
+Name real consumers when you can find them (callers, subscribers, clients in the
+repo); otherwise write `?`. A single change needs no table.
 
 ### Advise (pick an answer to a question)
 
@@ -117,6 +133,14 @@ Why: <one or two sentences, naming what stays separate or what doesn't break>
 Tradeoff: <what you give up by choosing it>
 ```
 
+5. When there are three or more options, or the call is close (the runner-up loses
+   on only one or two criteria), add a tradeoff table **under** the block, following
+   `references/tradeoff-table.md`: status quo first, the 3 to 5 criteria that decide
+   it, aspects in the cells, no totals. It shows why the other options lost, so the
+   person can overrule the pick knowingly. With two clear options, the Tradeoff line
+   is enough. When the answer goes on a question card, only the block goes on the
+   card; the table goes below the question.
+
 If the question isn't about design (naming a file, picking a date, a matter of
 taste), say "decomplect has no opinion here" rather than inventing one. The pick is
 advice, not the decision: the person still chooses. Once they have chosen, offer
@@ -130,7 +154,8 @@ Advise or Design, or when a new decision reverses an accepted ADR. Follow
 
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
 2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
-   status quo as the first column), Decision, Consequences (including "Revisit if").
+   status quo as the first column, per `references/tradeoff-table.md`; reuse the
+   Advise or Design table if there was one), Decision, Consequences (including "Revisit if").
 3. Write it as Proposed unless the person says it is decided.
 4. Never edit an accepted ADR's body. To change a decision, write a new ADR with
    `Supersedes: NNNN`, starting from the old tradeoff table.
