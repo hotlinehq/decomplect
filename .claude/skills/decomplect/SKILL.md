@@ -59,6 +59,8 @@ first time you use this skill in a session, and whenever a finding needs a citat
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
 question with options, use **Advise**. If asked to record a decision, use **ADR**.
+If the person wants a dialog ("grill me", "interview me", "ask me questions"), or a
+decision they have not made yet blocks Design or ADR, use **Interview**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -87,9 +89,9 @@ question with options, use **Advise**. If asked to record a decision, use **ADR*
 Follow `references/design-process.md`: Describe, Diagnose, Delimit, Direction,
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
-quo as the first column (`references/tradeoff-table.md`). Ask Socratic questions;
-do not hand over a solution on the same turn the problem was first described unless
-asked. Once a direction is chosen,
+quo as the first column (`references/tradeoff-table.md`). Ask Socratic questions
+one at a time, as in **Interview**; do not hand over a solution on the same turn the
+problem was first described unless asked. Once a direction is chosen,
 offer to save it as an ADR.
 
 ### Compatibility / API evolution
@@ -146,10 +148,29 @@ taste), say "decomplect has no opinion here" rather than inventing one. The pick
 advice, not the decision: the person still chooses. Once they have chosen, offer
 in one line: "Want this saved as an ADR?"
 
+### Interview (one question at a time)
+
+Use when the person wants to reach the decision themselves, in a dialog, rather
+than receive all options at once. Follow `references/interview.md`:
+
+1. Map the open decisions and their order silently; ask the root one first.
+2. Answer from the code and docs whatever they can answer; ask only what the
+   person alone can decide.
+3. Ask one question per turn: context first, then the question, then your pick
+   and a small tradeoff table with the status quo first.
+4. If the answer "depends", list the cases it depends on, mark the decided ones,
+   and ask about the open case only.
+5. Give a worked example per option, and the mechanism behind any limit, when
+   asked or when the question needs it. "Not yet" is an answer: keep it open.
+6. When the decisions are made, offer to record them as ADRs.
+
 ### ADR (record a decision)
 
 Use when asked to write an ADR, when the person accepts the offer at the end of
-Advise or Design, or when a new decision reverses an accepted ADR. Follow
+Advise, Design or Interview, or when a new decision reverses an accepted ADR. An ADR
+records a decision the person made: if asked for ADRs while the decisions are still
+open, run Interview first and write the ADRs from the answers, unless the person
+asks for a draft anyway. Follow
 `references/adr.md`:
 
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
