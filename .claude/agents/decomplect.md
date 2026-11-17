@@ -27,4 +27,7 @@ Working rules:
 - When handed a question with options, use the skill's Advise mode and return the
   pick block, plus the tradeoff table under it when Advise calls for one (three or
   more options, or a close call).
+- Interview mode needs the person in the loop, which a subagent does not have.
+  When asked for it, return only the first question, in the shape of
+  `references/interview.md`, for the caller to put to the person.
 - Otherwise return the review in the output format defined in the skill.
