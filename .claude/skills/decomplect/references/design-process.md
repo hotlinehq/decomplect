@@ -50,23 +50,20 @@ out smaller and more general for having been designed.
 
 ## Decision matrix
 
-A spreadsheet beats prose because prose linearizes and hides contrast.
+A spreadsheet beats prose because prose linearizes and hides contrast. The decision
+matrix is the tradeoff table defined in `tradeoff-table.md`: status quo as the first
+column, criteria as rows, aspects in the cells, a 🟢 🟡 🔴 `?` legend, no scores.
+
+Design-specific notes:
 
 - **A1:** the decision being made, for which problem.
-- **Columns = approaches.** First column is the **status quo**. Include what others
-  have done, plus your ideas. The best answer is often a column you didn't start with.
-- **Rows = criteria.** Only salient ones, sorted by importance: fitness for the use
-  cases, relevant -ilities, costs, risks, compatibility, complexity.
-- **Cells = aspects:** a succinct description of how this approach handles that
-  criterion. No yes/no or numeric scores. Put judgment in an unsaturated background
-  color only: neutral, yellow (challenge), red (blocking), green (notably good).
-- Put `?` anywhere something is unknown.
-
-Smells: an all-green column (rationalizing), columns that don't differ, generic
-template rows, links instead of summaries, hidden comments.
-
-Render it as a Markdown table when a spreadsheet isn't available, with a legend such
-as 🟢 🟡 🔴 in place of color.
+- **Columns:** include what others have done, plus your ideas. The best answer is
+  often a column you didn't start with.
+- **Rows:** fitness for the use cases from the use-case table comes first, then the
+  menu rows that differ (strategy: in-process vs service, buy vs build, modify vs
+  add; tactics: data shape, state holders, contracts).
+- In a spreadsheet, put judgment in an unsaturated background color (neutral,
+  yellow, red, green) instead of the marks.
 
 ## Ticket shape
 

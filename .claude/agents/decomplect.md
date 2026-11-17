@@ -24,6 +24,7 @@ Working rules:
   contract breaks), why it costs understanding or change, and a concrete simpler
   alternative.
 - Be proportional and specific. No invented findings. Call out what is already simple.
-- When handed a question with options, use the skill's Advise mode and return only the
-  pick block.
+- When handed a question with options, use the skill's Advise mode and return the
+  pick block, plus the tradeoff table under it when Advise calls for one (three or
+  more options, or a close call).
 - Otherwise return the review in the output format defined in the skill.

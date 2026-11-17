@@ -77,15 +77,18 @@ question with options, use **Advise**. If asked to record a decision, use **ADR*
 5. Separate *incidental* complexity (from our construct choices) from *essential*
    complexity (from the problem). Never ask to remove essential complexity.
 6. Respect tradeoffs: if the simpler alternative costs something real
-   (performance, migration risk, team familiarity), say so.
+   (performance, migration risk, team familiarity), say so. For a blocking or major
+   finding with two credible fixes, add a small tradeoff table under "Simpler
+   alternative" (the Appendix: Tradeoff tables section below). Most findings need none.
 
 ### Design / shaping (before code exists)
 
 Follow the Appendix: Design process section below: Describe, Diagnose, Delimit, Direction,
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
-quo as the first column. Ask Socratic questions; do not hand over a solution on the
-same turn the problem was first described unless asked. Once a direction is chosen,
+quo as the first column (the Appendix: Tradeoff tables section below). Ask Socratic
+questions; do not hand over a solution on the same turn the problem was first
+described unless asked. Once a direction is chosen,
 offer to save it as an ADR.
 
 ### Compatibility / API evolution
@@ -94,6 +97,19 @@ Classify every change to a published interface (function, endpoint, message,
 schema, package) as accretion, relaxation, fixation, or breakage. For breakage,
 propose how to turn it into accretion (new name, new endpoint, new field, keep the
 old one). Flag version bumps used to excuse breakage.
+
+When more than one published thing changes, list them in a change ledger, one row
+per change, so the reader sees at a glance who breaks:
+
+```
+| Change | Class | Who is affected | How to make it growth |
+|---|---|---|---|
+| `GET /orders` drops `total` | 🔴 breakage | billing UI, partner export | keep `total`; add `total_with_tax` |
+| `POST /orders` accepts optional `note` | 🟢 accretion | nobody | already growth |
+```
+
+Name real consumers when you can find them (callers, subscribers, clients in the
+repo); otherwise write `?`. A single change needs no table.
 
 ### Advise (pick an answer to a question)
 
@@ -116,6 +132,14 @@ Why: <one or two sentences, naming what stays separate or what doesn't break>
 Tradeoff: <what you give up by choosing it>
 ```
 
+5. When there are three or more options, or the call is close (the runner-up loses
+   on only one or two criteria), add a tradeoff table **under** the block, following
+   the Appendix: Tradeoff tables section below: status quo first, the 3 to 5 criteria that decide
+   it, aspects in the cells, no totals. It shows why the other options lost, so the
+   person can overrule the pick knowingly. With two clear options, the Tradeoff line
+   is enough. When the answer goes on a question card, only the block goes on the
+   card; the table goes below the question.
+
 If the question isn't about design (naming a file, picking a date, a matter of
 taste), say "decomplect has no opinion here" rather than inventing one. The pick is
 advice, not the decision: the person still chooses. Once they have chosen, offer
@@ -129,7 +153,8 @@ the Appendix: ADRs section below:
 
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
 2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
-   status quo as the first column), Decision, Consequences (including "Revisit if").
+   status quo as the first column, per the Appendix: Tradeoff tables section below; reuse the
+   Advise or Design table if there was one), Decision, Consequences (including "Revisit if").
 3. Write it as Proposed unless the person says it is decided.
 4. Never edit an accepted ADR's body. To change a decision, write a new ADR with
    `Supersedes: NNNN`, starting from the old tradeoff table.
@@ -603,6 +628,8 @@ to evidence. Principle numbers refer to the Principles appendix.
 - [ ] Does the change address that problem, or a symptom of it?
 - [ ] Were alternatives considered? Is the status quo one of them?
 - [ ] Are known tradeoffs and open questions stated?
+- [ ] For design docs and ADRs: does the tradeoff table have a status quo column, rows
+      that actually differ, and no all-green or scored column? (Smells in the Appendix: Tradeoff tables.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
 - [ ] If the repo keeps ADRs: does the change contradict an accepted one, trip a
       "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
@@ -723,23 +750,20 @@ out smaller and more general for having been designed.
 
 ### Decision matrix
 
-A spreadsheet beats prose because prose linearizes and hides contrast.
+A spreadsheet beats prose because prose linearizes and hides contrast. The decision
+matrix is the tradeoff table defined in the Appendix: Tradeoff tables: status quo as the first
+column, criteria as rows, aspects in the cells, a 🟢 🟡 🔴 `?` legend, no scores.
+
+Design-specific notes:
 
 - **A1:** the decision being made, for which problem.
-- **Columns = approaches.** First column is the **status quo**. Include what others
-  have done, plus your ideas. The best answer is often a column you didn't start with.
-- **Rows = criteria.** Only salient ones, sorted by importance: fitness for the use
-  cases, relevant -ilities, costs, risks, compatibility, complexity.
-- **Cells = aspects:** a succinct description of how this approach handles that
-  criterion. No yes/no or numeric scores. Put judgment in an unsaturated background
-  color only: neutral, yellow (challenge), red (blocking), green (notably good).
-- Put `?` anywhere something is unknown.
-
-Smells: an all-green column (rationalizing), columns that don't differ, generic
-template rows, links instead of summaries, hidden comments.
-
-Render it as a Markdown table when a spreadsheet isn't available, with a legend such
-as 🟢 🟡 🔴 in place of color.
+- **Columns:** include what others have done, plus your ideas. The best answer is
+  often a column you didn't start with.
+- **Rows:** fitness for the use cases from the use-case table comes first, then the
+  menu rows that differ (strategy: in-process vs service, buy vs build, modify vs
+  add; tactics: data shape, state holders, contracts).
+- In a spreadsheet, put judgment in an unsaturated background color (neutral,
+  yellow, red, green) instead of the marks.
 
 ### Ticket shape
 
@@ -862,22 +886,13 @@ The table is the part of the ADR that pays off later. The decision line says wha
 was chosen; the table says what was given up and why the other options lost, which
 is the information that is otherwise lost first.
 
-- **Columns are options.** The first column is the status quo (doing nothing or
-  keeping what exists). Include at least two options; a table with one column is a
-  justification, not a decision (Tradeoffs require alternatives, Hammock Driven
-  Development).
-- **Rows are criteria,** sorted by importance, and only the ones where the options
-  differ: fitness for the use cases, what it does to information and history,
-  state and time, compatibility for consumers, operational cost, migration risk,
-  team familiarity. Drop a row where every cell says the same thing.
-- **Cells describe, they don't score.** Write how the option handles that criterion
-  in a few words ("keeps every status change as a row"), then a mark. No yes/no,
-  no points, no totals.
+Follow the Appendix: Tradeoff tables for the shape, the criteria menu and the smells. For an
+ADR in particular:
+
+- **Keep the rejected columns.** They answer "why didn't we just ...?" six months
+  later, and Review uses them to spot a change that brings a rejected option back.
 - **Put `?` where you don't know.** An honest `?` is a reason to revisit later; a
-  guess hides it.
-- **Smells:** an all-green column (rationalizing a choice already made), columns that
-  barely differ, generic rows copied from a template, cells that are links instead
-  of summaries.
+  guess hides it. Turn the important ones into "Revisit if" lines.
 
 When the decision came from Design mode, the decision matrix from
 the Appendix: Design process section is the tradeoff table: reuse it. When it came from Advise mode,
@@ -903,3 +918,84 @@ In Review mode, before walking the checklist:
 
 A contradiction is not automatically wrong: the decision may deserve to change.
 The finding asks for the change to be recorded as a new ADR, so the reason is kept.
+
+---
+
+## Appendix: Tradeoff tables
+
+One table shape, used wherever decomplect compares options: Design mode's decision
+matrix, an ADR's "Options and tradeoffs" section, and Advise when the call is close.
+Prose linearizes and hides contrast; a table lets the reader see why the other
+options lost, and disagree with the pick for a reason the skill could not see
+(Design in Practice).
+
+### Shape
+
+- **First cell / one line above:** the decision being made, for which problem.
+- **Columns are options.** The first column is the **status quo** (keep what exists,
+  or do nothing), even when the question left it out. At least two options; one
+  column is a justification, not a decision (Hammock Driven Development).
+- **Rows are criteria,** 3 to 5 of them, most important first, and only rows where
+  the options differ. Pick them from the menu below.
+- **Cells are aspects:** a few words on how this option handles this criterion,
+  using the real names from the code ("keeps every attempt as a row"). No yes/no,
+  no points.
+- **Marks:** 🟢 notably good · 🟡 challenge · 🔴 blocking · `?` unknown · no mark:
+  neutral. Put the legend under the table.
+- **No totals.** Never count greens or add scores. The pick is argued in words
+  above or below the table; the table is the evidence.
+- **Width:** at most four option columns. With more options, transpose (options as
+  rows, criteria as columns) so it stays readable in a terminal or a PR comment.
+
+```markdown
+<Decision, for which problem.>
+
+| Criterion | Status quo: <what exists> | <Option B> | <Option C> |
+|---|---|---|---|
+| <most important> | 🔴 <aspect> | 🟢 <aspect> | 🟢 <aspect> |
+| <next> | <aspect> | 🟡 <aspect> | ? |
+
+🟢 notably good · 🟡 challenge · 🔴 blocking · ? unknown · no mark: neutral
+```
+
+### Criteria menu
+
+Row labels are in plain words, so a newcomer can read the table without knowing the
+principles. The principle behind each row is here, not in the table.
+
+| Row label | What the cell answers | Principle (talk) |
+|---|---|---|
+| Solves the stated problem | Does it remove the cause of the unmet objective, or only add a feature? | Solve problems, not features (Hammock Driven Development; Design in Practice) |
+| What gets tangled together | Which independent things it braids together, or keeps apart | Complect = interleave (Simple Made Easy) |
+| History and time | Does it keep facts with their time, or overwrite them in place? | Facts incorporate time (The Value of Values; Are We There Yet?) |
+| Who can change state, and where | Where mutable state lives, and which boundaries share it | State is never simple (Are We There Yet?) |
+| Effect on existing consumers | Grows, relaxes or breaks a published contract, and for whom | Change is growth or breakage (Spec-ulation) |
+| Cost to change later | How hard it is to undo or extend once data and callers depend on it | Judge the artifact, not the construct (Simple Made Easy) |
+| Real costs now | Performance, migration effort, operational load, team familiarity | Easy is relative, but its costs are real (Simple Made Easy) |
+
+Domain criteria (latency budget, a compliance rule, a use case from the use-case
+table) are welcome; put them first when they decide the question.
+
+### Smells
+
+Raise these as findings when reviewing a design doc or ADR, and fix them in your own
+tables before showing them:
+
+- **All-green column:** the choice was made first and the table rationalizes it. If
+  the picked column truly has no 🟡 or 🔴, say why in one line.
+- **No status quo column,** or only one option.
+- **Rows that don't differ:** every cell says the same thing. Drop the row.
+- **Generic rows:** all seven menu rows filled in every time, whatever the question.
+- **Scores or totals,** or cells that are only a mark with no words.
+- **Links instead of summaries,** and hidden comments.
+- **Jargon row labels** ("complects", "accretion") in a table meant for people.
+
+### Where each mode uses it
+
+| Mode | When | Notes |
+|---|---|---|
+| Design | Strategy and implementation decision matrices | Always. See the Appendix: Design process |
+| ADR | The "Options and tradeoffs" section | Always. Reuse the Design matrix or the Advise table if there was one. See the Appendix: ADRs |
+| Advise | Three or more options, or a close call | Under the pick block, never instead of it |
+| Review | A blocking or major finding with two credible fixes | Under "Simpler alternative". Most findings need none |
+| Compatibility | Not this table | Use the change ledger in Compatibility mode: rows are changes, not options |

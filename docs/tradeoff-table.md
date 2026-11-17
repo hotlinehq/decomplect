@@ -51,25 +51,36 @@ one sentence; the table is the record of why the other two lost.
    or a close call, the one line drops the information the person needs to overrule
    the pick.
 
-## What we adopt now (this PR)
+## What we adopted
 
+- One definition of the table in `references/tradeoff-table.md`: shape, a menu of
+  seven plain-word criteria tied to the principles, marks, smells, and which mode
+  uses it when. Design's decision matrix and the ADR's table both point to it.
 - The ADR template's "Options and tradeoffs" section is this table, with the status
-  quo first, and rules for writing it (`references/adr.md`).
-- Design mode's decision matrix is reused as the ADR's table, not rewritten.
-- A superseding ADR starts from the old table.
-- Review flags contradictions with accepted ADRs, tripped "Revisit if" triggers, and
-  edits to accepted ADR bodies.
+  quo first (`references/adr.md`). A superseding ADR starts from the old table.
+- **Advise:** with three or more options, or a close call, a compact table goes under
+  the pick block. The pick block stays first and is the only part that goes on a
+  question card.
+- **Compatibility:** a change ledger (change, class, who is affected, how to make it
+  growth) when more than one published thing changes.
+- **Review:** an optional small table under "Simpler alternative" for blocking or
+  major findings with two credible fixes; table smells are on the checklist for
+  design docs and ADRs; contradictions with accepted ADRs are flagged.
 
-## Possible next steps (not in this PR)
+## Guardrails
 
-- **Advise: optional table.** When there are three or more options, or the pick is a
-  close call, add a compact table under the pick block (rows: the two or three
-  criteria that decided it). Keep the pick block first so it can still be pasted
-  next to a question.
-- **Review: table smells.** Add the smells above to the review checklist for ADRs and
-  design docs, so "all-green column" or "no status quo" becomes a finding.
-- **Review: rejected-option detection.** When reviewing a PR, match the change against
-  the rejected columns of accepted ADRs, not only the Decision lines.
+| Risk | Guardrail |
+|---|---|
+| Verbosity | Table only when it changes what the reader can see: 3+ options, a close call, or an ADR. Two clear options keep the one-line Tradeoff |
+| False precision | No scores, no totals; the pick is argued in words |
+| Generic rows | 3 to 5 rows, only ones where options differ |
+| Rationalizing | Status quo column first; an all-green pick column must say why |
+| Jargon | Plain-word row labels; principles live in the reference file |
+| Narrow renderers | At most four option columns; transpose beyond that |
 
-Each is a few lines in `SKILL.md` and the checklist. Worth trying on a real repo with a
-handful of ADRs before committing to them.
+## Still open
+
+- **Rejected-option detection.** When reviewing a PR, match the change against the
+  rejected columns of accepted ADRs, not only the Decision lines.
+- Try Advise with tables on a handful of real questions. A table that never changes
+  anyone's mind or surfaces a `?` means the trigger is too loose.
