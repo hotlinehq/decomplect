@@ -80,7 +80,9 @@ one sentence; the table is the record of why the other two lost.
 
 ## Still open
 
-- **Rejected-option detection.** When reviewing a PR, match the change against the
-  rejected columns of accepted ADRs, not only the Decision lines.
+- **Rejected-option detection.** Partly addressed: ADRs now carry a Confirmation
+  line (from MADR) naming a code signal, usually the rejected option's pattern, and
+  Review searches the diff for it. Still open: matching a change against rejected
+  columns when the ADR's Confirmation is `?`.
 - Try Advise with tables on a handful of real questions. A table that never changes
   anyone's mind or surfaces a `?` means the trigger is too loose.

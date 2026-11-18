@@ -138,8 +138,9 @@ Tradeoff: <what you give up by choosing it>
    on only one or two criteria), add a tradeoff table **under** the block, following
    the Appendix: Tradeoff tables section below: status quo first, the 3 to 5 criteria that decide
    it, aspects in the cells, no totals. It shows why the other options lost, so the
-   person can overrule the pick knowingly. With two clear options, the Tradeoff line
-   is enough. When the answer goes on a question card, only the block goes on the
+   person can overrule the pick knowingly. For a close call, end it with a
+   "Flips if" line: the fact that would make the runner-up win. With two clear
+   options, the Tradeoff line is enough. When the answer goes on a question card, only the block goes on the
    card; the table goes below the question.
 
 If the question isn't about design (naming a file, picking a date, a matter of
@@ -175,7 +176,9 @@ the Appendix: ADRs section below:
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
 2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
    status quo as the first column, per the Appendix: Tradeoff tables section below; reuse the
-   Advise or Design table if there was one), Decision, Consequences (including "Revisit if").
+   Advise or Design table if there was one), Decision with a Confirmation line (a
+   signal in the code that the decision is followed), Consequences (including
+   "Revisit if").
 3. Write it as Proposed unless the person says it is decided.
 4. Never edit an accepted ADR's body. To change a decision, write a new ADR with
    `Supersedes: NNNN`, starting from the old tradeoff table.
@@ -650,10 +653,11 @@ to evidence. Principle numbers refer to the Principles appendix.
 - [ ] Were alternatives considered? Is the status quo one of them?
 - [ ] Are known tradeoffs and open questions stated?
 - [ ] For design docs and ADRs: does the tradeoff table have a status quo column, rows
-      that actually differ, and no all-green or scored column? (Smells in the Appendix: Tradeoff tables.)
+      that actually differ, must rows marked (must), and no all-green or scored
+      column? Does an ADR have a Confirmation line? (Smells in the Appendix: Tradeoff tables.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
-- [ ] If the repo keeps ADRs: does the change contradict an accepted one, trip a
-      "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
+- [ ] If the repo keeps ADRs: does the change contradict an accepted one, fail its
+      Confirmation line, trip a "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
       (See "Reviewing against ADRs" in the Appendix: ADRs section.)
 
 ### B. Complecting (1.2–1.8)
@@ -894,6 +898,10 @@ remedy. Include the context a newcomer needs: what exists today and what hurts.>
 <The option chosen, in one or two sentences, and why it wins on the rows that
 matter most. Name the principle if one applies, with its talk.>
 
+Confirmation: <how a reviewer can tell from the code that this decision is followed,
+e.g. "status changes go through `OrderEvents.append`; no `UPDATE orders SET status`
+outside it". `?` if there is no such signal yet.>
+
 ## Consequences
 - Easier: <what this makes simpler or possible>
 - Harder: <what this costs: the tradeoff we accepted>
@@ -913,7 +921,25 @@ ADR in particular:
 - **Keep the rejected columns.** They answer "why didn't we just ...?" six months
   later, and Review uses them to spot a change that brings a rejected option back.
 - **Put `?` where you don't know.** An honest `?` is a reason to revisit later; a
-  guess hides it. Turn the important ones into "Revisit if" lines.
+  guess hides it. Turn the important ones into "Revisit if" lines, along with the
+  "Flips if" line if the decision had one.
+
+### Writing the Confirmation line
+
+The Confirmation line (from MADR) turns the decision into something a reviewer can
+check in a diff. Name a concrete signal in the code, using real names:
+
+- a pattern that must not appear: the rejected column coming back
+  (`UPDATE orders SET status`, a second writer to the same table, a new sync call
+  from `billing` to `orders`);
+- a pattern that must appear: the chosen path (`OrderEvents.append`, a version
+  field on every message, the `current_status` view as the only reader);
+- or a check that already enforces it: a lint rule, an architecture test, a schema
+  constraint.
+
+Prefer the rejected-option pattern: it is what drifts back in. Keep it to one or two
+signals. If the decision has no signal in code (a team process, a vendor choice),
+write `Confirmation: ?`; Review then falls back to the Decision line.
 
 When the decision came from Design mode, the decision matrix from
 the Appendix: Design process section is the tradeoff table: reuse it. When it came from Advise mode,
@@ -925,11 +951,14 @@ question left it out.
 In Review mode, before walking the checklist:
 
 1. Look for an ADR folder (see Where it goes). If there is none, skip this.
-2. Read the titles and the Decision lines of Accepted ADRs. Open the ones that touch
-   the files, data, services or contracts in the change.
+2. Read the titles, the Decision lines and the Confirmation lines of Accepted ADRs.
+   Open the ones that touch the files, data, services or contracts in the change.
+   Search the diff for each Confirmation signal: a forbidden pattern that appears, or
+   a required one that is bypassed, is a contradiction.
 3. Raise a finding when the change:
    - **contradicts** an accepted decision (does the option the ADR rejected, or
-     undoes the one it chose) without a new ADR that supersedes it;
+     undoes the one it chose, or fails its Confirmation line) without a new ADR that
+     supersedes it;
    - **trips a revisit trigger** named in an ADR's Consequences;
    - **edits the body of an accepted ADR** instead of adding a superseding one
      (that rewrites a recorded fact);
@@ -958,6 +987,11 @@ options lost, and disagree with the pick for a reason the skill could not see
   column is a justification, not a decision (Hammock Driven Development).
 - **Rows are criteria,** 3 to 5 of them, most important first, and only rows where
   the options differ. Pick them from the menu below.
+- **Must-have rows:** a hard constraint (something the decision must satisfy, not a
+  preference) gets `(must)` after its label and goes first. A 🔴 on a must row rules
+  the option out: say so in the cell ("🔴 breaks the v1 API: out") and don't argue it
+  further in the other rows. Keep the column; it records why the option lost
+  (MADR's knock-out criterion). A 🔴 on any other row is a cost to weigh, not a veto.
 - **Cells are aspects:** a few words on how this option handles this criterion,
   using the real names from the code ("keeps every attempt as a row"). No yes/no,
   no points.
@@ -973,11 +1007,24 @@ options lost, and disagree with the pick for a reason the skill could not see
 
 | Criterion | Status quo: <what exists> | <Option B> | <Option C> |
 |---|---|---|---|
+| <hard constraint> (must) | <aspect> | <aspect> | 🔴 <aspect>: out |
 | <most important> | 🔴 <aspect> | 🟢 <aspect> | 🟢 <aspect> |
 | <next> | <aspect> | 🟡 <aspect> | ? |
 
 🟢 notably good · 🟡 challenge · 🔴 blocking · ? unknown · no mark: neutral
+
+Flips if: <the observable fact that would make the runner-up win>
 ```
+
+### Flips if
+
+Under a close-call table (Advise or Interview, where the runner-up loses on only one
+or two rows), add one line: `Flips if: <fact>`. Name the observable fact that would
+make the runner-up win: a number crossing a threshold, a use case arriving, a `?`
+resolving the other way. "If priorities change" is not a fact. This replaces
+re-weighting the criteria: it tells the person exactly what they would have to
+believe to overrule the pick. When the decision is recorded, the line becomes a
+"Revisit if" in the ADR's Consequences. A table with a clear winner needs no line.
 
 ### Criteria menu
 
@@ -1010,6 +1057,13 @@ tables before showing them:
 - **Scores or totals,** or cells that are only a mark with no words.
 - **Links instead of summaries,** and hidden comments.
 - **Jargon row labels** ("complects", "accretion") in a table meant for people.
+- **A preference marked (must),** or a must row where every option passes: drop the
+  mark or the row.
+- **Options at different levels:** a pattern against a product ("event sourcing vs
+  Kafka"). Compare like with like, or split the decision in two.
+- **Popularity as the argument:** a cell whose only reason is "everybody does it" or
+  "we've always done it this way". Say what it does for this problem.
+- **Close call without "Flips if".**
 
 ### Where each mode uses it
 
