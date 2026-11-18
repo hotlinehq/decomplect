@@ -139,8 +139,9 @@ Tradeoff: <what you give up by choosing it>
    on only one or two criteria), add a tradeoff table **under** the block, following
    `references/tradeoff-table.md`: status quo first, the 3 to 5 criteria that decide
    it, aspects in the cells, no totals. It shows why the other options lost, so the
-   person can overrule the pick knowingly. With two clear options, the Tradeoff line
-   is enough. When the answer goes on a question card, only the block goes on the
+   person can overrule the pick knowingly. For a close call, end it with a
+   "Flips if" line: the fact that would make the runner-up win. With two clear
+   options, the Tradeoff line is enough. When the answer goes on a question card, only the block goes on the
    card; the table goes below the question.
 
 If the question isn't about design (naming a file, picking a date, a matter of
@@ -176,7 +177,9 @@ asks for a draft anyway. Follow
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
 2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
    status quo as the first column, per `references/tradeoff-table.md`; reuse the
-   Advise or Design table if there was one), Decision, Consequences (including "Revisit if").
+   Advise or Design table if there was one), Decision with a Confirmation line (a
+   signal in the code that the decision is followed), Consequences (including
+   "Revisit if").
 3. Write it as Proposed unless the person says it is decided.
 4. Never edit an accepted ADR's body. To change a decision, write a new ADR with
    `Supersedes: NNNN`, starting from the old tradeoff table.

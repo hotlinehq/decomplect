@@ -14,6 +14,11 @@ options lost, and disagree with the pick for a reason the skill could not see
   column is a justification, not a decision (Hammock Driven Development).
 - **Rows are criteria,** 3 to 5 of them, most important first, and only rows where
   the options differ. Pick them from the menu below.
+- **Must-have rows:** a hard constraint (something the decision must satisfy, not a
+  preference) gets `(must)` after its label and goes first. A 🔴 on a must row rules
+  the option out: say so in the cell ("🔴 breaks the v1 API: out") and don't argue it
+  further in the other rows. Keep the column; it records why the option lost
+  (MADR's knock-out criterion). A 🔴 on any other row is a cost to weigh, not a veto.
 - **Cells are aspects:** a few words on how this option handles this criterion,
   using the real names from the code ("keeps every attempt as a row"). No yes/no,
   no points.
@@ -29,11 +34,24 @@ options lost, and disagree with the pick for a reason the skill could not see
 
 | Criterion | Status quo: <what exists> | <Option B> | <Option C> |
 |---|---|---|---|
+| <hard constraint> (must) | <aspect> | <aspect> | 🔴 <aspect>: out |
 | <most important> | 🔴 <aspect> | 🟢 <aspect> | 🟢 <aspect> |
 | <next> | <aspect> | 🟡 <aspect> | ? |
 
 🟢 notably good · 🟡 challenge · 🔴 blocking · ? unknown · no mark: neutral
+
+Flips if: <the observable fact that would make the runner-up win>
 ```
+
+## Flips if
+
+Under a close-call table (Advise or Interview, where the runner-up loses on only one
+or two rows), add one line: `Flips if: <fact>`. Name the observable fact that would
+make the runner-up win: a number crossing a threshold, a use case arriving, a `?`
+resolving the other way. "If priorities change" is not a fact. This replaces
+re-weighting the criteria: it tells the person exactly what they would have to
+believe to overrule the pick. When the decision is recorded, the line becomes a
+"Revisit if" in the ADR's Consequences. A table with a clear winner needs no line.
 
 ## Criteria menu
 
@@ -66,6 +84,13 @@ tables before showing them:
 - **Scores or totals,** or cells that are only a mark with no words.
 - **Links instead of summaries,** and hidden comments.
 - **Jargon row labels** ("complects", "accretion") in a table meant for people.
+- **A preference marked (must),** or a must row where every option passes: drop the
+  mark or the row.
+- **Options at different levels:** a pattern against a product ("event sourcing vs
+  Kafka"). Compare like with like, or split the decision in two.
+- **Popularity as the argument:** a cell whose only reason is "everybody does it" or
+  "we've always done it this way". Say what it does for this problem.
+- **Close call without "Flips if".**
 
 ## Where each mode uses it
 

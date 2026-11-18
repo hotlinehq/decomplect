@@ -87,6 +87,10 @@ remedy. Include the context a newcomer needs: what exists today and what hurts.>
 <The option chosen, in one or two sentences, and why it wins on the rows that
 matter most. Name the principle if one applies, with its talk.>
 
+Confirmation: <how a reviewer can tell from the code that this decision is followed,
+e.g. "status changes go through `OrderEvents.append`; no `UPDATE orders SET status`
+outside it". `?` if there is no such signal yet.>
+
 ## Consequences
 - Easier: <what this makes simpler or possible>
 - Harder: <what this costs: the tradeoff we accepted>
@@ -106,7 +110,25 @@ ADR in particular:
 - **Keep the rejected columns.** They answer "why didn't we just ...?" six months
   later, and Review uses them to spot a change that brings a rejected option back.
 - **Put `?` where you don't know.** An honest `?` is a reason to revisit later; a
-  guess hides it. Turn the important ones into "Revisit if" lines.
+  guess hides it. Turn the important ones into "Revisit if" lines, along with the
+  "Flips if" line if the decision had one.
+
+## Writing the Confirmation line
+
+The Confirmation line (from MADR) turns the decision into something a reviewer can
+check in a diff. Name a concrete signal in the code, using real names:
+
+- a pattern that must not appear: the rejected column coming back
+  (`UPDATE orders SET status`, a second writer to the same table, a new sync call
+  from `billing` to `orders`);
+- a pattern that must appear: the chosen path (`OrderEvents.append`, a version
+  field on every message, the `current_status` view as the only reader);
+- or a check that already enforces it: a lint rule, an architecture test, a schema
+  constraint.
+
+Prefer the rejected-option pattern: it is what drifts back in. Keep it to one or two
+signals. If the decision has no signal in code (a team process, a vendor choice),
+write `Confirmation: ?`; Review then falls back to the Decision line.
 
 When the decision came from Design mode, the decision matrix from
 `design-process.md` is the tradeoff table: reuse it. When it came from Advise mode,
@@ -118,11 +140,14 @@ question left it out.
 In Review mode, before walking the checklist:
 
 1. Look for an ADR folder (see Where it goes). If there is none, skip this.
-2. Read the titles and the Decision lines of Accepted ADRs. Open the ones that touch
-   the files, data, services or contracts in the change.
+2. Read the titles, the Decision lines and the Confirmation lines of Accepted ADRs.
+   Open the ones that touch the files, data, services or contracts in the change.
+   Search the diff for each Confirmation signal: a forbidden pattern that appears, or
+   a required one that is bypassed, is a contradiction.
 3. Raise a finding when the change:
    - **contradicts** an accepted decision (does the option the ADR rejected, or
-     undoes the one it chose) without a new ADR that supersedes it;
+     undoes the one it chose, or fails its Confirmation line) without a new ADR that
+     supersedes it;
    - **trips a revisit trigger** named in an ADR's Consequences;
    - **edits the body of an accepted ADR** instead of adding a superseding one
      (that rewrites a recorded fact);

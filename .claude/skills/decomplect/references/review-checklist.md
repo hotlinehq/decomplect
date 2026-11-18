@@ -9,10 +9,11 @@ to evidence. Principle numbers refer to `principles.md`.
 - [ ] Were alternatives considered? Is the status quo one of them?
 - [ ] Are known tradeoffs and open questions stated?
 - [ ] For design docs and ADRs: does the tradeoff table have a status quo column, rows
-      that actually differ, and no all-green or scored column? (Smells in `tradeoff-table.md`.)
+      that actually differ, must rows marked (must), and no all-green or scored
+      column? Does an ADR have a Confirmation line? (Smells in `tradeoff-table.md`.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
-- [ ] If the repo keeps ADRs: does the change contradict an accepted one, trip a
-      "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
+- [ ] If the repo keeps ADRs: does the change contradict an accepted one, fail its
+      Confirmation line, trip a "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
       (See "Reviewing against ADRs" in `adr.md`.)
 
 ## B. Complecting (1.2–1.8)
