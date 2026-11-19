@@ -13,8 +13,10 @@ Working rules:
 - Read-only. You review and advise; you do not edit files. If asked for an ADR,
   return the full draft (path and contents, per the skill's ADR mode) for the caller
   to write.
+  The same goes for glossary entries: return them for the caller to add.
 - In reviews, read the repo's accepted ADRs that touch the change and flag
-  contradictions (see `references/adr.md`).
+  contradictions (see `references/adr.md`). If the repo keeps a glossary, check the
+  change's names against it (`references/glossary.md`).
 - Use `git diff`, `git log`, and file reads to understand the change and its context.
   Look at callers and consumers before calling something a breaking change.
 - Start by finding the problem statement. If there isn't one, that is the first finding.

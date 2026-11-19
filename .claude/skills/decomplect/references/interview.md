@@ -15,23 +15,32 @@ that. One good question at a time does not.
 1. **Map the decisions first, silently.** List the open decisions and which ones
    depend on which. Ask the root one first: the one whose answer changes what the
    other questions are. Do not show the whole tree.
-2. **Look before you ask.** If the code, docs, earlier decisions or ADRs can answer
-   it, read them and state the answer as a fact with where you found it. Ask the
-   person only what only they can decide (goals, priorities, risk they accept).
-3. **Ask one question per turn.** Never two. Number them (Q1, Q2, ...) so answers
-   can point back.
+2. **Look before you ask.** Facts are your job; decisions are the person's. If the
+   code, docs, glossary, earlier decisions or ADRs can answer it, read them and state
+   the answer as a fact with where you found it. Ask the person only what only they
+   can decide (goals, priorities, risk they accept).
+   - **Don't stall on a lookup.** When finding a fact takes a while (many files,
+     another repository, running something), hand it to a subagent if you can, and
+     meanwhile ask a question that does not depend on it. Only the questions that
+     need that fact wait for it.
+   - **Check claims against the code.** When the person says how something works
+     today, check it before building on it. If the code disagrees, show where
+     (`file:line`) and ask which is right; that is the next question.
+3. **Ask one question per turn.** Never two, unless the person asked for rounds
+   (below). Number them (Q1, Q2, ...) so answers can point back.
 4. **Wait.** Do not write the ADR, the plan or the next question until the person
    answers. When they answer, say in one line what is now decided, then ask the next
-   question.
-5. **At the end,** offer to record the answers as ADRs (`adr.md`). The tradeoff
-   tables from the questions become the ADRs' tables.
+   question. If the answer settled a term, update the glossary (`glossary.md`) in
+   the same turn.
+5. **Close with the decision list** (below) once no open question is left, and wait
+   for the person to confirm it before acting on any of it.
 
 ## Shape of one question
 
 ```
 <Context: two to four sentences on what exists today and why this question comes up.>
 
-**Q<n>. <The question, in the person's words, one sentence.>**
+**Q<n>. <The question, in the person's words, one sentence, worded so "yes" takes the pick.>**
 
 My pick: <option>, because <one sentence>.
 
@@ -44,6 +53,11 @@ My pick: <option>, because <one sentence>.
 
 - **Context comes first.** A question the person cannot answer without reading the
   code is not ready to ask.
+- **"Yes" takes the pick.** Word the question so a plain "yes" accepts your pick:
+  "Q3. Keep every status change as a row in a new `order_events` table?", not "Q3.
+  Should we overwrite `orders.status`?" with a pick that argues for "no". With more
+  than two options, name the pick in the question: "... in `order_events`, rather
+  than the other options below?"
 - **Always a pick and always a small table**, even with two options: status quo
   first, two to four rows, words in every cell (`tradeoff-table.md`). In Interview
   the table is the point, not an extra.
@@ -63,6 +77,21 @@ several cases. Split it before asking again:
 Asking "what should happen when X fails?" before listing why X can fail makes the
 person do the diagnosis (Design in Practice: Diagnose before Delimit).
 
+## When talk can't settle it
+
+Some questions are not answered by more questions: how a screen or a workflow
+should feel, or a number nobody has measured yet (latency, load, cost, how often a
+case happens). Asking again only produces guesses, and the scope grows with the
+uncertainty.
+
+1. Say that this one needs evidence, not an opinion.
+2. Propose the smallest experiment that would answer it: a throwaway prototype, a
+   query against real data, a quick load test. Write down first what result would
+   decide it ("if p99 stays under 200 ms with 50 writers, the queue is not needed"),
+   as in Design in Practice's Diagnose phase.
+3. Keep the question open and carry on with questions that don't depend on it. When
+   the result is in, the answer is usually one line.
+
 ## When the person asks for more
 
 These are the usual follow-ups. Answer them before they are asked when you can.
@@ -80,10 +109,49 @@ These are the usual follow-ups. Answer them before they are asked when you can.
   it. Ask what context is missing, or offer the example or mechanism that is most
   likely missing.
 
+## Rounds, on request
+
+One question per turn is the default. If the person asks for the questions in
+batches ("ask them all", "give me a round", "batch them"):
+
+- Ask every open question whose answer does not depend on another open question,
+  numbered and each in the usual shape (context, question, pick, table), separated
+  by a rule.
+- A question that depends on an answer in this round waits for the next round.
+- After each round, say in one line per question what is now decided, then work out
+  the next round from scratch: answers open up questions the first round could not
+  ask.
+- Go back to one question per turn when the person asks.
+
+## The decision list
+
+The interview is done when no open question is left, or when the person says to
+stop. Close with every decision made, one line each, including the ones that will
+never be ADRs; most decisions do not earn one, and without this list they exist only
+in the chat.
+
+```
+Decided:
+- Q1. Status changes are kept as rows in `order_events`. (ADR: yes)
+- Q2. `GET /orders` keeps `status` as a computed field. (ADR: no, easy to change)
+Still open:
+- Q4. Retention period for `order_events`: needs a storage cost estimate.
+Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
+```
+
+- Write each line as a fact a newcomer could act on, with the precise detail the
+  person gave (numbers, orderings, "never" rules). Don't soften them.
+- Mark which ones pass the ADR test (`adr.md`, "When to write one").
+- Ask the person to confirm the list matches what they meant. Do not write ADRs, a
+  plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
+  tradeoff tables from their questions become the ADRs' tables.
+
 ## What Interview does not do
 
 - Does not hand over all options and all decisions in one message, even when it
   could.
-- Does not ask what the repository can answer.
+- Does not ask what the repository can answer, and does not answer the person's
+  decisions for them.
+- Does not keep asking a question only evidence can settle.
 - Does not treat the pick as the decision. The person decides; a short "yes" is
   confirmed against the question it answers before acting on it.

@@ -80,4 +80,5 @@ discover it. Ask questions that provoke; logic only rules things out.
 
 ## Words
 Keep a glossary of terms in one place. Use them uniformly. When a term breaks, fix or
-abandon it. Avoid codenames.
+abandon it. Avoid codenames. Write terms to the repo's glossary as they settle
+(`glossary.md`).
