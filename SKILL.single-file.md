@@ -58,8 +58,9 @@ The full principle set, with sources, is in the Appendix: Principles section bel
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
 question with options, use **Advise**. If asked to record a decision, use **ADR**.
-If the person wants a dialog ("hammock this", "question me", "help me think this through"), or a
-decision they have not made yet blocks Design or ADR, use **Hammock**.
+If the person wants to shape a problem before building, or to reach a decision in a
+dialog ("hammock this", "question me", "help me think this through"), or a decision
+they have not made yet blocks ADR, use **Hammock**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -84,18 +85,6 @@ decision they have not made yet blocks Design or ADR, use **Hammock**.
    (performance, migration risk, team familiarity), say so. For a blocking or major
    finding with two credible fixes, add a small tradeoff table under "Simpler
    alternative" (the Appendix: Tradeoff tables section below). Most findings need none.
-
-### Design / shaping (before code exists)
-
-Follow the Appendix: Design process section below: Describe, Diagnose, Delimit, Direction,
-Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
-statement, a use-case table (what, not how), and a decision matrix with the status
-quo as the first column (the Appendix: Tradeoff tables section below). Ask Socratic questions
-one at a time, as in **Hammock**; do not hand over a solution on the same turn the
-problem was first described unless asked. Write terms to the glossary as they
-settle (the Appendix: Glossary section below). Once a direction is chosen, close with the
-decision list from **Hammock**, and offer an ADR for the decisions that pass the
-ADR test in the Appendix: ADRs section below.
 
 ### Compatibility / API evolution
 
@@ -154,36 +143,45 @@ in one line: "Want this saved as an ADR?", but only if the decision passes the A
 test in the Appendix: ADRs section below (hard to reverse, surprising without context, a real
 tradeoff).
 
-### Hammock (one question at a time)
+### Hammock (shape the problem and decide, one question at a time)
 
-Use when the person wants to reach the decision themselves, in a dialog, rather
-than receive all options at once. Follow the Appendix: Hammock section below:
+Use before code exists, when a problem needs shaping, or whenever the person wants
+to reach a decision themselves in a dialog rather than receive all options at once.
+The `/hammock` command starts it. Follow the Appendix: Hammock section below for the dialog and
+the Appendix: Design process section below for the phases and the decision matrix:
 
-1. Map the open decisions and their order silently; ask the root one first.
-2. Answer from the code and docs whatever they can answer; ask only what the
+1. **Problem first.** Ask until the problem is clear: what the situation is, what
+   is actually wrong, and a problem statement (unmet objective and its cause) the
+   person confirms. Do not propose a solution before that unless asked.
+2. Map the open decisions and their order silently; ask the root one first.
+3. Answer from the code and docs whatever they can answer; ask only what the
    person alone can decide. Hand slow lookups to a subagent and keep asking the
    questions that don't depend on them. When the person says how something works,
    check the code, and ask if it disagrees.
-3. Ask one question per turn: context first, then the question, worded so "yes"
+4. Ask one question per turn: context first, then the question, worded so "yes"
    takes your pick, then your pick and a small tradeoff table with the status quo
    first. Ask in rounds (every question that doesn't depend on another open one)
-   only when the person asks for it.
-4. If the answer "depends", list the cases it depends on, mark the decided ones,
+   only when the person asks for it. For the direction-setting decisions, the table
+   is the decision matrix: status quo first, criteria as rows, words in the cells.
+5. If the answer "depends", list the cases it depends on, mark the decided ones,
    and ask about the open case only.
-5. Give a worked example per option, and the mechanism behind any limit, when
+6. Give a worked example per option, and the mechanism behind any limit, when
    asked or when the question needs it. "Not yet" is an answer: keep it open. If
    only evidence can settle it (how something feels, a number nobody has), propose
    the smallest experiment instead of asking again.
-6. When a term is settled, write it to the glossary right away
+7. When a term is settled, write it to the glossary right away
    (the Appendix: Glossary section below).
-7. At the end, list every decision made (including those that won't be ADRs) and
+8. At the end, list every decision made (including those that won't be ADRs) and
    wait for the person to confirm the list before acting on it. Then offer ADRs for
    the decisions that pass the ADR test in the Appendix: ADRs section below.
+9. **No docs.** If the person says "no docs", write no files at all: no glossary
+   entries and no ADRs. Settled terms and ADR-worthy decisions go into the decision
+   list instead, so nothing is lost.
 
 ### ADR (record a decision)
 
 Use when asked to write an ADR, when the person accepts the offer at the end of
-Advise, Design or Hammock, or when a new decision reverses an accepted ADR. An ADR
+Advise or Hammock, or when a new decision reverses an accepted ADR. An ADR
 records a decision the person made: if asked for ADRs while the decisions are still
 open, run Hammock first and write the ADRs from the answers, unless the person
 asks for a draft anyway. Follow
@@ -192,7 +190,7 @@ the Appendix: ADRs section below:
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
 2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
    status quo as the first column, per the Appendix: Tradeoff tables section below; reuse the
-   Advise or Design table if there was one), Decision with a Confirmation line (a
+   Advise or Hammock table if there was one), Decision with a Confirmation line (a
    signal in the code that the decision is followed), Consequences (including
    "Revisit if").
 3. Write it as Proposed unless the person says it is decided.
@@ -836,7 +834,7 @@ this: keep the terms in one place, use them uniformly, and when a term breaks, f
 or drop it. Fuzzy words hide fuzzy thinking; a question asked in a word that means
 two things gets an answer about one of them.
 
-The glossary is written **during** Hammock and Design modes, the moment a term is
+The glossary is written **during** Hammock mode, the moment a term is
 settled, not in a batch at the end. Review reads it and never writes it.
 
 ### Where it goes
@@ -876,7 +874,7 @@ _Avoid_: block, freeze
   (the Appendix: Hammock section below).
 - Group terms under subheadings only when clusters appear on their own.
 
-### During Hammock and Design modes
+### During Hammock mode
 
 - **Challenge against the glossary.** When the person uses a term the glossary
   defines differently, say so at once: "GLOSSARY.md defines *cancellation* as the
@@ -907,7 +905,7 @@ If the repo has a glossary, check the change's names against it (checklist G):
 ## Appendix: ADRs
 
 An ADR is a short file that records one decision: the problem, the options weighed,
-the choice, and the tradeoff accepted. It keeps the output of Advise and Design
+the choice, and the tradeoff accepted. It keeps the output of Advise and Hammock
 from disappearing with the chat.
 
 An ADR is a fact: "on this date, for this problem, we chose X over Y because Z".
@@ -918,7 +916,7 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
 ### When to write one
 
 1. **On request.** "Write an ADR for this", "record this decision", "save that as an ADR".
-2. **Offered at the end of Advise, Design or Hammock**, once a decision has
+2. **Offered at the end of Advise or Hammock**, once a decision has
    actually been made **and** it passes all three of these:
    - **Hard to reverse:** changing it later costs real work (data written in its
      shape, consumers depending on it, a vendor or platform to move off).
@@ -1046,8 +1044,8 @@ Prefer the rejected-option pattern: it is what drifts back in. Keep it to one or
 signals. If the decision has no signal in code (a team process, a vendor choice),
 write `Confirmation: ?`; Review then falls back to the Decision line.
 
-When the decision came from Design mode, the decision matrix from
-the Appendix: Design process section above is the tradeoff table: reuse it. When it came from Advise mode,
+When the decision came from Hammock mode, the decision matrix from
+that question is the tradeoff table: reuse it. When it came from Advise mode,
 build the table from the options in the question, with the status quo added if the
 question left it out.
 
@@ -1078,7 +1076,7 @@ The finding asks for the change to be recorded as a new ADR, so the reason is ke
 
 ## Appendix: Tradeoff tables
 
-One table shape, used wherever decomplect compares options: Design mode's decision
+One table shape, used wherever decomplect compares options: Hammock mode's decision
 matrix, an ADR's "Options and tradeoffs" section, and Advise when the call is close.
 Prose linearizes and hides contrast; a table lets the reader see why the other
 options lost, and disagree with the pick for a reason the skill could not see
@@ -1174,8 +1172,8 @@ tables before showing them:
 
 | Mode | When | Notes |
 |---|---|---|
-| Design | Strategy and implementation decision matrices | Always. See the Appendix: Design process section above |
-| ADR | The "Options and tradeoffs" section | Always. Reuse the Design matrix or the Advise table if there was one. See the Appendix: ADRs section above |
+| Hammock | Every question, and the strategy and implementation decision matrices | Always. See the Appendix: Hammock section below and the Appendix: Design process section above |
+| ADR | The "Options and tradeoffs" section | Always. Reuse the Hammock or Advise table if there was one. See the Appendix: ADRs section above |
 | Advise | Three or more options, or a close call | Under the pick block, never instead of it |
 | Review | A blocking or major finding with two credible fixes | Under "Simpler alternative". Most findings need none |
 | Compatibility | Not this table | Use the change ledger in Compatibility mode: rows are changes, not options |
@@ -1184,15 +1182,34 @@ tables before showing them:
 
 ## Appendix: Hammock
 
-Use when the person wants a dialog instead of a full answer: "hammock this", "question me",
-"ask me questions", "help me think this through", "help me decide", or when Design or
-ADR mode reaches a decision the person has not made yet. The output of Advise, Design and ADR is a
-finished artifact; the output of Hammock mode is the person's own answers, one at a
-time, which those modes then record.
+Use before code exists, when a problem needs shaping, or when the person wants a
+dialog instead of a full answer: `/hammock`, "hammock this", "question me", "ask me
+questions", "help me think this through", "help me decide", or when ADR mode reaches
+a decision the person has not made yet. The output of Advise and ADR is a finished
+artifact; the output of Hammock mode is the problem statement and the person's own
+decisions, reached one question at a time.
 
 The idea comes from Hammock Driven Development and Design in Practice: the person
 who owns the problem has to load it into their own head. A wall of options skips
 that. One good question at a time does not.
+
+### Phases
+
+Hammock mode walks the phases of the Appendix: Design process section above, as questions rather than as a
+document handed over:
+
+1. **Problem first** (Describe, Diagnose, Delimit). Ask about the situation and
+   what is actually wrong until you can write the problem statement: the unmet
+   objective and its cause, not the feature. Show it and ask the person to confirm
+   it. No solution before that, unless asked.
+2. **Direction.** Show the use-case table (what people could do were the problem
+   solved), then ask the strategy decisions, each with a decision matrix as its
+   table (status quo first).
+3. **Design.** Ask the implementation decisions that the direction opened up, the
+   same way.
+
+Backtracking is normal: if an answer changes the problem, say so, update the problem
+statement, and reopen the decisions that depended on it.
 
 ### The loop
 
@@ -1329,6 +1346,19 @@ Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
 - Ask the person to confirm the list matches what they meant. Do not write ADRs, a
   plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
   tradeoff tables from their questions become the ADRs' tables.
+
+### No docs
+
+If the person says "no docs" (for example `/hammock no docs: should we split
+billing events?`), write no files: no `GLOSSARY.md` entries and no ADRs. Run the
+same dialog, and put what would have been written into the decision list instead:
+
+```
+Glossary (not written): *Billing event*: a fact about money owed or paid, ...
+ADR candidates (not written): Q2. Split billing events into their own stream.
+```
+
+The person can ask for the files later from that list.
 
 ### What Hammock mode does not do
 

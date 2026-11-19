@@ -6,7 +6,7 @@ this: keep the terms in one place, use them uniformly, and when a term breaks, f
 or drop it. Fuzzy words hide fuzzy thinking; a question asked in a word that means
 two things gets an answer about one of them.
 
-The glossary is written **during** Hammock and Design modes, the moment a term is
+The glossary is written **during** Hammock mode, the moment a term is
 settled, not in a batch at the end. Review reads it and never writes it.
 
 ## Where it goes
@@ -46,7 +46,7 @@ _Avoid_: block, freeze
   (`hammock.md`).
 - Group terms under subheadings only when clusters appear on their own.
 
-## During Hammock and Design modes
+## During Hammock mode
 
 - **Challenge against the glossary.** When the person uses a term the glossary
   defines differently, say so at once: "GLOSSARY.md defines *cancellation* as the
