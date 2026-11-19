@@ -104,3 +104,7 @@ It never approves or blocks merges.
   they are not committed here.
 - The skill avoids Lisp/Clojure framing and translates every idea into the idioms of
   the code under review.
+- Some workflow ideas in Hammock mode and the glossary (rounds, the closing decision
+  list, the ADR test) were inspired by Matt Pocock's
+  [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Credited in
+  `references/sources.md`; no text is copied.
