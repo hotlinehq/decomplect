@@ -922,8 +922,8 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
    actually been made **and** it passes all three of these:
    - **Hard to reverse:** changing it later costs real work (data written in its
      shape, consumers depending on it, a vendor or platform to move off).
-   - **Surprising without context:** "a future reader would not guess the reason from the
-     code, or would "fix" it back to the obvious option.
+   - **Surprising without context:** a future reader would not guess the reason
+     from the code, or would "fix" it back to the obvious option.
    - **A real tradeoff:** there were at least two credible options and one was
      picked for a reason. "We did the obvious thing" has nothing to record.
 
