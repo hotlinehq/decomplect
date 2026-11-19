@@ -65,6 +65,8 @@ endpoint, event, message, table, config, CLI flag):
 - [ ] Do names say what things are? Any codenames or puns hiding meaning?
 - [ ] Is the same concept named differently, or one name used for two concepts?
 - [ ] Would a glossary entry help reviewers and newcomers?
+- [ ] If the repo keeps a glossary: does the change use a word it lists under
+      `_Avoid_`, or a defined term for a different concept? (See `glossary.md`.)
 
 ## H. Size and generality (4.6)
 - [ ] Is new code specific where a generic function over data exists already?

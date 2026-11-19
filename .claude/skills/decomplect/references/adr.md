@@ -12,10 +12,20 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
 ## When to write one
 
 1. **On request.** "Write an ADR for this", "record this decision", "save that as an ADR".
-2. **Offered at the end of Advise or Design**, once a decision has actually been made.
-   Ask in one line: "Want this saved as an ADR?" Do not write one by default; small
-   questions should not fill the repository with files. Do not offer when the person
-   has not chosen yet, or when decomplect had no opinion.
+2. **Offered at the end of Advise, Design or Interview**, once a decision has
+   actually been made **and** it passes all three of these:
+   - **Hard to reverse:** changing it later costs real work (data written in its
+     shape, consumers depending on it, a vendor or platform to move off).
+   - **Surprising without context:** a future reader would ask "why on earth did
+     they do it this way?", or would "fix" it back to the obvious option.
+   - **A real tradeoff:** there were at least two credible options and one was
+     picked for a reason. "We did the obvious thing" has nothing to record.
+
+   If all three hold, ask in one line: "Want this saved as an ADR?" If any is
+   missing, don't offer: the decision goes in the decision list (`interview.md`)
+   and nowhere else. Do not write one by default; small questions should not fill
+   the repository with files. Do not offer when the person has not chosen yet, or
+   when decomplect had no opinion. An explicit request (1) always gets an ADR.
 3. **When a decision reverses or replaces an accepted ADR.** Write a new ADR that
    supersedes it (see Superseding). Never rewrite the old one.
 

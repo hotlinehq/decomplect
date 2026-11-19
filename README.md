@@ -40,7 +40,8 @@ walk a team through problem-first design and record the decisions as ADRs.
     references/tradeoff-table.md   # one table shape for Advise, Design, ADRs and Review
     references/design-process.md   # Describe → Diagnose → Delimit → Direction → Design → Dev, decision matrix
     references/adr.md              # when and how to write ADRs, template, tradeoff table, reviewing against ADRs
-    references/interview.md        # one question at a time: context, pick and table, cases, examples
+    references/interview.md        # one question at a time: context, pick and table, cases, examples, decision list
+    references/glossary.md         # the project's words: kept during Interview and Design, checked in Review
     references/sources.md          # talks used, with links
   agents/decomplect.md       # read-only subagent that applies the skill
   commands/architect-review.md     # /architect-review [base | PR# | doc path]
@@ -71,7 +72,11 @@ into the repository root and commit.
 - "Grill me on this with decomplect" starts interview mode: one question per turn,
   each with context, decomplect's pick and a small tradeoff table. It splits a
   question that "depends" into its cases, gives a worked example per option when
-  asked, and writes ADRs only from your answers.
+  asked, and looks up in the code anything the code can answer. Settled terms go
+  straight into `GLOSSARY.md`. It ends with a list of every decision you made, waits
+  for you to confirm it, and offers ADRs only for decisions that are hard to reverse,
+  surprising without context, and a real tradeoff. Say "ask in rounds" to get every
+  independent question at once instead of one per turn.
 
 - "What would decomplect pick: A or B?" gives one recommended option with the why and the
   tradeoff. See [docs/advise-on-questions.md](docs/advise-on-questions.md) to have Claude
@@ -79,7 +84,8 @@ into the repository root and commit.
 
 - "Write an ADR for this" records a decision in `docs/adr/NNNN-slug.md` (or the repo's
   existing ADR folder): problem, a tradeoff table with the status quo first, decision,
-  and consequences. Advise and Design offer this once you've decided. A changed
+  and consequences. Advise, Design and Interview offer this once you've decided, for
+  decisions worth recording. A changed
   decision gets a new ADR that supersedes the old one; accepted ADRs are never
   rewritten. Reviews flag changes that contradict an accepted ADR. See
   [docs/tradeoff-table.md](docs/tradeoff-table.md) for why the table matters.

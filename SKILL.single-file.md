@@ -67,6 +67,8 @@ decision they have not made yet blocks Design or ADR, use **Interview**.
    issue, design doc). If there is none, say so first; that is a finding.
    If the repo keeps ADRs, read the accepted ones that touch this change (see
    "Reviewing against ADRs" in the Appendix: ADRs section below) and flag contradictions.
+   If it keeps a glossary, check the change's names against it
+   (the Appendix: Glossary section below).
 2. Read the change and its surroundings. Map the moving parts: data shapes, state
    holders, boundaries (process, network, storage), time/ordering assumptions,
    public contracts.
@@ -88,10 +90,12 @@ decision they have not made yet blocks Design or ADR, use **Interview**.
 Follow the Appendix: Design process section below: Describe, Diagnose, Delimit, Direction,
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
-quo as the first column (the Appendix: Tradeoff tables section below). Ask Socratic
-questions one at a time, as in **Interview**; do not hand over a solution on the same turn the problem was first
-described unless asked. Once a direction is chosen,
-offer to save it as an ADR.
+quo as the first column (the Appendix: Tradeoff tables section below). Ask Socratic questions
+one at a time, as in **Interview**; do not hand over a solution on the same turn the
+problem was first described unless asked. Write terms to the glossary as they
+settle (the Appendix: Glossary section below). Once a direction is chosen, close with the
+decision list from **Interview**, and offer an ADR for the decisions that pass the
+ADR test in the Appendix: ADRs section below.
 
 ### Compatibility / API evolution
 
@@ -146,7 +150,9 @@ Tradeoff: <what you give up by choosing it>
 If the question isn't about design (naming a file, picking a date, a matter of
 taste), say "decomplect has no opinion here" rather than inventing one. The pick is
 advice, not the decision: the person still chooses. Once they have chosen, offer
-in one line: "Want this saved as an ADR?"
+in one line: "Want this saved as an ADR?", but only if the decision passes the ADR
+test in the Appendix: ADRs section below (hard to reverse, surprising without context, a real
+tradeoff).
 
 ### Interview (one question at a time)
 
@@ -155,14 +161,24 @@ than receive all options at once. Follow the Appendix: Interview section below:
 
 1. Map the open decisions and their order silently; ask the root one first.
 2. Answer from the code and docs whatever they can answer; ask only what the
-   person alone can decide.
-3. Ask one question per turn: context first, then the question, then your pick
-   and a small tradeoff table with the status quo first.
+   person alone can decide. Hand slow lookups to a subagent and keep asking the
+   questions that don't depend on them. When the person says how something works,
+   check the code, and ask if it disagrees.
+3. Ask one question per turn: context first, then the question, worded so "yes"
+   takes your pick, then your pick and a small tradeoff table with the status quo
+   first. Ask in rounds (every question that doesn't depend on another open one)
+   only when the person asks for it.
 4. If the answer "depends", list the cases it depends on, mark the decided ones,
    and ask about the open case only.
 5. Give a worked example per option, and the mechanism behind any limit, when
-   asked or when the question needs it. "Not yet" is an answer: keep it open.
-6. When the decisions are made, offer to record them as ADRs.
+   asked or when the question needs it. "Not yet" is an answer: keep it open. If
+   only evidence can settle it (how something feels, a number nobody has), propose
+   the smallest experiment instead of asking again.
+6. When a term is settled, write it to the glossary right away
+   (the Appendix: Glossary section below).
+7. At the end, list every decision made (including those that won't be ADRs) and
+   wait for the person to confirm the list before acting on it. Then offer ADRs for
+   the decisions that pass the ADR test in the Appendix: ADRs section below.
 
 ### ADR (record a decision)
 
@@ -257,7 +273,7 @@ quoting long passages.
 ## Appendix: Principles
 
 Each principle has: the idea, how to spot its violation in any language, and the
-talk it comes from. 
+talk it comes from.
 
 ---
 
@@ -645,7 +661,7 @@ talk it comes from.
 ## Appendix: Review checklist
 
 Walk these in order. Each line is a question; raise a finding only when you can point
-to evidence. Principle numbers refer to the Principles appendix.
+to evidence. Principle numbers refer to the Appendix: Principles section above.
 
 ### A. Problem fit (6.1–6.4)
 - [ ] Is there a written problem statement (unmet objective + cause), not just a feature name?
@@ -654,11 +670,11 @@ to evidence. Principle numbers refer to the Principles appendix.
 - [ ] Are known tradeoffs and open questions stated?
 - [ ] For design docs and ADRs: does the tradeoff table have a status quo column, rows
       that actually differ, must rows marked (must), and no all-green or scored
-      column? Does an ADR have a Confirmation line? (Smells in the Appendix: Tradeoff tables.)
+      column? Does an ADR have a Confirmation line? (Smells in the Appendix: Tradeoff tables section below.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
 - [ ] If the repo keeps ADRs: does the change contradict an accepted one, fail its
       Confirmation line, trip a "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
-      (See "Reviewing against ADRs" in the Appendix: ADRs section.)
+      (See "Reviewing against ADRs" in the Appendix: ADRs section below.)
 
 ### B. Complecting (1.2–1.8)
 - [ ] Does any unit mix *what* with *how* (business rule with iteration, I/O, or framework calls)?
@@ -709,6 +725,8 @@ endpoint, event, message, table, config, CLI flag):
 - [ ] Do names say what things are? Any codenames or puns hiding meaning?
 - [ ] Is the same concept named differently, or one name used for two concepts?
 - [ ] Would a glossary entry help reviewers and newcomers?
+- [ ] If the repo keeps a glossary: does the change use a word it lists under
+      `_Avoid_`, or a defined term for a different concept? (See the Appendix: Glossary section below.)
 
 ### H. Size and generality (4.6)
 - [ ] Is new code specific where a generic function over data exists already?
@@ -776,7 +794,7 @@ out smaller and more general for having been designed.
 ### Decision matrix
 
 A spreadsheet beats prose because prose linearizes and hides contrast. The decision
-matrix is the tradeoff table defined in the Appendix: Tradeoff tables: status quo as the first
+matrix is the tradeoff table defined in the Appendix: Tradeoff tables section below: status quo as the first
 column, criteria as rows, aspects in the cells, a 🟢 🟡 🔴 `?` legend, no scores.
 
 Design-specific notes:
@@ -805,7 +823,84 @@ discover it. Ask questions that provoke; logic only rules things out.
 
 ### Words
 Keep a glossary of terms in one place. Use them uniformly. When a term breaks, fix or
-abandon it. Avoid codenames.
+abandon it. Avoid codenames. Write terms to the repo's glossary as they settle
+(the Appendix: Glossary section below).
+
+---
+
+## Appendix: Glossary
+
+A glossary is one file that holds the project's own words for its own things, each
+with a tight definition and the words to avoid. Design in Practice asks for exactly
+this: keep the terms in one place, use them uniformly, and when a term breaks, fix it
+or drop it. Fuzzy words hide fuzzy thinking; a question asked in a word that means
+two things gets an answer about one of them.
+
+The glossary is written **during** Interview and Design, the moment a term is
+settled, not in a batch at the end. Review reads it and never writes it.
+
+### Where it goes
+
+1. Look for an existing glossary first: `GLOSSARY.md`, `docs/glossary.md`,
+   `docs/GLOSSARY.md`, a "Glossary" or "Ubiquitous language" section in the README or
+   design docs. If one exists, add to it in its own format.
+2. If the repo has several areas with their own words (a `GLOSSARY.md` per service or
+   module, or a map file listing them), write to the one the current topic belongs
+   to. If it is unclear which, ask.
+3. Otherwise create `GLOSSARY.md` at the repository root, and only when the first
+   term is settled. No term settled, no file.
+
+### Format
+
+```markdown
+# Glossary
+
+<One or two sentences: what this system or area is.>
+
+**Order**:
+A customer's request for one or more products, from checkout until it is delivered or cancelled.
+_Avoid_: purchase, transaction
+
+**Invoice**:
+A request for payment sent to a customer after delivery.
+_Avoid_: bill, payment request
+```
+
+- **One canonical word per thing.** When the code, the docs and the person use
+  several words for the same thing, pick one and list the others under `_Avoid_`.
+- **Say what it is, not what it does,** in one or two sentences.
+- **Only this project's words.** General programming terms (timeout, retry, cache)
+  do not belong, even when the code uses them everywhere.
+- **No decisions and no implementation.** Not a spec, not notes, not a place for
+  "we store it in Postgres". Decisions go to ADRs (the Appendix: ADRs section below) or the decision list
+  (the Appendix: Interview section below).
+- Group terms under subheadings only when clusters appear on their own.
+
+### During Interview and Design
+
+- **Challenge against the glossary.** When the person uses a term the glossary
+  defines differently, say so at once: "GLOSSARY.md defines *cancellation* as the
+  whole order being withdrawn, but you seem to mean one line item. Which is it?"
+- **Sharpen fuzzy words.** When a word could mean two things ("account": the
+  customer or the login?), name both and propose one canonical term. This is a
+  question for the person, asked in the usual shape.
+- **Check the code's words too.** When the code uses one name for two concepts, or
+  two names for one, raise it: the glossary is where that gets settled.
+- **Write it when it is settled.** Add or fix the entry right away and say so in one
+  line ("Added *Order* to GLOSSARY.md, avoiding *purchase*."). Do not ask
+  permission per term; the person can edit the file.
+- **When a term breaks,** edit its entry: the glossary is the current vocabulary,
+  not a log. Keep the old word under `_Avoid_` so the next reader knows it is gone.
+  If the change in meaning came from a decision, that decision is what gets recorded.
+
+### In Review
+
+If the repo has a glossary, check the change's names against it (checklist G):
+
+- a word listed under `_Avoid_` used for the thing it was replaced by;
+- a defined term used for a different concept;
+- a new concept named in the code with no entry, where the team keeps a glossary
+  (note severity: offer the entry, do not write it).
 
 ---
 
@@ -823,10 +918,20 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
 ### When to write one
 
 1. **On request.** "Write an ADR for this", "record this decision", "save that as an ADR".
-2. **Offered at the end of Advise or Design**, once a decision has actually been made.
-   Ask in one line: "Want this saved as an ADR?" Do not write one by default; small
-   questions should not fill the repository with files. Do not offer when the person
-   has not chosen yet, or when decomplect had no opinion.
+2. **Offered at the end of Advise, Design or Interview**, once a decision has
+   actually been made **and** it passes all three of these:
+   - **Hard to reverse:** changing it later costs real work (data written in its
+     shape, consumers depending on it, a vendor or platform to move off).
+   - **Surprising without context:** a future reader would ask "why on earth did
+     they do it this way?", or would "fix" it back to the obvious option.
+   - **A real tradeoff:** there were at least two credible options and one was
+     picked for a reason. "We did the obvious thing" has nothing to record.
+
+   If all three hold, ask in one line: "Want this saved as an ADR?" If any is
+   missing, don't offer: the decision goes in the decision list (the Appendix: Interview section below)
+   and nowhere else. Do not write one by default; small questions should not fill
+   the repository with files. Do not offer when the person has not chosen yet, or
+   when decomplect had no opinion. An explicit request (1) always gets an ADR.
 3. **When a decision reverses or replaces an accepted ADR.** Write a new ADR that
    supersedes it (see Superseding). Never rewrite the old one.
 
@@ -915,7 +1020,7 @@ The table is the part of the ADR that pays off later. The decision line says wha
 was chosen; the table says what was given up and why the other options lost, which
 is the information that is otherwise lost first.
 
-Follow the Appendix: Tradeoff tables for the shape, the criteria menu and the smells. For an
+Follow the Appendix: Tradeoff tables section below for the shape, the criteria menu and the smells. For an
 ADR in particular:
 
 - **Keep the rejected columns.** They answer "why didn't we just ...?" six months
@@ -942,7 +1047,7 @@ signals. If the decision has no signal in code (a team process, a vendor choice)
 write `Confirmation: ?`; Review then falls back to the Decision line.
 
 When the decision came from Design mode, the decision matrix from
-the Appendix: Design process section is the tradeoff table: reuse it. When it came from Advise mode,
+the Appendix: Design process section above is the tradeoff table: reuse it. When it came from Advise mode,
 build the table from the options in the question, with the status quo added if the
 question left it out.
 
@@ -1069,11 +1174,13 @@ tables before showing them:
 
 | Mode | When | Notes |
 |---|---|---|
-| Design | Strategy and implementation decision matrices | Always. See the Appendix: Design process |
-| ADR | The "Options and tradeoffs" section | Always. Reuse the Design matrix or the Advise table if there was one. See the Appendix: ADRs |
+| Design | Strategy and implementation decision matrices | Always. See the Appendix: Design process section above |
+| ADR | The "Options and tradeoffs" section | Always. Reuse the Design matrix or the Advise table if there was one. See the Appendix: ADRs section above |
 | Advise | Three or more options, or a close call | Under the pick block, never instead of it |
 | Review | A blocking or major finding with two credible fixes | Under "Simpler alternative". Most findings need none |
 | Compatibility | Not this table | Use the change ledger in Compatibility mode: rows are changes, not options |
+
+---
 
 ## Appendix: Interview
 
@@ -1092,23 +1199,32 @@ that. One good question at a time does not.
 1. **Map the decisions first, silently.** List the open decisions and which ones
    depend on which. Ask the root one first: the one whose answer changes what the
    other questions are. Do not show the whole tree.
-2. **Look before you ask.** If the code, docs, earlier decisions or ADRs can answer
-   it, read them and state the answer as a fact with where you found it. Ask the
-   person only what only they can decide (goals, priorities, risk they accept).
-3. **Ask one question per turn.** Never two. Number them (Q1, Q2, ...) so answers
-   can point back.
+2. **Look before you ask.** Facts are your job; decisions are the person's. If the
+   code, docs, glossary, earlier decisions or ADRs can answer it, read them and state
+   the answer as a fact with where you found it. Ask the person only what only they
+   can decide (goals, priorities, risk they accept).
+   - **Don't stall on a lookup.** When finding a fact takes a while (many files,
+     another repository, running something), hand it to a subagent if you can, and
+     meanwhile ask a question that does not depend on it. Only the questions that
+     need that fact wait for it.
+   - **Check claims against the code.** When the person says how something works
+     today, check it before building on it. If the code disagrees, show where
+     (`file:line`) and ask which is right; that is the next question.
+3. **Ask one question per turn.** Never two, unless the person asked for rounds
+   (below). Number them (Q1, Q2, ...) so answers can point back.
 4. **Wait.** Do not write the ADR, the plan or the next question until the person
    answers. When they answer, say in one line what is now decided, then ask the next
-   question.
-5. **At the end,** offer to record the answers as ADRs (the Appendix: ADRs section above). The tradeoff
-   tables from the questions become the ADRs' tables.
+   question. If the answer settled a term, update the glossary (the Appendix: Glossary section above) in
+   the same turn.
+5. **Close with the decision list** (below) once no open question is left, and wait
+   for the person to confirm it before acting on any of it.
 
 ### Shape of one question
 
 ```
 <Context: two to four sentences on what exists today and why this question comes up.>
 
-**Q<n>. <The question, in the person's words, one sentence.>**
+**Q<n>. <The question, in the person's words, one sentence, worded so "yes" takes the pick.>**
 
 My pick: <option>, because <one sentence>.
 
@@ -1121,6 +1237,11 @@ My pick: <option>, because <one sentence>.
 
 - **Context comes first.** A question the person cannot answer without reading the
   code is not ready to ask.
+- **"Yes" takes the pick.** Word the question so a plain "yes" accepts your pick:
+  "Q3. Keep every status change as a row in a new `order_events` table?", not "Q3.
+  Should we overwrite `orders.status`?" with a pick that argues for "no". With more
+  than two options, name the pick in the question: "... in `order_events`, rather
+  than the other options below?"
 - **Always a pick and always a small table**, even with two options: status quo
   first, two to four rows, words in every cell (the Appendix: Tradeoff tables section above). In Interview
   the table is the point, not an extra.
@@ -1140,6 +1261,21 @@ several cases. Split it before asking again:
 Asking "what should happen when X fails?" before listing why X can fail makes the
 person do the diagnosis (Design in Practice: Diagnose before Delimit).
 
+### When talk can't settle it
+
+Some questions are not answered by more questions: how a screen or a workflow
+should feel, or a number nobody has measured yet (latency, load, cost, how often a
+case happens). Asking again only produces guesses, and the scope grows with the
+uncertainty.
+
+1. Say that this one needs evidence, not an opinion.
+2. Propose the smallest experiment that would answer it: a throwaway prototype, a
+   query against real data, a quick load test. Write down first what result would
+   decide it ("if p99 stays under 200 ms with 50 writers, the queue is not needed"),
+   as in Design in Practice's Diagnose phase.
+3. Keep the question open and carry on with questions that don't depend on it. When
+   the result is in, the answer is usually one line.
+
 ### When the person asks for more
 
 These are the usual follow-ups. Answer them before they are asked when you can.
@@ -1157,10 +1293,49 @@ These are the usual follow-ups. Answer them before they are asked when you can.
   it. Ask what context is missing, or offer the example or mechanism that is most
   likely missing.
 
+### Rounds, on request
+
+One question per turn is the default. If the person asks for the questions in
+batches ("ask them all", "give me a round", "batch them"):
+
+- Ask every open question whose answer does not depend on another open question,
+  numbered and each in the usual shape (context, question, pick, table), separated
+  by a rule.
+- A question that depends on an answer in this round waits for the next round.
+- After each round, say in one line per question what is now decided, then work out
+  the next round from scratch: answers open up questions the first round could not
+  ask.
+- Go back to one question per turn when the person asks.
+
+### The decision list
+
+The interview is done when no open question is left, or when the person says to
+stop. Close with every decision made, one line each, including the ones that will
+never be ADRs; most decisions do not earn one, and without this list they exist only
+in the chat.
+
+```
+Decided:
+- Q1. Status changes are kept as rows in `order_events`. (ADR: yes)
+- Q2. `GET /orders` keeps `status` as a computed field. (ADR: no, easy to change)
+Still open:
+- Q4. Retention period for `order_events`: needs a storage cost estimate.
+Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
+```
+
+- Write each line as a fact a newcomer could act on, with the precise detail the
+  person gave (numbers, orderings, "never" rules). Don't soften them.
+- Mark which ones pass the ADR test (the Appendix: ADRs section above, "When to write one").
+- Ask the person to confirm the list matches what they meant. Do not write ADRs, a
+  plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
+  tradeoff tables from their questions become the ADRs' tables.
+
 ### What Interview does not do
 
 - Does not hand over all options and all decisions in one message, even when it
   could.
-- Does not ask what the repository can answer.
+- Does not ask what the repository can answer, and does not answer the person's
+  decisions for them.
+- Does not keep asking a question only evidence can settle.
 - Does not treat the pick as the decision. The person decides; a short "yes" is
   confirmed against the question it answers before acting on it.

@@ -68,6 +68,8 @@ decision they have not made yet blocks Design or ADR, use **Interview**.
    issue, design doc). If there is none, say so first; that is a finding.
    If the repo keeps ADRs, read the accepted ones that touch this change (see
    "Reviewing against ADRs" in `references/adr.md`) and flag contradictions.
+   If it keeps a glossary, check the change's names against it
+   (`references/glossary.md`).
 2. Read the change and its surroundings. Map the moving parts: data shapes, state
    holders, boundaries (process, network, storage), time/ordering assumptions,
    public contracts.
@@ -91,8 +93,10 @@ Design, Dev. Produce the artifacts it names: a one-paragraph description, a prob
 statement, a use-case table (what, not how), and a decision matrix with the status
 quo as the first column (`references/tradeoff-table.md`). Ask Socratic questions
 one at a time, as in **Interview**; do not hand over a solution on the same turn the
-problem was first described unless asked. Once a direction is chosen,
-offer to save it as an ADR.
+problem was first described unless asked. Write terms to the glossary as they
+settle (`references/glossary.md`). Once a direction is chosen, close with the
+decision list from **Interview**, and offer an ADR for the decisions that pass the
+ADR test in `references/adr.md`.
 
 ### Compatibility / API evolution
 
@@ -147,7 +151,9 @@ Tradeoff: <what you give up by choosing it>
 If the question isn't about design (naming a file, picking a date, a matter of
 taste), say "decomplect has no opinion here" rather than inventing one. The pick is
 advice, not the decision: the person still chooses. Once they have chosen, offer
-in one line: "Want this saved as an ADR?"
+in one line: "Want this saved as an ADR?", but only if the decision passes the ADR
+test in `references/adr.md` (hard to reverse, surprising without context, a real
+tradeoff).
 
 ### Interview (one question at a time)
 
@@ -156,14 +162,24 @@ than receive all options at once. Follow `references/interview.md`:
 
 1. Map the open decisions and their order silently; ask the root one first.
 2. Answer from the code and docs whatever they can answer; ask only what the
-   person alone can decide.
-3. Ask one question per turn: context first, then the question, then your pick
-   and a small tradeoff table with the status quo first.
+   person alone can decide. Hand slow lookups to a subagent and keep asking the
+   questions that don't depend on them. When the person says how something works,
+   check the code, and ask if it disagrees.
+3. Ask one question per turn: context first, then the question, worded so "yes"
+   takes your pick, then your pick and a small tradeoff table with the status quo
+   first. Ask in rounds (every question that doesn't depend on another open one)
+   only when the person asks for it.
 4. If the answer "depends", list the cases it depends on, mark the decided ones,
    and ask about the open case only.
 5. Give a worked example per option, and the mechanism behind any limit, when
-   asked or when the question needs it. "Not yet" is an answer: keep it open.
-6. When the decisions are made, offer to record them as ADRs.
+   asked or when the question needs it. "Not yet" is an answer: keep it open. If
+   only evidence can settle it (how something feels, a number nobody has), propose
+   the smallest experiment instead of asking again.
+6. When a term is settled, write it to the glossary right away
+   (`references/glossary.md`).
+7. At the end, list every decision made (including those that won't be ADRs) and
+   wait for the person to confirm the list before acting on it. Then offer ADRs for
+   the decisions that pass the ADR test in `references/adr.md`.
 
 ### ADR (record a decision)
 
