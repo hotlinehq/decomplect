@@ -92,13 +92,6 @@ time, breaking changes and missing problem statements.
   rewritten. Reviews flag changes that contradict an accepted ADR. See
   [docs/tradeoff-table.md](docs/tradeoff-table.md) for why the table matters.
 
-## Pipeline (optional, not enabled)
-
-`examples/untangle.yml` runs `/untangle`'s review once per PR and posts one advisory comment through
-claude-code-action. To enable it, copy it to `.github/workflows/` and add an
-`ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`, from `claude setup-token`) secret.
-It never approves or blocks merges.
-
 ## Notes
 
 - Principles are synthesized, not copied. Run `transcripts/fetch.sh` to download the
