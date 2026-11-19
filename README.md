@@ -40,8 +40,8 @@ walk a team through problem-first design and record the decisions as ADRs.
     references/tradeoff-table.md   # one table shape for Advise, Design, ADRs and Review
     references/design-process.md   # Describe → Diagnose → Delimit → Direction → Design → Dev, decision matrix
     references/adr.md              # when and how to write ADRs, template, tradeoff table, reviewing against ADRs
-    references/interview.md        # one question at a time: context, pick and table, cases, examples, decision list
-    references/glossary.md         # the project's words: kept during Interview and Design, checked in Review
+    references/socratic.md         # one question at a time: context, pick and table, cases, examples, decision list
+    references/glossary.md         # the project's words: kept during Socratic and Design, checked in Review
     references/sources.md          # talks used, with links
   agents/decomplect.md       # read-only subagent that applies the skill
   commands/architect-review.md     # /architect-review [base | PR# | doc path]
@@ -69,7 +69,7 @@ into the repository root and commit.
 - "Help me shape this problem with the decomplect skill" starts design mode
   (description, problem statement, use cases, decision matrix).
 
-- "Grill me on this with decomplect" starts interview mode: one question per turn,
+- "Question me on this with decomplect" starts Socratic mode: one question per turn,
   each with context, decomplect's pick and a small tradeoff table. It splits a
   question that "depends" into its cases, gives a worked example per option when
   asked, and looks up in the code anything the code can answer. Settled terms go
@@ -84,7 +84,7 @@ into the repository root and commit.
 
 - "Write an ADR for this" records a decision in `docs/adr/NNNN-slug.md` (or the repo's
   existing ADR folder): problem, a tradeoff table with the status quo first, decision,
-  and consequences. Advise, Design and Interview offer this once you've decided, for
+  and consequences. Advise, Design and Socratic offer this once you've decided, for
   decisions worth recording. A changed
   decision gets a new ADR that supersedes the old one; accepted ADRs are never
   rewritten. Reviews flag changes that contradict an accepted ADR. See

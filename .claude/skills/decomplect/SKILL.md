@@ -59,8 +59,8 @@ first time you use this skill in a session, and whenever a finding needs a citat
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
 question with options, use **Advise**. If asked to record a decision, use **ADR**.
-If the person wants a dialog ("grill me", "interview me", "ask me questions"), or a
-decision they have not made yet blocks Design or ADR, use **Interview**.
+If the person wants a dialog ("question me", "ask me questions", "help me think this through"), or a
+decision they have not made yet blocks Design or ADR, use **Socratic**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -92,10 +92,10 @@ Follow `references/design-process.md`: Describe, Diagnose, Delimit, Direction,
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
 quo as the first column (`references/tradeoff-table.md`). Ask Socratic questions
-one at a time, as in **Interview**; do not hand over a solution on the same turn the
+one at a time, as in **Socratic**; do not hand over a solution on the same turn the
 problem was first described unless asked. Write terms to the glossary as they
 settle (`references/glossary.md`). Once a direction is chosen, close with the
-decision list from **Interview**, and offer an ADR for the decisions that pass the
+decision list from **Socratic**, and offer an ADR for the decisions that pass the
 ADR test in `references/adr.md`.
 
 ### Compatibility / API evolution
@@ -155,10 +155,10 @@ in one line: "Want this saved as an ADR?", but only if the decision passes the A
 test in `references/adr.md` (hard to reverse, surprising without context, a real
 tradeoff).
 
-### Interview (one question at a time)
+### Socratic (one question at a time)
 
 Use when the person wants to reach the decision themselves, in a dialog, rather
-than receive all options at once. Follow `references/interview.md`:
+than receive all options at once. Follow `references/socratic.md`:
 
 1. Map the open decisions and their order silently; ask the root one first.
 2. Answer from the code and docs whatever they can answer; ask only what the
@@ -184,9 +184,9 @@ than receive all options at once. Follow `references/interview.md`:
 ### ADR (record a decision)
 
 Use when asked to write an ADR, when the person accepts the offer at the end of
-Advise, Design or Interview, or when a new decision reverses an accepted ADR. An ADR
+Advise, Design or Socratic, or when a new decision reverses an accepted ADR. An ADR
 records a decision the person made: if asked for ADRs while the decisions are still
-open, run Interview first and write the ADRs from the answers, unless the person
+open, run Socratic first and write the ADRs from the answers, unless the person
 asks for a draft anyway. Follow
 `references/adr.md`:
 

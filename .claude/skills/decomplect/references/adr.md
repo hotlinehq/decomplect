@@ -12,7 +12,7 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
 ## When to write one
 
 1. **On request.** "Write an ADR for this", "record this decision", "save that as an ADR".
-2. **Offered at the end of Advise, Design or Interview**, once a decision has
+2. **Offered at the end of Advise, Design or Socratic**, once a decision has
    actually been made **and** it passes all three of these:
    - **Hard to reverse:** changing it later costs real work (data written in its
      shape, consumers depending on it, a vendor or platform to move off).
@@ -22,7 +22,7 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
      picked for a reason. "We did the obvious thing" has nothing to record.
 
    If all three hold, ask in one line: "Want this saved as an ADR?" If any is
-   missing, don't offer: the decision goes in the decision list (`interview.md`)
+   missing, don't offer: the decision goes in the decision list (`socratic.md`)
    and nowhere else. Do not write one by default; small questions should not fill
    the repository with files. Do not offer when the person has not chosen yet, or
    when decomplect had no opinion. An explicit request (1) always gets an ADR.

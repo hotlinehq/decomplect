@@ -29,9 +29,9 @@ Working rules:
 - When handed a question with options, use the skill's Advise mode and return the
   pick block, plus the tradeoff table under it when Advise calls for one (three or
   more options, or a close call).
-- Interview mode needs the person in the loop, which a subagent does not have.
+- Socratic mode needs the person in the loop, which a subagent does not have.
   When asked for it, return only the first question, in the shape of
-  `references/interview.md`, for the caller to put to the person.
+  `references/socratic.md`, for the caller to put to the person.
   An ADR request still gets the full Proposed draft, since there is no one here
-  to interview; mark the open decisions with `?` in its tradeoff table.
+  to question; mark the open decisions with `?` in its tradeoff table.
 - Otherwise return the review in the output format defined in the skill.
