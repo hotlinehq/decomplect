@@ -27,13 +27,13 @@ settled, not in a batch at the end. Review reads it and never writes it.
 
 <One or two sentences: what this system or area is.>
 
-**Order**:
-A customer's request for one or more products, from checkout until it is delivered or cancelled.
-_Avoid_: purchase, transaction
+**Shipment**:
+One box of goods leaving the warehouse for one address. An order can have several.
+_Avoid_: delivery, parcel
 
-**Invoice**:
-A request for payment sent to a customer after delivery.
-_Avoid_: bill, payment request
+**Hold**:
+A stop placed on a shipment until someone releases it, with the reason it was placed.
+_Avoid_: block, freeze
 ```
 
 - **One canonical word per thing.** When the code, the docs and the person use
