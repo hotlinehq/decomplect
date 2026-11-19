@@ -6,7 +6,7 @@ this: keep the terms in one place, use them uniformly, and when a term breaks, f
 or drop it. Fuzzy words hide fuzzy thinking; a question asked in a word that means
 two things gets an answer about one of them.
 
-The glossary is written **during** Socratic and Design modes, the moment a term is
+The glossary is written **during** Hammock and Design modes, the moment a term is
 settled, not in a batch at the end. Review reads it and never writes it.
 
 ## Where it goes
@@ -43,10 +43,10 @@ _Avoid_: bill, payment request
   do not belong, even when the code uses them everywhere.
 - **No decisions and no implementation.** Not a spec, not notes, not a place for
   "we store it in Postgres". Decisions go to ADRs (`adr.md`) or the decision list
-  (`socratic.md`).
+  (`hammock.md`).
 - Group terms under subheadings only when clusters appear on their own.
 
-## During Socratic and Design modes
+## During Hammock and Design modes
 
 - **Challenge against the glossary.** When the person uses a term the glossary
   defines differently, say so at once: "GLOSSARY.md defines *cancellation* as the

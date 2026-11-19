@@ -45,7 +45,7 @@ Flips if: <the observable fact that would make the runner-up win>
 
 ## Flips if
 
-Under a close-call table (Advise or Socratic, where the runner-up loses on only one
+Under a close-call table (Advise or Hammock, where the runner-up loses on only one
 or two rows), add one line: `Flips if: <fact>`. Name the observable fact that would
 make the runner-up win: a number crossing a threshold, a use case arriving, a `?`
 resolving the other way. "If priorities change" is not a fact. This replaces

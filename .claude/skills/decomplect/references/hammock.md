@@ -1,9 +1,9 @@
-# Socratic (one question at a time)
+# Hammock (one question at a time)
 
-Use when the person wants a dialog instead of a full answer: "question me", "ask me
-questions", "help me think this through", "help me decide", or when Design or
+Use when the person wants a dialog instead of a full answer: "hammock this", "question me",
+"ask me questions", "help me think this through", "help me decide", or when Design or
 ADR mode reaches a decision the person has not made yet. The output of Advise, Design and ADR is a
-finished artifact; the output of Socratic mode is the person's own answers, one at a
+finished artifact; the output of Hammock mode is the person's own answers, one at a
 time, which those modes then record.
 
 The idea comes from Hammock Driven Development and Design in Practice: the person
@@ -59,7 +59,7 @@ My pick: <option>, because <one sentence>.
   than two options, name the pick in the question: "... in `order_events`, rather
   than the other options below?"
 - **Always a pick and always a small table**, even with two options: status quo
-  first, two to four rows, words in every cell (`tradeoff-table.md`). In Socratic mode
+  first, two to four rows, words in every cell (`tradeoff-table.md`). In Hammock mode
   the table is the point, not an extra.
 - **Plain words.** Define every term of jargon in the sentence that uses it, every
   time, even if an earlier question defined it.
@@ -146,7 +146,7 @@ Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
   plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
   tradeoff tables from their questions become the ADRs' tables.
 
-## What Socratic mode does not do
+## What Hammock mode does not do
 
 - Does not hand over all options and all decisions in one message, even when it
   could.

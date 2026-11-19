@@ -58,8 +58,8 @@ The full principle set, with sources, is in the Appendix: Principles section bel
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
 question with options, use **Advise**. If asked to record a decision, use **ADR**.
-If the person wants a dialog ("question me", "ask me questions", "help me think this through"), or a
-decision they have not made yet blocks Design or ADR, use **Socratic**.
+If the person wants a dialog ("hammock this", "question me", "help me think this through"), or a
+decision they have not made yet blocks Design or ADR, use **Hammock**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -91,10 +91,10 @@ Follow the Appendix: Design process section below: Describe, Diagnose, Delimit, 
 Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
 statement, a use-case table (what, not how), and a decision matrix with the status
 quo as the first column (the Appendix: Tradeoff tables section below). Ask Socratic questions
-one at a time, as in **Socratic**; do not hand over a solution on the same turn the
+one at a time, as in **Hammock**; do not hand over a solution on the same turn the
 problem was first described unless asked. Write terms to the glossary as they
 settle (the Appendix: Glossary section below). Once a direction is chosen, close with the
-decision list from **Socratic**, and offer an ADR for the decisions that pass the
+decision list from **Hammock**, and offer an ADR for the decisions that pass the
 ADR test in the Appendix: ADRs section below.
 
 ### Compatibility / API evolution
@@ -154,10 +154,10 @@ in one line: "Want this saved as an ADR?", but only if the decision passes the A
 test in the Appendix: ADRs section below (hard to reverse, surprising without context, a real
 tradeoff).
 
-### Socratic (one question at a time)
+### Hammock (one question at a time)
 
 Use when the person wants to reach the decision themselves, in a dialog, rather
-than receive all options at once. Follow the Appendix: Socratic section below:
+than receive all options at once. Follow the Appendix: Hammock section below:
 
 1. Map the open decisions and their order silently; ask the root one first.
 2. Answer from the code and docs whatever they can answer; ask only what the
@@ -183,9 +183,9 @@ than receive all options at once. Follow the Appendix: Socratic section below:
 ### ADR (record a decision)
 
 Use when asked to write an ADR, when the person accepts the offer at the end of
-Advise, Design or Socratic, or when a new decision reverses an accepted ADR. An ADR
+Advise, Design or Hammock, or when a new decision reverses an accepted ADR. An ADR
 records a decision the person made: if asked for ADRs while the decisions are still
-open, run Socratic first and write the ADRs from the answers, unless the person
+open, run Hammock first and write the ADRs from the answers, unless the person
 asks for a draft anyway. Follow
 the Appendix: ADRs section below:
 
@@ -836,7 +836,7 @@ this: keep the terms in one place, use them uniformly, and when a term breaks, f
 or drop it. Fuzzy words hide fuzzy thinking; a question asked in a word that means
 two things gets an answer about one of them.
 
-The glossary is written **during** Socratic and Design modes, the moment a term is
+The glossary is written **during** Hammock and Design modes, the moment a term is
 settled, not in a batch at the end. Review reads it and never writes it.
 
 ### Where it goes
@@ -873,10 +873,10 @@ _Avoid_: bill, payment request
   do not belong, even when the code uses them everywhere.
 - **No decisions and no implementation.** Not a spec, not notes, not a place for
   "we store it in Postgres". Decisions go to ADRs (the Appendix: ADRs section below) or the decision list
-  (the Appendix: Socratic section below).
+  (the Appendix: Hammock section below).
 - Group terms under subheadings only when clusters appear on their own.
 
-### During Socratic and Design modes
+### During Hammock and Design modes
 
 - **Challenge against the glossary.** When the person uses a term the glossary
   defines differently, say so at once: "GLOSSARY.md defines *cancellation* as the
@@ -918,7 +918,7 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
 ### When to write one
 
 1. **On request.** "Write an ADR for this", "record this decision", "save that as an ADR".
-2. **Offered at the end of Advise, Design or Socratic**, once a decision has
+2. **Offered at the end of Advise, Design or Hammock**, once a decision has
    actually been made **and** it passes all three of these:
    - **Hard to reverse:** changing it later costs real work (data written in its
      shape, consumers depending on it, a vendor or platform to move off).
@@ -928,7 +928,7 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
      picked for a reason. "We did the obvious thing" has nothing to record.
 
    If all three hold, ask in one line: "Want this saved as an ADR?" If any is
-   missing, don't offer: the decision goes in the decision list (the Appendix: Socratic section below)
+   missing, don't offer: the decision goes in the decision list (the Appendix: Hammock section below)
    and nowhere else. Do not write one by default; small questions should not fill
    the repository with files. Do not offer when the person has not chosen yet, or
    when decomplect had no opinion. An explicit request (1) always gets an ADR.
@@ -1123,7 +1123,7 @@ Flips if: <the observable fact that would make the runner-up win>
 
 ### Flips if
 
-Under a close-call table (Advise or Socratic, where the runner-up loses on only one
+Under a close-call table (Advise or Hammock, where the runner-up loses on only one
 or two rows), add one line: `Flips if: <fact>`. Name the observable fact that would
 make the runner-up win: a number crossing a threshold, a use case arriving, a `?`
 resolving the other way. "If priorities change" is not a fact. This replaces
@@ -1182,12 +1182,12 @@ tables before showing them:
 
 ---
 
-## Appendix: Socratic
+## Appendix: Hammock
 
-Use when the person wants a dialog instead of a full answer: "question me", "ask me
-questions", "help me think this through", "help me decide", or when Design or
+Use when the person wants a dialog instead of a full answer: "hammock this", "question me",
+"ask me questions", "help me think this through", "help me decide", or when Design or
 ADR mode reaches a decision the person has not made yet. The output of Advise, Design and ADR is a
-finished artifact; the output of Socratic mode is the person's own answers, one at a
+finished artifact; the output of Hammock mode is the person's own answers, one at a
 time, which those modes then record.
 
 The idea comes from Hammock Driven Development and Design in Practice: the person
@@ -1243,7 +1243,7 @@ My pick: <option>, because <one sentence>.
   than two options, name the pick in the question: "... in `order_events`, rather
   than the other options below?"
 - **Always a pick and always a small table**, even with two options: status quo
-  first, two to four rows, words in every cell (the Appendix: Tradeoff tables section above). In Socratic mode
+  first, two to four rows, words in every cell (the Appendix: Tradeoff tables section above). In Hammock mode
   the table is the point, not an extra.
 - **Plain words.** Define every term of jargon in the sentence that uses it, every
   time, even if an earlier question defined it.
@@ -1330,7 +1330,7 @@ Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
   plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
   tradeoff tables from their questions become the ADRs' tables.
 
-### What Socratic mode does not do
+### What Hammock mode does not do
 
 - Does not hand over all options and all decisions in one message, even when it
   could.
