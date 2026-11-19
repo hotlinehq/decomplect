@@ -1,4 +1,4 @@
-name: Architect review
+name: Untangle
 
 # Runs the decomplect skill on pull requests.
 # Requires the ANTHROPIC_API_KEY secret (or swap for claude_code_oauth_token).
@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize, ready_for_review, labeled]
 
 concurrency:
-  group: architect-review-${{ github.event.pull_request.number }}
+  group: untangle-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:

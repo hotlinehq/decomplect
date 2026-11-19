@@ -59,8 +59,9 @@ first time you use this skill in a session, and whenever a finding needs a citat
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
 question with options, use **Advise**. If asked to record a decision, use **ADR**.
-If the person wants a dialog ("hammock this", "question me", "help me think this through"), or a
-decision they have not made yet blocks Design or ADR, use **Hammock**.
+If the person wants to shape a problem before building, or to reach a decision in a
+dialog ("hammock this", "question me", "help me think this through"), or a decision
+they have not made yet blocks ADR, use **Hammock**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -85,18 +86,6 @@ decision they have not made yet blocks Design or ADR, use **Hammock**.
    (performance, migration risk, team familiarity), say so. For a blocking or major
    finding with two credible fixes, add a small tradeoff table under "Simpler
    alternative" (`references/tradeoff-table.md`). Most findings need none.
-
-### Design / shaping (before code exists)
-
-Follow `references/design-process.md`: Describe, Diagnose, Delimit, Direction,
-Design, Dev. Produce the artifacts it names: a one-paragraph description, a problem
-statement, a use-case table (what, not how), and a decision matrix with the status
-quo as the first column (`references/tradeoff-table.md`). Ask Socratic questions
-one at a time, as in **Hammock**; do not hand over a solution on the same turn the
-problem was first described unless asked. Write terms to the glossary as they
-settle (`references/glossary.md`). Once a direction is chosen, close with the
-decision list from **Hammock**, and offer an ADR for the decisions that pass the
-ADR test in `references/adr.md`.
 
 ### Compatibility / API evolution
 
@@ -155,36 +144,45 @@ in one line: "Want this saved as an ADR?", but only if the decision passes the A
 test in `references/adr.md` (hard to reverse, surprising without context, a real
 tradeoff).
 
-### Hammock (one question at a time)
+### Hammock (shape the problem and decide, one question at a time)
 
-Use when the person wants to reach the decision themselves, in a dialog, rather
-than receive all options at once. Follow `references/hammock.md`:
+Use before code exists, when a problem needs shaping, or whenever the person wants
+to reach a decision themselves in a dialog rather than receive all options at once.
+The `/hammock` command starts it. Follow `references/hammock.md` for the dialog and
+`references/design-process.md` for the phases and the decision matrix:
 
-1. Map the open decisions and their order silently; ask the root one first.
-2. Answer from the code and docs whatever they can answer; ask only what the
+1. **Problem first.** Ask until the problem is clear: what the situation is, what
+   is actually wrong, and a problem statement (unmet objective and its cause) the
+   person confirms. Do not propose a solution before that unless asked.
+2. Map the open decisions and their order silently; ask the root one first.
+3. Answer from the code and docs whatever they can answer; ask only what the
    person alone can decide. Hand slow lookups to a subagent and keep asking the
    questions that don't depend on them. When the person says how something works,
    check the code, and ask if it disagrees.
-3. Ask one question per turn: context first, then the question, worded so "yes"
+4. Ask one question per turn: context first, then the question, worded so "yes"
    takes your pick, then your pick and a small tradeoff table with the status quo
    first. Ask in rounds (every question that doesn't depend on another open one)
-   only when the person asks for it.
-4. If the answer "depends", list the cases it depends on, mark the decided ones,
+   only when the person asks for it. For the direction-setting decisions, the table
+   is the decision matrix: status quo first, criteria as rows, words in the cells.
+5. If the answer "depends", list the cases it depends on, mark the decided ones,
    and ask about the open case only.
-5. Give a worked example per option, and the mechanism behind any limit, when
+6. Give a worked example per option, and the mechanism behind any limit, when
    asked or when the question needs it. "Not yet" is an answer: keep it open. If
    only evidence can settle it (how something feels, a number nobody has), propose
    the smallest experiment instead of asking again.
-6. When a term is settled, write it to the glossary right away
+7. When a term is settled, write it to the glossary right away
    (`references/glossary.md`).
-7. At the end, list every decision made (including those that won't be ADRs) and
+8. At the end, list every decision made (including those that won't be ADRs) and
    wait for the person to confirm the list before acting on it. Then offer ADRs for
    the decisions that pass the ADR test in `references/adr.md`.
+9. **No docs.** If the person says "no docs", write no files at all: no glossary
+   entries and no ADRs. Settled terms and ADR-worthy decisions go into the decision
+   list instead, so nothing is lost.
 
 ### ADR (record a decision)
 
 Use when asked to write an ADR, when the person accepts the offer at the end of
-Advise, Design or Hammock, or when a new decision reverses an accepted ADR. An ADR
+Advise or Hammock, or when a new decision reverses an accepted ADR. An ADR
 records a decision the person made: if asked for ADRs while the decisions are still
 open, run Hammock first and write the ADRs from the answers, unless the person
 asks for a draft anyway. Follow
@@ -193,7 +191,7 @@ asks for a draft anyway. Follow
 1. Find the repo's ADR folder and conventions; default to `docs/adr/NNNN-slug.md`.
 2. Fill the template: Problem, Options and tradeoffs (a tradeoff table with the
    status quo as the first column, per `references/tradeoff-table.md`; reuse the
-   Advise or Design table if there was one), Decision with a Confirmation line (a
+   Advise or Hammock table if there was one), Decision with a Confirmation line (a
    signal in the code that the decision is followed), Consequences (including
    "Revisit if").
 3. Write it as Proposed unless the person says it is decided.

@@ -1,6 +1,6 @@
 # Tradeoff tables
 
-One table shape, used wherever decomplect compares options: Design mode's decision
+One table shape, used wherever decomplect compares options: Hammock mode's decision
 matrix, an ADR's "Options and tradeoffs" section, and Advise when the call is close.
 Prose linearizes and hides contrast; a table lets the reader see why the other
 options lost, and disagree with the pick for a reason the skill could not see
@@ -96,8 +96,8 @@ tables before showing them:
 
 | Mode | When | Notes |
 |---|---|---|
-| Design | Strategy and implementation decision matrices | Always. See `design-process.md` |
-| ADR | The "Options and tradeoffs" section | Always. Reuse the Design matrix or the Advise table if there was one. See `adr.md` |
+| Hammock | Every question, and the strategy and implementation decision matrices | Always. See `hammock.md` and `design-process.md` |
+| ADR | The "Options and tradeoffs" section | Always. Reuse the Hammock or Advise table if there was one. See `adr.md` |
 | Advise | Three or more options, or a close call | Under the pick block, never instead of it |
 | Review | A blocking or major finding with two credible fixes | Under "Simpler alternative". Most findings need none |
 | Compatibility | Not this table | Use the change ledger in SKILL.md: rows are changes, not options |

@@ -1,6 +1,6 @@
 # Spike: what a tradeoff table buys us
 
-decomplect already asks for a decision matrix in Design mode (`references/design-process.md`).
+decomplect already asks for a decision matrix in Hammock mode (`references/design-process.md`).
 This spike looks at where the same table helps beyond that, and what we adopt now.
 
 ## The table
@@ -55,7 +55,7 @@ one sentence; the table is the record of why the other two lost.
 
 - One definition of the table in `references/tradeoff-table.md`: shape, a menu of
   seven plain-word criteria tied to the principles, marks, smells, and which mode
-  uses it when. Design's decision matrix and the ADR's table both point to it.
+  uses it when. Hammock's decision matrix and the ADR's table both point to it.
 - The ADR template's "Options and tradeoffs" section is this table, with the status
   quo first (`references/adr.md`). A superseding ADR starts from the old table.
 - **Advise:** with three or more options, or a close call, a compact table goes under

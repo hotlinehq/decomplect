@@ -36,25 +36,49 @@ into the repository root and commit.
 
 **Personal (all projects):** copy `.claude/skills/decomplect` to `~/.claude/skills/`,
 `.claude/agents/decomplect.md` to `~/.claude/agents/`, and
-`.claude/commands/architect-review.md` to `~/.claude/commands/`.
+`.claude/commands/hammock.md` and `.claude/commands/untangle.md` to `~/.claude/commands/`.
 
-## Use
+## Commands
 
-- `/architect-review` reviews the current branch against `origin/main`.
-- `/architect-review 123` reviews PR #123.
-- `/architect-review docs/adr/0007-events.md` reviews a design doc.
+### `/hammock`: shape the problem and decide
+
+Asks you one question at a time until the problem is clear, then works through the
+decisions it leads to. Each question comes with context, decomplect's pick and a
+small tradeoff table with today's setup as the first column. It looks up in the code
+anything the code can answer, and asks you only what you alone can decide.
+
+Along the way it writes settled terms to `GLOSSARY.md`. It ends with a list of every
+decision you made and waits for you to confirm it. Then it offers ADRs, but only for
+decisions that are hard to reverse, surprising without context, and a real tradeoff.
+
+```
+/hammock should we split billing events into their own stream?
+/hammock customers keep asking for order history, what should we build?
+/hammock no docs: should we split billing events?
+```
+
+With `no docs` it runs the same dialog but writes no files: no glossary entries and
+no ADRs. What it would have written goes into the final decision list instead.
+
+Say "ask in rounds" to get every independent question at once instead of one per
+turn.
+
+### `/untangle`: review a change
+
+Reviews a branch, a PR or a design doc for things tangled together, hidden state and
+time, breaking changes and missing problem statements.
+
+```
+/untangle                            # current branch against origin/main
+/untangle 123                        # PR #123
+/untangle docs/adr/0007-events.md    # a design doc or ADR
+```
+
+## Other ways to use it
+
 - "Use the decomplect agent to review the payments module boundaries."
-- "Help me shape this problem with the decomplect skill" starts design mode
-  (description, problem statement, use cases, decision matrix).
-
-- "Hammock this with decomplect" (or "question me on this") starts Hammock mode: one question per turn,
-  each with context, decomplect's pick and a small tradeoff table. It splits a
-  question that "depends" into its cases, gives a worked example per option when
-  asked, and looks up in the code anything the code can answer. Settled terms go
-  straight into `GLOSSARY.md`. It ends with a list of every decision you made, waits
-  for you to confirm it, and offers ADRs only for decisions that are hard to reverse,
-  surprising without context, and a real tradeoff. Say "ask in rounds" to get every
-  independent question at once instead of one per turn.
+- "Hammock this with decomplect" or "question me on this" starts the same dialog as
+  `/hammock`.
 
 - "What would decomplect pick: A or B?" gives one recommended option with the why and the
   tradeoff. See [docs/advise-on-questions.md](docs/advise-on-questions.md) to have Claude
@@ -62,7 +86,7 @@ into the repository root and commit.
 
 - "Write an ADR for this" records a decision in `docs/adr/NNNN-slug.md` (or the repo's
   existing ADR folder): problem, a tradeoff table with the status quo first, decision,
-  and consequences. Advise, Design and Hammock offer this once you've decided, for
+  and consequences. Advise and `/hammock` offer this once you've decided, for
   decisions worth recording. A changed
   decision gets a new ADR that supersedes the old one; accepted ADRs are never
   rewritten. Reviews flag changes that contradict an accepted ADR. See
@@ -70,7 +94,7 @@ into the repository root and commit.
 
 ## Pipeline (optional, not enabled)
 
-`examples/architect-review.yml` posts one advisory review per PR via
+`examples/untangle.yml` runs `/untangle`'s review once per PR and posts one advisory comment through
 claude-code-action. To enable it, copy it to `.github/workflows/` and add an
 `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`, from `claude setup-token`) secret.
 It never approves or blocks merges.

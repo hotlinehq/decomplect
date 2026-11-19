@@ -1,7 +1,7 @@
 # Architecture decision records (ADR mode)
 
 An ADR is a short file that records one decision: the problem, the options weighed,
-the choice, and the tradeoff accepted. It keeps the output of Advise and Design
+the choice, and the tradeoff accepted. It keeps the output of Advise and Hammock
 from disappearing with the chat.
 
 An ADR is a fact: "on this date, for this problem, we chose X over Y because Z".
@@ -12,7 +12,7 @@ see what was decided, when, and what changed (The Value of Values; Spec-ulation)
 ## When to write one
 
 1. **On request.** "Write an ADR for this", "record this decision", "save that as an ADR".
-2. **Offered at the end of Advise, Design or Hammock**, once a decision has
+2. **Offered at the end of Advise or Hammock**, once a decision has
    actually been made **and** it passes all three of these:
    - **Hard to reverse:** changing it later costs real work (data written in its
      shape, consumers depending on it, a vendor or platform to move off).
@@ -140,8 +140,8 @@ Prefer the rejected-option pattern: it is what drifts back in. Keep it to one or
 signals. If the decision has no signal in code (a team process, a vendor choice),
 write `Confirmation: ?`; Review then falls back to the Decision line.
 
-When the decision came from Design mode, the decision matrix from
-`design-process.md` is the tradeoff table: reuse it. When it came from Advise mode,
+When the decision came from Hammock mode, the decision matrix from
+that question is the tradeoff table: reuse it. When it came from Advise mode,
 build the table from the options in the question, with the status quo added if the
 question left it out.
 

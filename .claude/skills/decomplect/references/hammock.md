@@ -1,14 +1,33 @@
-# Hammock (one question at a time)
+# Hammock (shape the problem and decide, one question at a time)
 
-Use when the person wants a dialog instead of a full answer: "hammock this", "question me",
-"ask me questions", "help me think this through", "help me decide", or when Design or
-ADR mode reaches a decision the person has not made yet. The output of Advise, Design and ADR is a
-finished artifact; the output of Hammock mode is the person's own answers, one at a
-time, which those modes then record.
+Use before code exists, when a problem needs shaping, or when the person wants a
+dialog instead of a full answer: `/hammock`, "hammock this", "question me", "ask me
+questions", "help me think this through", "help me decide", or when ADR mode reaches
+a decision the person has not made yet. The output of Advise and ADR is a finished
+artifact; the output of Hammock mode is the problem statement and the person's own
+decisions, reached one question at a time.
 
 The idea comes from Hammock Driven Development and Design in Practice: the person
 who owns the problem has to load it into their own head. A wall of options skips
 that. One good question at a time does not.
+
+## Phases
+
+Hammock mode walks the phases of `design-process.md`, as questions rather than as a
+document handed over:
+
+1. **Problem first** (Describe, Diagnose, Delimit). Ask about the situation and
+   what is actually wrong until you can write the problem statement: the unmet
+   objective and its cause, not the feature. Show it and ask the person to confirm
+   it. No solution before that, unless asked.
+2. **Direction.** Show the use-case table (what people could do were the problem
+   solved), then ask the strategy decisions, each with a decision matrix as its
+   table (status quo first).
+3. **Design.** Ask the implementation decisions that the direction opened up, the
+   same way.
+
+Backtracking is normal: if an answer changes the problem, say so, update the problem
+statement, and reopen the decisions that depended on it.
 
 ## The loop
 
@@ -145,6 +164,19 @@ Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
 - Ask the person to confirm the list matches what they meant. Do not write ADRs, a
   plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
   tradeoff tables from their questions become the ADRs' tables.
+
+## No docs
+
+If the person says "no docs" (for example `/hammock no docs: should we split
+billing events?`), write no files: no `GLOSSARY.md` entries and no ADRs. Run the
+same dialog, and put what would have been written into the decision list instead:
+
+```
+Glossary (not written): *Billing event*: a fact about money owed or paid, ...
+ADR candidates (not written): Q2. Split billing events into their own stream.
+```
+
+The person can ask for the files later from that list.
 
 ## What Hammock mode does not do
 

@@ -1,4 +1,4 @@
-# Design process (shaping mode)
+# Design process (the phases of Hammock mode)
 
 Based on *Design in Practice* (2023) and *Hammock Driven Development* (2010).
 Design is not waterfall, and not a do-over loop. It is a hike up the understanding
