@@ -29,28 +29,6 @@ It reviews PRs, design docs, APIs and schemas for complecting, place-oriented da
 hidden state and time, breaking changes, and missing problem statements, and it can
 walk a team through problem-first design and record the decisions as ADRs.
 
-## What's here
-
-```
-.claude/
-  skills/decomplect/
-    SKILL.md                       # the skill: stance, modes, output format
-    references/principles.md       # ~40 principles, how to spot violations, talk citations
-    references/review-checklist.md # the review walk-through
-    references/tradeoff-table.md   # one table shape for Advise, Design, ADRs and Review
-    references/design-process.md   # Describe → Diagnose → Delimit → Direction → Design → Dev, decision matrix
-    references/adr.md              # when and how to write ADRs, template, tradeoff table, reviewing against ADRs
-    references/hammock.md          # one question at a time: context, pick and table, cases, examples, decision list
-    references/glossary.md         # the project's words: kept during Hammock and Design, checked in Review
-    references/sources.md          # talks used, with links
-  agents/decomplect.md       # read-only subagent that applies the skill
-  commands/architect-review.md     # /architect-review [base | PR# | doc path]
-assets/                            # logo: icon, mono stamp, light/dark lockups
-docs/                              # advise-on-questions.md, tradeoff-table.md (spike)
-examples/architect-review.yml      # optional GitHub Action for PR reviews (not enabled)
-transcripts/                       # COVERAGE.md + fetch.sh (downloads all available transcripts)
-```
-
 ## Install
 
 **Per repo (team-shared):** copy `.claude/`
