@@ -5,6 +5,12 @@ Principles were synthesized from transcripts in
 and the talk index in [tallesl/Rich-Hickey-fanclub](https://github.com/tallesl/Rich-Hickey-fanclub).
 Watch the talks; this skill only summarizes them.
 
+Some workflow ideas (a glossary kept during the dialog, the three-part test before
+offering an ADR, the closing decision list, asking in rounds) were inspired by Matt
+Pocock's `grilling`, `grill-with-docs` and `domain-modeling` skills in
+[mattpocock/skills](https://github.com/mattpocock/skills) (MIT License). No text
+from them is reproduced here.
+
 | Talk | Year | Main themes used | Video |
 |---|---|---|---|
 | Design in Practice | 2023 | phases, problem statement, decision matrix, words, glossary | https://www.youtube.com/watch?v=c5QF2HjHLSE |

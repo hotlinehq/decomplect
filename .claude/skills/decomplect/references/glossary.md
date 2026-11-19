@@ -6,7 +6,7 @@ this: keep the terms in one place, use them uniformly, and when a term breaks, f
 or drop it. Fuzzy words hide fuzzy thinking; a question asked in a word that means
 two things gets an answer about one of them.
 
-The glossary is written **during** Interview and Design, the moment a term is
+The glossary is written **during** Hammock and Design modes, the moment a term is
 settled, not in a batch at the end. Review reads it and never writes it.
 
 ## Where it goes
@@ -27,13 +27,13 @@ settled, not in a batch at the end. Review reads it and never writes it.
 
 <One or two sentences: what this system or area is.>
 
-**Order**:
-A customer's request for one or more products, from checkout until it is delivered or cancelled.
-_Avoid_: purchase, transaction
+**Shipment**:
+One box of goods leaving the warehouse for one address. An order can have several.
+_Avoid_: delivery, parcel
 
-**Invoice**:
-A request for payment sent to a customer after delivery.
-_Avoid_: bill, payment request
+**Hold**:
+A stop placed on a shipment until someone releases it, with the reason it was placed.
+_Avoid_: block, freeze
 ```
 
 - **One canonical word per thing.** When the code, the docs and the person use
@@ -43,10 +43,10 @@ _Avoid_: bill, payment request
   do not belong, even when the code uses them everywhere.
 - **No decisions and no implementation.** Not a spec, not notes, not a place for
   "we store it in Postgres". Decisions go to ADRs (`adr.md`) or the decision list
-  (`interview.md`).
+  (`hammock.md`).
 - Group terms under subheadings only when clusters appear on their own.
 
-## During Interview and Design
+## During Hammock and Design modes
 
 - **Challenge against the glossary.** When the person uses a term the glossary
   defines differently, say so at once: "GLOSSARY.md defines *cancellation* as the

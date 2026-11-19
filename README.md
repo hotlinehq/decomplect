@@ -29,28 +29,6 @@ It reviews PRs, design docs, APIs and schemas for complecting, place-oriented da
 hidden state and time, breaking changes, and missing problem statements, and it can
 walk a team through problem-first design and record the decisions as ADRs.
 
-## What's here
-
-```
-.claude/
-  skills/decomplect/
-    SKILL.md                       # the skill: stance, modes, output format
-    references/principles.md       # ~40 principles, how to spot violations, talk citations
-    references/review-checklist.md # the review walk-through
-    references/tradeoff-table.md   # one table shape for Advise, Design, ADRs and Review
-    references/design-process.md   # Describe → Diagnose → Delimit → Direction → Design → Dev, decision matrix
-    references/adr.md              # when and how to write ADRs, template, tradeoff table, reviewing against ADRs
-    references/interview.md        # one question at a time: context, pick and table, cases, examples, decision list
-    references/glossary.md         # the project's words: kept during Interview and Design, checked in Review
-    references/sources.md          # talks used, with links
-  agents/decomplect.md       # read-only subagent that applies the skill
-  commands/architect-review.md     # /architect-review [base | PR# | doc path]
-assets/                            # logo: icon, mono stamp, light/dark lockups
-docs/                              # advise-on-questions.md, tradeoff-table.md (spike)
-examples/architect-review.yml      # optional GitHub Action for PR reviews (not enabled)
-transcripts/                       # COVERAGE.md + fetch.sh (downloads all available transcripts)
-```
-
 ## Install
 
 **Per repo (team-shared):** copy `.claude/`
@@ -69,7 +47,7 @@ into the repository root and commit.
 - "Help me shape this problem with the decomplect skill" starts design mode
   (description, problem statement, use cases, decision matrix).
 
-- "Grill me on this with decomplect" starts interview mode: one question per turn,
+- "Hammock this with decomplect" (or "question me on this") starts Hammock mode: one question per turn,
   each with context, decomplect's pick and a small tradeoff table. It splits a
   question that "depends" into its cases, gives a worked example per option when
   asked, and looks up in the code anything the code can answer. Settled terms go
@@ -84,7 +62,7 @@ into the repository root and commit.
 
 - "Write an ADR for this" records a decision in `docs/adr/NNNN-slug.md` (or the repo's
   existing ADR folder): problem, a tradeoff table with the status quo first, decision,
-  and consequences. Advise, Design and Interview offer this once you've decided, for
+  and consequences. Advise, Design and Hammock offer this once you've decided, for
   decisions worth recording. A changed
   decision gets a new ADR that supersedes the old one; accepted ADRs are never
   rewritten. Reviews flag changes that contradict an accepted ADR. See
@@ -104,3 +82,7 @@ It never approves or blocks merges.
   they are not committed here.
 - The skill avoids Lisp/Clojure framing and translates every idea into the idioms of
   the code under review.
+- Some workflow ideas in Hammock mode and the glossary (rounds, the closing decision
+  list, the ADR test) were inspired by Matt Pocock's
+  [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Credited in
+  `references/sources.md`; no text is copied.
