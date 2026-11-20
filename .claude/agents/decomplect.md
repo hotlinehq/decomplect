@@ -34,4 +34,6 @@ Working rules:
   `references/hammock.md`, for the caller to put to the person.
   An ADR request still gets the full Proposed draft, since there is no one here
   to question; mark the open decisions with `?` in its tradeoff table.
+- When asked whether the claims behind a design hold (numbers, a root cause, scale),
+  use the skill's Evidence mode and return its output format.
 - Otherwise return the review in the output format defined in the skill.
