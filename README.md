@@ -37,7 +37,7 @@ into the repository root and commit.
 **Personal (all projects):** copy `.claude/skills/decomplect` to `~/.claude/skills/`,
 `.claude/agents/decomplect.md` to `~/.claude/agents/`, and
 `.claude/commands/hammock.md`, `.claude/commands/untangle.md` and
-`.claude/commands/evidence.md` to `~/.claude/commands/`.
+`.claude/commands/errorbar.md` to `~/.claude/commands/`.
 
 ## Commands
 
@@ -75,7 +75,10 @@ time, breaking changes and missing problem statements.
 /untangle docs/adr/0007-events.md    # a design doc or ADR
 ```
 
-### `/evidence`: check the claims behind a design
+### `/errorbar`: check the claims behind a design
+
+Named after Neil deGrasse Tyson's essay "Belly Up to the Error Bar": every claim
+carries its uncertainty.
 
 Lists every claim a design, PR, ADR or incident report rests on and labels each one
 measured, inferred or assumed. For a claimed cause it names a rival explanation and
@@ -87,15 +90,15 @@ its cost, its gain and the before/after measurement that will confirm it. It end
 the cheapest test for each weak claim and the decision in plain words.
 
 ```
-/evidence 123                               # the claims in PR #123
-/evidence docs/postmortems/2026-10-checkout.md
-/evidence "the new cache will cut p99 by half"
-/evidence ask should we shard the orders table?   # as a dialog, one question at a time
+/errorbar 123                               # the claims in PR #123
+/errorbar docs/postmortems/2026-10-checkout.md
+/errorbar "the new cache will cut p99 by half"
+/errorbar ask should we shard the orders table?   # as a dialog, one question at a time
 ```
 
 The principles come from Neil deGrasse Tyson (judging claims), Brendan Gregg
 (measuring running systems) and Jeff Dean (sizing designs); sources are in
-`references/evidence-sources.md`.
+`references/errorbar-sources.md`.
 
 ## Other ways to use it
 
@@ -126,6 +129,9 @@ The principles come from Neil deGrasse Tyson (judging claims), Brendan Gregg
   list, the ADR test) were inspired by Matt Pocock's
   [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Credited in
   `references/sources.md`; no text is copied.
-- Evidence mode's principles are our summaries with short quotes for citation; the
-  linked essays, talks and papers are in `references/evidence-sources.md`. Three of its
-  steps were inspired by public agent skills, credited there; no text is copied.
+- Error Bar mode's principles are our summaries with short quotes for citation; the
+  linked essays, talks and papers are in `references/errorbar-sources.md`. Three of its
+  steps were inspired by skills in four public repositories, credited there; no text is
+  copied.
+- The Apache-2.0 license covers this repository's own text only. Quoted passages stay
+  the copyright of their authors; see [NOTICE](NOTICE).

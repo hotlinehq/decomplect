@@ -1,6 +1,6 @@
-# Evidence sources
+# Error Bar sources
 
-Links to the sources behind `evidence-principles.md`. The principles are our own summaries with
+Links to the sources behind `errorbar-principles.md`. The principles are our own summaries with
 short quotes for citation; no full texts are reproduced here. Read or watch the originals.
 
 ## Tyson (Part A)
@@ -13,7 +13,6 @@ short quotes for citation; no full texts are reproduced here. Read or watch the 
 | Certain Uncertainties II | Tyson, Natural History essay ("Belly Up to the Error Bar") | ≥1998 | https://neildegrassetyson.com/?p=257 |
 | The Beginning of Science | Tyson, Natural History essay | — | https://neildegrassetyson.com/?p=264 |
 | By the Numbers | Space Chronicles excerpt (2008 keynote) | 2012 | https://www.nhmag.com/print/2148 |
-| Moyers 2014 | Moyers & Company, Science Literacy pt. 2 | 2014-01-24 | https://billmoyers.com/episode/neil-degrasse-tyson-on-science-literacy/ |
 | Ferriss #389 | The Tim Ferriss Show | 2019-10 | https://tim.blog/2019/10/15/neil-degrasse-tyson-transcript/ |
 | Harbinger #327 | The Jordan Harbinger Show | — | https://jordanharbinger.com/327 |
 | Freakonomics 2024 | People I (Mostly) Admire #145 | 2024-11-22 | https://freakonomics.com/podcast/neil-degrasse-tyson-is-still-starstruck |
@@ -57,7 +56,7 @@ Not used as a source: the popular "Latency numbers every programmer should know"
 
 ## Ideas borrowed from other agent skills
 
-Three steps of the mode were inspired by public agent skills; no text from them is reproduced here.
+Three steps of the mode were inspired by skills in four public repositories; no text from them is reproduced here.
 - A rival explanation and a High/Medium/Low confidence for every claimed cause (E10): `confidence-honesty`
   in [ntcoding/claude-skillz](https://github.com/ntcoding/claude-skillz) and `fact-checker` in
   [NickCrew/Claude-Cortex](https://github.com/NickCrew/Claude-Cortex).

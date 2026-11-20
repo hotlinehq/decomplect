@@ -1,12 +1,12 @@
-# Evidence mode
+# Error Bar mode
 
-Sanity-check the claims behind a design before judging how it is put together. The `/evidence`
+Sanity-check the claims behind a design before judging how it is put together. The `/errorbar`
 command starts it.
 
 Use when a design, PR, ADR, incident report or decision rests on factual claims: performance numbers,
 user demand, cost, root cause, usage ("nobody calls this"), scale ("we'll have millions of events").
 Also use when someone asks "is this true?", "is this big enough to matter?", or "how do I explain
-this decision?". Principles are in `evidence-principles.md`: Part A (E1-E12) for every
+this decision?". Principles are in `errorbar-principles.md`: Part A (E1-E12) for every
 claim, Part B (E13-E17) when the claim is about a running system (performance, capacity, cost,
 incident cause), Part C (E18-E26) when a design rests on numbers (throughput, latency, storage,
 cost, failures, growth). Reference costs are in `numbers.md`.
@@ -104,7 +104,7 @@ design.
 
 ## As a dialog
 
-When the person asks to work through the claims together ("question me", or `/evidence ask`),
+When the person asks to work through the claims together ("question me", or `/errorbar ask`),
 follow the Hammock rules in `hammock.md` (one question per turn, look before you ask, stop once the
 decision is safe) with these questions, in this order:
 

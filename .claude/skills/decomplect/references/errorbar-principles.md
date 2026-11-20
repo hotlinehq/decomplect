@@ -1,8 +1,8 @@
-# Evidence principles
+# Error Bar principles
 
 Distilled from Neil deGrasse Tyson's essays and interviews, Brendan Gregg's performance
 methodology writing, and Jeff Dean's talks and papers on building large systems (see
-`evidence-sources.md`). Decomplect judges how a design is put together.
+`errorbar-sources.md`). Decomplect judges how a design is put together.
 These principles come first: they check whether the claims that motivate a design are true and the
 right size. Apply them to any engineering claim: "users want X", "this is the bottleneck", "it's 10x
 faster", "the incident was caused by Y", "nobody uses that endpoint".
@@ -21,7 +21,6 @@ Short quotes are for citation only. Cite by source id, don't paste long passages
 ## E1. How you think beats what you know
 A claim is judged by how it was reached, not by who says it or how familiar it sounds.
 Ask how the claim was obtained before arguing about what it says.
-> "the most important moments of your life are decided not by what you know, but by how you think." (MasterClass ch.1)
 - Engineering form: "Where does that come from?" is the first question for any premise in a design doc.
 
 ## E2. Don't fool yourself; name the habit that fooled you
@@ -35,9 +34,6 @@ impersonal:
 - **Traffic light**: green dashboard means fine, red means that's the cause. Fine for objective metrics (error counts), misleading for subjective ones (latency).
 - **Average**: explain the mean and assume one peak.
 - **Passive benchmarking**: run a benchmark, chart it, ship the slides.
-> "do whatever it takes-- whatever it takes-- to not fool yourself" (MasterClass ch.3)
-> "This is how your prior biases can prevent what might be a discovery." (Freakonomics 2024)
-> "A lack of data analysis—or even data to begin with—leads to the hypothesis." (Gregg, Queue 2012, on blame-someone-else)
 - Engineering form: look for the benchmark run that was discarded, the dashboard filter that hides a
   segment, the incident timeline that starts after the cause. Gregg's case: a customer blamed the
   network from ping output; the database was out of memory and paging, and the network focus had
@@ -49,7 +45,6 @@ The skeptic's questions: what is the source, what is the mechanism, what test wa
 the thing claimed, has anyone else reproduced it? For a benchmark, ask what limited it: a result
 nobody can explain ("why X and not 2X?") hasn't been understood yet.
 > "Was that research result verified by others?" (MasterClass ch.4)
-> "You could have done an experiment that didn't really test what you were looking for" (MasterClass ch.4)
 > "you benchmark A, but actually measure B, and conclude you've measured C." (Gregg, Active Benchmarking)
 > "Can they explain why the benchmark result was X, and not 2X (twice as fast)?" (Gregg, Active Benchmarking)
 - Engineering form: a load test against a warm cache does not test cold-start latency. "The new JSON
@@ -60,7 +55,6 @@ nobody can explain ("why X and not 2X?") hasn't been understood yet.
 An idea about how something works is a hypothesis until it has made a prediction that was tested.
 Say which one you have.
 > "If you have an idea about how something works, it's not a theory; it's a hypothesis." (Freakonomics 2024)
-> "I have a hypothesis. But I didn't do the experiment." (Moyers 2014)
 - Engineering form: label premises in a design doc as **measured**, **inferred**, or **assumed**. A design resting on assumed premises must say what would falsify them.
 
 ## E5. One result is weak; replication is strong; negative results count
@@ -77,7 +71,6 @@ utilization, no saturation and no errors is exonerated, which narrows the search
 errors (wrong instrument, wrong population) are worse than noise because they don't average out.
 Interval averages hide bursts, and many latency distributions have more than one peak: ask for the
 distribution and the time series at a resolution that fits the problem.
-> "Accuracy is, I don't care how tight your measurement is, is the measurement right at all?" (MasterClass ch.8)
 > "Ordinary uncertainties almost always lead to correct (and meaningful) answers, but systematic uncertainties are insidious." (Certain Uncertainties II)
 > "a five-minute average can disguise short periods of 100-percent utilization and, therefore, saturation." (Gregg, Queue 2012)
 > "Many distributions aren't normal, gaussian, or unimodal" (Gregg, Velocity 2013)
@@ -113,7 +106,6 @@ Where understanding runs out, say so. "We can't explain it, so it must be X" is 
 ignorance. Also don't declare a problem unsolvable just because you haven't solved it. A metric you
 can't currently collect is still a question: write it down, with the instrumentation that would
 answer it.
-> "They call on God only from the lonely and precarious edge of incomprehension." (Perimeter of Ignorance)
 > "how presumptuous it would be for me to claim that if I can't solve a problem, neither can any other person" (Perimeter of Ignorance)
 > "Take note of metrics that are not currently available: these are the "known unknowns."" (Gregg, Queue 2012)
 - Engineering form: "probably a network blip" closing a postmortem is a god-of-the-gaps. Write "cause
@@ -126,7 +118,6 @@ necessarily the problem. So for every claimed cause, name at least one rival exp
 the same evidence, and the observation that would tell them apart. Then say how sure you are:
 **High** (direct evidence, rivals ruled out), **Medium** (evidence points this way, a rival is still
 open), **Low** (one possibility among several). Say what would raise it.
-> "Initial uncertainty is a natural element of the scientific method" (Certain Uncertainties I)
 > "Lord Kelvin was off by a factor of fifty." (Certain Uncertainties I)
 > "the first one you find may be *a* problem but not *the* problem." (Gregg, USE)
 - Engineering form: "root cause: the connection pool is too small" (Medium). Rival: a slow query
@@ -136,16 +127,13 @@ open), **Low** (one possibility among several). Say what would raise it.
 ## E11. Bias can't be removed, only exposed
 You can't live without bias, but you can be aware of it and invite people who don't share it.
 Echo chambers hide the critique.
-> "You can't expect to live life without bias, but you can live life self-aware of it or self-aware of the risk." (Harbinger #327)
 > "you never see a critique of your thoughts because your search engine never takes you there." (Harbinger #327)
 - Engineering form: ask the team that will be hurt by the change to try to break the claim.
 
 ## E12. Being right is half the job; the impression must be right too
 A correct fact that leaves the wrong impression has failed. Meet the audience most of the way: use
 a familiar comparison, and scale numbers to something they can feel.
-> "it's not good enough to be right. You also have to be effective." (MasterClass ch.9)
 > "If the impression isn't accurate, it doesn't matter that the fact is correct." (Freakonomics 2024)
-> "giving something else that is familiar in your life, somehow makes it real." (Ferriss #389)
 - Engineering form: "adds 40 ms" means nothing to a PM; "checkout feels as slow as it did last spring" does.
 
 # Part B. Measuring a system
@@ -153,7 +141,6 @@ a familiar comparison, and scale numbers to something they can feel.
 ## E13. Start with questions, not with the tools you happen to know
 Running the familiar tool and reading what it shows is not analysis. Pick the questions first, then
 find (or build) the metric that answers each one.
-> "The most familiar tools are run first, even if they don't make the most sense." (Gregg, Queue 2012)
 > "Start with the questions, then make metrics to answer them" (Gregg, Applicative 2016)
 - Engineering form: "we looked at the dashboard and CPU was fine" answers a question nobody asked.
   Ask "what is the request waiting on?" and then find the trace, profile or queue metric for it.
@@ -163,7 +150,6 @@ A handful of questions often solves the issue outright, and always narrows it: w
 there is a problem, has it ever been fine, what changed, can it be expressed as latency or run time,
 who else is affected, what is the environment.
 > "What makes you think there is a performance problem?" (Gregg, Methodology)
-> "The description on its own may even solve the issue." (Gregg, Queue 2012)
 - Engineering form: "has this endpoint ever been fast?" turns "Postgres is slow" into "p99 doubled on
   Tuesday, the day the ORM upgrade shipped".
 
@@ -172,14 +158,12 @@ For every resource the design touches (CPU, memory, disk, network, and software 
 thread pools, connection pools, queues, file descriptors) check utilization, saturation and errors.
 Breadth first finds the cause nobody claimed, and clean resources are exonerated (E5).
 > "For every resource, check utilization, saturation, and errors." (Gregg, USE)
-> "by considering all resources, you are unlikely to overlook any issues." (Gregg, USE)
 - Engineering form: before "add a cache", check the connection pool: requests queued waiting for a
   connection is saturation, and a cache won't fix it.
 
 ## E16. Separate load from architecture; the best win is removing work
 Many "architecture" problems are unexpected load. Characterise the workload (E8) before redesigning,
 and consider not doing the work at all before doing it faster.
-> "This helps to separate problems of load from problems of architecture, by identifying the former." (Gregg, Queue 2012)
 > "The best performance wins often arise from eliminating unnecessary work." (Gregg, Queue 2012)
 - Engineering form: before sharding, find out who sends the traffic. One client polling every 100 ms
   is a conversation, not a migration.
@@ -189,7 +173,6 @@ No method finds everything. Use cheap broad checks first (problem statement, wor
 expensive deep ones (profiles, latency breakdown). Fix where the gain is worth it, and stop when the
 remaining gain isn't.
 > "I find it solves about 80% of server issues with 5% of the effort" (Gregg, USE)
-> "it doesn't solve all types of problems and should be treated as just one methodology in the toolbox." (Gregg, Queue 2012)
 - Engineering form: Method R (cited on Gregg's Methodology page): pick the user actions that matter
   to the business, measure where their time goes, fix the biggest net payoff.
 
@@ -200,7 +183,6 @@ Being able to predict a design's performance on paper is a core skill. It picks 
 out of several before any code exists. Performance belongs in the design for the small part of the
 system where it matters (Knuth's "critical 3%"), not "later".
 > "Important skill: ability to estimate performance of a system design" / "without actually having to build it!" (Dean, LADIS 2009)
-> "Back of the envelope helps identify most promising…" (Dean, LADIS 2009)
 > "This document is about that critical 3%." (Dean, Perf Hints)
 - Engineering form: a design doc that claims "fast enough" or "scales" without a calculation is a
   finding. Ask for the envelope before asking for a benchmark.
@@ -233,7 +215,6 @@ Estimates need costs for the basic operations, to an order of magnitude. The num
 hypothesis (E4): when a number decides the design, measure it on your own system, with the care
 of Part B (E13-E17), and keep small benchmarks honest (E3).
 > "If you don't know what's going on, you can't do decent back-of-the-envelope calculations!" (Dean, LADIS 2009; repeated in Perf Hints)
-> "Write Microbenchmarks!" / "Builds intuition for back-of-the-envelope calculations" (Dean, LADIS 2009)
 > "microbenchmarks can have pitfalls that make them non-representative of full system performance." (Dean, Perf Hints)
 - Engineering form: cite the table and its year with every estimate (`numbers.md`). When the
   estimate and a measurement differ by more than ~2x, one of them is wrong: find out which.
@@ -241,7 +222,6 @@ of Part B (E13-E17), and keep small benchmarks honest (E3).
 ## E21. Know how your building blocks work, not just their interfaces
 The cost of a call depends on its implementation: block sizes, replication, caches, where the data
 lives.
-> "Not just their interfaces, but understand their implementations (at least at a high level)" (Dean, LADIS 2009)
 - Example (Bigtable 2006): each random read pulled a 64 KB block to return a 1 KB value; about 1,200
   reads/s already saturated the server. Smaller blocks were the fix.
 - Engineering form: "one key-value lookup" may be a network round trip, a disk read and a 64 KB
@@ -261,7 +241,6 @@ This is the design-time twin of the USE sweep (E15).
 Averages hide what users feel (E6), and fan-out amplifies the slow end. If 1 in 100 calls is slow and
 a request touches 100 servers, most requests are slow.
 > "then 63% of user requests will take more than one second." (Tail at Scale 2013)
-> "Worry about variance!" (Dean, LADIS 2009)
 - Arithmetic: P(request slow) = 1 − (1 − p)^N. With p = 0.01 and N = 100: 1 − 0.99^100 ≈ 0.63.
 - Measured (Tail at Scale 2013): p99 for one leaf 10 ms; p99 waiting for all leaves 140 ms.
 - Engineering form: any latency claim names the percentile and the fan-out. "p50 is 20 ms" says
@@ -270,8 +249,6 @@ a request touches 100 servers, most requests are slow.
 ## E24. Failures are a rate: budget for them
 At scale, failure is a steady stream with a known shape, not an event. Count it like any other load,
 and ask whether failures are independent or correlated.
-> "Things will crash. Deal with it!" (Dean, LADIS 2009)
-> "Can we expect faults to be independent or correlated?" (Dean, LADIS 2009)
 - Example (Dean, LADIS 2009): a typical first year of a new cluster: about 1,000 machine failures,
   thousands of disk failures, about 20 rack failures, one power-unit failure dropping 500-1,000
   machines at once.
@@ -285,7 +262,6 @@ Parameters grow by orders of magnitude, and the right design at one scale is wro
 the design survive 10x, and don't pay for scale or features nobody has shown are needed.
 > "design for ~10X growth, but plan to rewrite before ~100X" (Dean, WSDM 2009)
 > "Don't design to scale infinitely:" (Dean, Stanford 2010)
-> "Don't imagine unlikely potential needs that aren't really there" (Dean, LADIS 2009)
 > "it is important to delay adding new features until it is clear how the new features will be used." (Bigtable 2006)
 - Engineering form: state today's number, the 10x number, and what breaks first between 10x and
   100x. A design for 1000x today's load needs a reason.

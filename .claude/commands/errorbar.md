@@ -4,12 +4,12 @@ argument-hint: "[ask] [PR number | path to doc | claim]"
 allowed-tools: Bash(git diff:*), Bash(git log:*), Bash(git merge-base:*), Bash(gh pr view:*), Bash(gh pr diff:*), Read, Grep, Glob
 ---
 
-Use the `decomplect` skill in **Evidence** mode (`references/evidence.md`).
+Use the `decomplect` skill in **Error Bar** mode (`references/errorbar.md`).
 
 Target: `$ARGUMENTS`
 
 - If it starts with "ask" (any case), drop that word and run the mode as a dialog,
-  one question per turn, as "As a dialog" in `references/evidence.md` describes.
+  one question per turn, as "As a dialog" in `references/errorbar.md` describes.
 - If it is a number, check the claims in that pull request: `gh pr view $ARGUMENTS`
   for the description and `gh pr diff $ARGUMENTS` for the change.
 - If it is a path, check the claims in that design doc, ADR or incident report.

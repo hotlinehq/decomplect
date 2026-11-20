@@ -73,7 +73,7 @@ endpoint, event, message, table, config, CLI flag):
 - [ ] Is a new abstraction justified by more than one use?
 - [ ] Could the change be smaller and more general?
 
-## I. Evidence (`evidence-principles.md`)
+## I. Evidence (`errorbar-principles.md`)
 - [ ] Does the design claim scale, speed or cost without an estimate? (E18)
 - [ ] Does a latency claim name the percentile and the fan-out? (E23)
 - [ ] Does each mitigation (retry, cache, replica, hedge) state its cost? (E26)
@@ -84,7 +84,7 @@ endpoint, event, message, table, config, CLI flag):
 - [ ] Is a fix reported as working without a before/after measurement on the same
       metric? (E26)
 
-For a full check of the claims, use Evidence mode (`evidence.md`).
+For a full check of the claims, use Error Bar mode (`errorbar.md`).
 
 ## Calibration
 - Proportionality: small changes get a short review.
