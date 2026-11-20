@@ -77,9 +77,6 @@ time, breaking changes and missing problem statements.
 
 ### `/errorbar`: check the claims behind a design
 
-Named after Neil deGrasse Tyson's essay "Belly Up to the Error Bar": every claim
-carries its uncertainty.
-
 Lists every claim a design, PR, ADR or incident report rests on and labels each one
 measured, inferred or assumed. For a claimed cause it names a rival explanation and
 grades the cause high, medium or low. For a running system it writes the problem
