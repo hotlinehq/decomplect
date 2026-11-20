@@ -1,4 +1,4 @@
-# Reference numbers (used by E19-E20)
+# Reference numbers (used by E15-E16)
 
 Orders of magnitude for back-of-envelope estimates. Rounded from Dean & Ghemawat, Performance Hints
 (2025 update). Dean's 2009 values in brackets where they differ by 2x or more. Re-measure any

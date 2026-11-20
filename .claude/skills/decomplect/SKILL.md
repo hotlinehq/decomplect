@@ -188,7 +188,7 @@ The `/hammock` command starts it. Follow `references/hammock.md` for the dialog 
 Use when a design, PR, ADR, incident report or decision rests on factual claims:
 performance numbers, demand, cost, a root cause, usage ("nobody calls this"), scale.
 The `/errorbar` command starts it. Follow `references/errorbar.md`; the principles
-(E1-E26) are in `references/errorbar-principles.md` and reference costs in
+(E1-E22) are in `references/errorbar-principles.md` and reference costs in
 `references/numbers.md`.
 
 1. List every claim the decision depends on, in the author's words, and label each
