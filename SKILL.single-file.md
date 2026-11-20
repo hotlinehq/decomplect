@@ -187,7 +187,7 @@ the Appendix: Design process section below for the phases and the decision matri
 Use when a design, PR, ADR, incident report or decision rests on factual claims:
 performance numbers, demand, cost, a root cause, usage ("nobody calls this"), scale.
 The `/errorbar` command starts it. Follow the Appendix: Error Bar section below; the principles
-(E1-E26) are in the Appendix: Error Bar principles section below and reference costs in
+(E1-E22) are in the Appendix: Error Bar principles section below and reference costs in
 the Appendix: Reference numbers section below.
 
 1. List every claim the decision depends on, in the author's words, and label each
@@ -765,15 +765,15 @@ endpoint, event, message, table, config, CLI flag):
 - [ ] Could the change be smaller and more general?
 
 ### I. Evidence
-- [ ] Does the design claim scale, speed or cost without an estimate? (E18)
-- [ ] Does a latency claim name the percentile and the fan-out? (E23)
-- [ ] Does each mitigation (retry, cache, replica, hedge) state its cost? (E26)
-- [ ] Are the reference numbers behind an estimate dated and sourced? (minor, E20)
+- [ ] Does the design claim scale, speed or cost without an estimate? (E14)
+- [ ] Does a latency claim name the percentile and the fan-out? (E19)
+- [ ] Does each mitigation (retry, cache, replica, hedge) state its cost? (E22)
+- [ ] Are the reference numbers behind an estimate dated and sourced? (minor, E16)
 - [ ] Is a root cause stated with no rival explanation considered, or with more
-      certainty than the evidence supports? (E10)
-- [ ] Is a number that decides the design estimated only one way? (minor, E19)
+      certainty than the evidence supports? (E7)
+- [ ] Is a number that decides the design estimated only one way? (minor, E15)
 - [ ] Is a fix reported as working without a before/after measurement on the same
-      metric? (E26)
+      metric? (E22)
 
 For a full check of the claims, use Error Bar mode (the Appendix: Error Bar section below).
 
@@ -1426,58 +1426,58 @@ command starts it.
 Use when a design, PR, ADR, incident report or decision rests on factual claims: performance numbers,
 user demand, cost, root cause, usage ("nobody calls this"), scale ("we'll have millions of events").
 Also use when someone asks "is this true?", "is this big enough to matter?", or "how do I explain
-this decision?". Principles are in the Appendix: Error Bar principles section below: Part A (E1-E12) for every
-claim, Part B (E13-E17) when the claim is about a running system (performance, capacity, cost,
-incident cause), Part C (E18-E26) when a design rests on numbers (throughput, latency, storage,
+this decision?". Principles are in the Appendix: Error Bar principles section below: Part A (E1-E8) for every
+claim, Part B (E9-E13) when the claim is about a running system (performance, capacity, cost,
+incident cause), Part C (E14-E22) when a design rests on numbers (throughput, latency, storage,
 cost, failures, growth). Reference costs are in the Appendix: Reference numbers section below.
 
-0. **State the problem** (E13, E14). *System claims only.* Answer in one line each: what makes us
+0. **State the problem** (E9, E10). *System claims only.* Answer in one line each: what makes us
    think there is a problem, has it ever been fine, what changed, can it be expressed as latency or
    run time, who else is affected, what is the environment. Often this alone settles it.
 1. **List the claims.** Pull every premise the decision depends on into a table. One row per claim,
    in the author's words.
-2. **Label each claim** (E4): **measured** (data exists, cite it), **inferred** (reasoned from other
+2. **Label each claim** (E3): **measured** (data exists, cite it), **inferred** (reasoned from other
    data), or **assumed** (nobody checked). Don't upgrade a label because the claim sounds plausible.
-   If the claim came from a named anti-method (E2: blame someone else, streetlight, random change,
+   If the claim came from a named anti-method (E1: blame someone else, streetlight, random change,
    traffic light, average, passive benchmarking), note it.
-3. **Probe each measured claim** (E3, E5, E6, E8): source, method, did the test test this, what
+3. **Probe each measured claim** (E2, E4, E6): source, method, did the test test this, what
    limited it (why X and not 2X), sample size and base rate, like-for-like comparison, reproduced by
    anyone else, uncertainty range, distribution rather than mean, interval length, possible
    systematic error.
-4. **Name a rival and grade the cause** (E10). For each claimed cause ("X is the bottleneck", "Y
+4. **Name a rival and grade the cause** (E7). For each claimed cause ("X is the bottleneck", "Y
    caused the outage", "Z drove the drop"), name at least one rival explanation that fits the same
    evidence, and the observation that would tell them apart. Give the cause a confidence: High
    (direct evidence, rivals ruled out), Medium (a rival is still open) or Low (one possibility among
    several), and say what would raise it.
-5. **Cover** (E15, E16). *System claims only.* Sweep utilization, saturation and errors over the
+5. **Cover** (E11, E12). *System claims only.* Sweep utilization, saturation and errors over the
    resources the design touches, including software ones (pools, locks, queues). Report saturation or
    errors that no claim mentioned, and resources that are clean (exonerated). Ask whether the load
    itself is expected, or whether the work can be removed.
-6. **Size it** (E7, E18-E26): write a back-of-envelope estimate for any number that drives the
+6. **Size it** (E5, E14-E22): write a back-of-envelope estimate for any number that drives the
    design. Normalise (per user, per request, per month) and compare with a known reference. For a
    suspected cause, give its share of the whole (profile, latency breakdown). For a design, check:
-   - **Operations × cost** (E19-E21): what one request or job does, the unit cost of each step from
+   - **Operations × cost** (E15-E17): what one request or job does, the unit cost of each step from
      the Appendix: Reference numbers section below (with its year), the total as a range, and the dominant term.
-   - **Scarce resource** (E22): which resource runs out first, and at what load.
-   - **Tail** (E23): name the percentile; with fan-out N, apply 1 − (1 − p)^N.
-   - **Failures** (E24): expected failures per day at this size; independent or correlated?
-   - **Growth** (E25): does it hold at 10x? What breaks first before 100x? Is 100x actually needed?
-   - **Second route** (E19): estimate the result again a different way (top-down from a total, or
+   - **Scarce resource** (E18): which resource runs out first, and at what load.
+   - **Tail** (E19): name the percentile; with fan-out N, apply 1 − (1 − p)^N.
+   - **Failures** (E20): expected failures per day at this size; independent or correlated?
+   - **Growth** (E21): does it hold at 10x? What breaks first before 100x? Is 100x actually needed?
+   - **Second route** (E15): estimate the result again a different way (top-down from a total, or
      from a measured system of similar size). Within about 3x: they agree. 10x apart: one route is
      wrong; find which. Then ask whether the decision changes anywhere across the range; if not, stop.
-   - **Price the fix** (E26): every proposed mitigation states its cost and its gain in numbers, and
+   - **Price the fix** (E22): every proposed mitigation states its cost and its gain in numbers, and
      the measurement that will confirm the gain: same metric, percentile, load and instrument, before
      and after. A fix reported as working without that before/after comparison is still a claim.
    Flag anything off by 10x or more from the claim. Skip the bullets that don't apply.
-7. **Mark the edge** (E9, E10): say what is unknown. Replace "probably X" with "unknown; next test is
+7. **Mark the edge** (E7): say what is unknown. Replace "probably X" with "unknown; next test is
    Y". List known unknowns with the metric or instrumentation that would close each.
-8. **Find the cheapest test** (E17) for each assumed or weak claim that the decision hinges on: the
+8. **Find the cheapest test** (E13) for each assumed or weak claim that the decision hinges on: the
    smallest measurement, query or experiment that could prove it wrong. Order by cost: problem
    statement, workload characterization, USE sweep, profile, latency breakdown. For a design on
    paper, the cheapest test is often a microbenchmark of the dominant term or a measurement of the
-   one reference number the decision hinges on (E20). Prefer a test that rules out half the
+   one reference number the decision hinges on (E16). Prefer a test that rules out half the
    suspects at once.
-9. **Explain it** (E12): one paragraph a non-engineer can follow, with a familiar comparison for
+9. **Explain it** (E8): one paragraph a non-engineer can follow, with a familiar comparison for
    each number that matters.
 
 Output:
@@ -1516,7 +1516,7 @@ Fixes: <each mitigation: cost, gain, and the before/after measurement that will 
 <the decision and its key numbers for a non-engineer>
 ```
 
-Each weakness cites a principle (e.g. "E6 averages hide the shape (Gregg, Queue 2012)"). Leave the
+Each weakness cites a principle (e.g. "E4 averages hide the shape (Gregg, Queue 2012)"). Leave the
 Anti-method column blank when none applies. Keep it proportional: a one-line claim gets a one-line
 check, and skip steps 0 and 5 for claims that aren't about a running system. Don't invent doubt about
 claims the decision doesn't depend on. This mode checks facts; Review and Advise still judge the
@@ -1553,10 +1553,10 @@ These principles come first: they check whether the claims that motivate a desig
 right size. Apply them to any engineering claim: "users want X", "this is the bottleneck", "it's 10x
 faster", "the incident was caused by Y", "nobody uses that endpoint".
 
-- **Part A, judging a claim (E1-E12)**: applies to every claim.
-- **Part B, measuring a system (E13-E17)**: applies when the claim is about a running system:
+- **Part A, judging a claim (E1-E8)**: applies to every claim.
+- **Part B, measuring a system (E9-E13)**: applies when the claim is about a running system:
   performance, capacity, cost or the root cause of an incident.
-- **Part C, sizing a design (E18-E26)**: applies when a design, often one not built yet, rests on
+- **Part C, sizing a design (E14-E22)**: applies when a design, often one not built yet, rests on
   numbers: throughput, latency, storage, cost, failure rates or growth. Reference costs are in
   the Appendix: Reference numbers section below.
 
@@ -1564,12 +1564,7 @@ Short quotes are for citation only. Cite by source id, don't paste long passages
 
 ### Part A. Judging a claim
 
-#### E1. How you think beats what you know
-A claim is judged by how it was reached, not by who says it or how familiar it sounds.
-Ask how the claim was obtained before arguing about what it says.
-- Engineering form: "Where does that come from?" is the first question for any premise in a design doc.
-
-#### E2. Don't fool yourself; name the habit that fooled you
+#### E1. Don't fool yourself; name the habit that fooled you
 The method exists to beat your own bias. Prior expectations hide discoveries (Herschel logged Uranus
 as a comet). Selectively dropping inconvenient data is the classic blunder. In systems work the
 self-deceptions have names (Gregg's anti-methods), and naming one makes a review comment short and
@@ -1584,34 +1579,32 @@ impersonal:
   segment, the incident timeline that starts after the cause. Gregg's case: a customer blamed the
   network from ping output; the database was out of memory and paging, and the network focus had
   hidden it (Queue 2012).
+  Ask the team that will be hurt by the change to try to break the claim.
 
-#### E3. Neither swallow nor dismiss: ask, and check the test tested the claim
+#### E2. Neither swallow nor dismiss: ask, test, reproduce
 Accepting a claim without question and rejecting it without question are equally lazy.
-The skeptic's questions: what is the source, what is the mechanism, what test was run, did it test
-the thing claimed, has anyone else reproduced it? For a benchmark, ask what limited it: a result
-nobody can explain ("why X and not 2X?") hasn't been understood yet.
+The skeptic's questions: where does it come from, what is the mechanism, what test was run, did it
+test the thing claimed, has anyone else reproduced it? For a benchmark, ask what limited it: a result
+nobody can explain ("why X and not 2X?") hasn't been understood yet. One run, or two or three, can be
+a false positive from bias or bad design; independent reproduction is what makes a result solid.
+Null results count too: a resource with low utilization, no saturation and no errors is exonerated,
+which narrows the search.
 > "you benchmark A, but actually measure B, and conclude you've measured C." (Gregg, Active Benchmarking)
 > "Can they explain why the benchmark result was X, and not 2X (twice as fast)?" (Gregg, Active Benchmarking)
-- Engineering form: a load test against a warm cache does not test cold-start latency. "The new JSON
-  library is 3x faster" from a run limited by the load generator's single core says nothing about the
-  library. Ask what was at 100% while it ran.
+> "Consistency and repeatability are the hallmarks of a genuine scientific finding" (Tyson, Certain Uncertainties I)
+- Engineering form: "Where does that come from?" is the first question for any premise in a design
+  doc. A load test against a warm cache does not test cold-start latency. "The new JSON library is
+  3x faster" from a run limited by the load generator's single core says nothing about the library.
+  Ask what was at 100% while it ran, rerun on a different machine or by a different person, and
+  record the experiments that showed no effect and the components they ruled out.
 
-#### E4. Hypothesis is not theory
+#### E3. Hypothesis is not theory
 An idea about how something works is a hypothesis until it has made a prediction that was tested.
 Say which one you have.
 > "If you have an idea about how something works, it's not a theory; it's a hypothesis." (Tyson, Freakonomics 2024)
 - Engineering form: label premises in a design doc as **measured**, **inferred**, or **assumed**. A design resting on assumed premises must say what would falsify them.
 
-#### E5. One result is weak; replication is strong; negative results count
-A single experiment, or two or three, can be a false positive from bias or bad design. Independent
-reproduction is what makes a result solid. Null results count: in a system, a resource with low
-utilization, no saturation and no errors is exonerated, which narrows the search.
-> "Consistency and repeatability are the hallmarks of a genuine scientific finding" (Tyson, Certain Uncertainties I)
-> "if they get the same result, then it means you've transcended the bias." (Tyson, Harbinger #327)
-> "Null results matter too." (Tyson, Certain Uncertainties II)
-- Engineering form: rerun the benchmark on a different machine or by a different person; record the experiments that showed no effect, and the components they ruled out.
-
-#### E6. Every measurement has uncertainty; precision is not accuracy; averages hide the shape
+#### E4. Every measurement has uncertainty; precision is not accuracy; averages hide the shape
 "Error" means quantified uncertainty, not a mistake. A tight number can still be wrong. Systematic
 errors (wrong instrument, wrong population) are worse than noise because they don't average out.
 Interval averages hide bursts, and many latency distributions have more than one peak: ask for the
@@ -1623,7 +1616,7 @@ distribution and the time series at a resolution that fits the problem.
   accurate. "Average latency 40 ms" over a 2 ms cache-hit path and a 400 ms miss path describes no
   real request. Ask for the range, the histogram and the setup.
 
-#### E7. Size it before you believe it: against the world and against the whole
+#### E5. Size it before you believe it: against the world and against the whole
 Most bad claims are off by orders of magnitude, and a quick estimate catches them. Raw totals mislead;
 normalise per user, per request, per year, and compare with something familiar. Then size a suspect
 against the whole: a plausible cause that explains a small share of the cost is not the answer.
@@ -1633,10 +1626,10 @@ against the whole: a plausible cause that explains a small share of the cost is 
 - Engineering form: before designing for "a lot of traffic", write the back-of-envelope: users ×
   actions/day ÷ 86,400 = requests/s, × payload = bytes/s. Compare with what one box does. "Logging is
   slow" stays a hypothesis until a profile shows logging is a real share of request time (and
-  remember CPU profiles miss time spent waiting). For a design on paper, Part C (E18-E26) gives the
+  remember CPU profiles miss time spent waiting). For a design on paper, Part C (E14-E22) gives the
   full method.
 
-#### E8. Anecdote, base rate, confounders; know the workload
+#### E6. Anecdote, base rate, confounders; know the workload
 One vivid case is not data. Check the base rate, and compare like with like before concluding. For
 traffic, the base rate comes from characterising the workload: who causes the load, why, what it
 consists of, and how it changes over time.
@@ -1646,36 +1639,25 @@ consists of, and how it changes over time.
   month? "Service B is slower": on the same hardware, same data size, same time of day? "Traffic
   tripled": from whom?
 
-#### E9. Mark the edge of what you know; list the known unknowns
+#### E7. Mark the edge of what you know; name a rival; say how sure you are
 Where understanding runs out, say so. "We can't explain it, so it must be X" is an argument from
-ignorance. Also don't declare a problem unsolvable just because you haven't solved it. A metric you
-can't currently collect is still a question: write it down, with the instrumentation that would
-answer it.
-> "how presumptuous it would be for me to claim that if I can't solve a problem, neither can any other person" (Tyson, Perimeter of Ignorance)
+ignorance, and "we're done" claims age badly: keep the error bars on your own certainty. A metric
+you can't collect yet is still a question: write it down, with the instrumentation that would
+answer it. The first problem you find is a problem, not necessarily the problem. So for every
+claimed cause, name at least one rival explanation that fits the same evidence, and the observation
+that would tell them apart. Then say how sure you are: **High** (direct evidence, rivals ruled out),
+**Medium** (evidence points this way, a rival is still open), **Low** (one possibility among
+several). Say what would raise it.
 > "Take note of metrics that are not currently available: these are the "known unknowns."" (Gregg, Queue 2012)
-- Engineering form: "probably a network blip" closing a postmortem is a god-of-the-gaps. Write "cause
-  unknown" and the next test instead. "We have no per-tenant latency" belongs in the design's risks.
-
-#### E10. Confident "we're done" claims age badly: name a rival, say how sure you are
-Every era's experts announced the end of discovery, and were wrong. Keep the error bars on your own
-certainty; early results sit at the edge of knowledge. The first problem you find is a problem, not
-necessarily the problem. So for every claimed cause, name at least one rival explanation that fits
-the same evidence, and the observation that would tell them apart. Then say how sure you are:
-**High** (direct evidence, rivals ruled out), **Medium** (evidence points this way, a rival is still
-open), **Low** (one possibility among several). Say what would raise it.
-> "Lord Kelvin was off by a factor of fifty." (Tyson, Certain Uncertainties I)
 > "the first one you find may be *a* problem but not *the* problem." (Gregg, USE)
-- Engineering form: "root cause: the connection pool is too small" (Medium). Rival: a slow query
-  holds connections longer. They differ in query time per connection; one trace settles it. A
-  postmortem that names one cause, considered no rival and reads as certain is a finding.
+> "Lord Kelvin was off by a factor of fifty." (Tyson, Certain Uncertainties I)
+- Engineering form: "probably a network blip" closing a postmortem is a god-of-the-gaps. Write
+  "cause unknown" and the next test instead. "We have no per-tenant latency" belongs in the design's
+  risks. "Root cause: the connection pool is too small" (Medium). Rival: a slow query holds
+  connections longer. They differ in query time per connection; one trace settles it. A postmortem
+  that names one cause, considered no rival and reads as certain is a finding.
 
-#### E11. Bias can't be removed, only exposed
-You can't live without bias, but you can be aware of it and invite people who don't share it.
-Echo chambers hide the critique.
-> "you never see a critique of your thoughts because your search engine never takes you there." (Tyson, Harbinger #327)
-- Engineering form: ask the team that will be hurt by the change to try to break the claim.
-
-#### E12. Being right is half the job; the impression must be right too
+#### E8. Being right is half the job; the impression must be right too
 A correct fact that leaves the wrong impression has failed. Meet the audience most of the way: use
 a familiar comparison, and scale numbers to something they can feel.
 > "If the impression isn't accurate, it doesn't matter that the fact is correct." (Tyson, Freakonomics 2024)
@@ -1683,14 +1665,14 @@ a familiar comparison, and scale numbers to something they can feel.
 
 ### Part B. Measuring a system
 
-#### E13. Start with questions, not with the tools you happen to know
+#### E9. Start with questions, not with the tools you happen to know
 Running the familiar tool and reading what it shows is not analysis. Pick the questions first, then
 find (or build) the metric that answers each one.
 > "Start with the questions, then make metrics to answer them" (Gregg, Applicative 2016)
 - Engineering form: "we looked at the dashboard and CPU was fine" answers a question nobody asked.
   Ask "what is the request waiting on?" and then find the trace, profile or queue metric for it.
 
-#### E14. Write the problem statement before touching anything
+#### E10. Write the problem statement before touching anything
 A handful of questions often solves the issue outright, and always narrows it: what makes you think
 there is a problem, has it ever been fine, what changed, can it be expressed as latency or run time,
 who else is affected, what is the environment.
@@ -1698,22 +1680,22 @@ who else is affected, what is the environment.
 - Engineering form: "has this endpoint ever been fast?" turns "Postgres is slow" into "p99 doubled on
   Tuesday, the day the ORM upgrade shipped".
 
-#### E15. Cover every resource before you go deep (USE)
+#### E11. Cover every resource before you go deep (USE)
 For every resource the design touches (CPU, memory, disk, network, and software ones such as locks,
 thread pools, connection pools, queues, file descriptors) check utilization, saturation and errors.
-Breadth first finds the cause nobody claimed, and clean resources are exonerated (E5).
+Breadth first finds the cause nobody claimed, and clean resources are exonerated (E2).
 > "For every resource, check utilization, saturation, and errors." (Gregg, USE)
 - Engineering form: before "add a cache", check the connection pool: requests queued waiting for a
   connection is saturation, and a cache won't fix it.
 
-#### E16. Separate load from architecture; the best win is removing work
-Many "architecture" problems are unexpected load. Characterise the workload (E8) before redesigning,
+#### E12. Separate load from architecture; the best win is removing work
+Many "architecture" problems are unexpected load. Characterise the workload (E6) before redesigning,
 and consider not doing the work at all before doing it faster.
 > "The best performance wins often arise from eliminating unnecessary work." (Gregg, Queue 2012)
 - Engineering form: before sharding, find out who sends the traffic. One client polling every 100 ms
   is a conversation, not a migration.
 
-#### E17. Pick methods by payoff, and know when to stop
+#### E13. Pick methods by payoff, and know when to stop
 No method finds everything. Use cheap broad checks first (problem statement, workload, USE), then
 expensive deep ones (profiles, latency breakdown). Fix where the gain is worth it, and stop when the
 remaining gain isn't.
@@ -1723,7 +1705,7 @@ remaining gain isn't.
 
 ### Part C. Sizing a design
 
-#### E18. Estimate the design before you build it
+#### E14. Estimate the design before you build it
 Being able to predict a design's performance on paper is a core skill. It picks the promising design
 out of several before any code exists. Performance belongs in the design for the small part of the
 system where it matters (Knuth's "critical 3%"), not "later".
@@ -1732,7 +1714,7 @@ system where it matters (Knuth's "critical 3%"), not "later".
 - Engineering form: a design doc that claims "fast enough" or "scales" without a calculation is a
   finding. Ask for the envelope before asking for a benchmark.
 
-#### E19. Count the operations, multiply by cost, add up
+#### E15. Count the operations, multiply by cost, add up
 List the low-level operations one request or job needs (seeks, round trips, bytes moved, cache
 misses), multiply each by its rough cost, and sum. For latency, account for what runs in parallel.
 The sum also shows which term dominates, which is often not the one people argue about. Give a range,
@@ -1748,23 +1730,23 @@ not a point.
 Then check the estimate a second way, by a different route: top-down from a total (traffic, bill,
 fleet) instead of bottom-up from operations, or from a measured system of similar size. Two routes
 within about 3x of each other agree; 10x apart means one route is wrong, so find which before using
-either. This is replication (E5) on paper. Finally ask whether the decision changes anywhere across
-the range. If it doesn't, the estimate is good enough: stop (E17). If it does, the cheapest test is
+either. This is replication (E2) on paper. Finally ask whether the decision changes anywhere across
+the range. If it doesn't, the estimate is good enough: stop (E13). If it does, the cheapest test is
 the number that moves it.
 - Engineering form: "1,200 writes/s" from users × actions ÷ 86,400 should also come out of last
   month's write log ÷ 2.6 million seconds. If one route says 1,200 and the other 15, one input is wrong.
 
-#### E20. Know the reference numbers and their date; calibrate them
+#### E16. Know the reference numbers and their date; calibrate them
 Estimates need costs for the basic operations, to an order of magnitude. The numbers move: Dean's
 2009 table puts a datacenter round trip at 500 µs, the 2025 update at 50 µs. An estimate is a
-hypothesis (E4): when a number decides the design, measure it on your own system, with the care
-of Part B (E13-E17), and keep small benchmarks honest (E3).
+hypothesis (E3): when a number decides the design, measure it on your own system, with the care
+of Part B (E9-E13), and keep small benchmarks honest (E2).
 > "If you don't know what's going on, you can't do decent back-of-the-envelope calculations!" (Dean, LADIS 2009; repeated in Perf Hints)
 > "microbenchmarks can have pitfalls that make them non-representative of full system performance." (Dean, Perf Hints)
 - Engineering form: cite the table and its year with every estimate (the Appendix: Reference numbers section below). When the
   estimate and a measurement differ by more than ~2x, one of them is wrong: find out which.
 
-#### E21. Know how your building blocks work, not just their interfaces
+#### E17. Know how your building blocks work, not just their interfaces
 The cost of a call depends on its implementation: block sizes, replication, caches, where the data
 lives.
 - Example (Bigtable 2006): each random read pulled a 64 KB block to return a 1 KB value; about 1,200
@@ -1772,9 +1754,9 @@ lives.
 - Engineering form: "one key-value lookup" may be a network round trip, a disk read and a 64 KB
   transfer. Write down what the block really does.
 
-#### E22. Find the scarce resource
+#### E18. Find the scarce resource
 Designs win by spending the plentiful resource to save the scarce one. Name which one runs out first.
-This is the design-time twin of the USE sweep (E15).
+This is the design-time twin of the USE sweep (E11).
 > "CPUs are fast, memory/bandwidth are precious, ergo…" (Dean, LADIS 2009)
 > "network bandwidth is a scarce resource." (MapReduce 2004)
 - Example (MapReduce 2004): scheduling work next to its data meant most input "consumes no network
@@ -1782,8 +1764,8 @@ This is the design-time twin of the USE sweep (E15).
 - Engineering form: for each option, which of CPU, memory, disk, network, money or people hits its
   limit first, and at what load?
 
-#### E23. Estimate the tail, and multiply it by the fan-out
-Averages hide what users feel (E6), and fan-out amplifies the slow end. If 1 in 100 calls is slow and
+#### E19. Estimate the tail, and multiply it by the fan-out
+Averages hide what users feel (E4), and fan-out amplifies the slow end. If 1 in 100 calls is slow and
 a request touches 100 servers, most requests are slow.
 > "then 63% of user requests will take more than one second." (Tail at Scale 2013)
 - Arithmetic: P(request slow) = 1 − (1 − p)^N. With p = 0.01 and N = 100: 1 − 0.99^100 ≈ 0.63.
@@ -1791,7 +1773,7 @@ a request touches 100 servers, most requests are slow.
 - Engineering form: any latency claim names the percentile and the fan-out. "p50 is 20 ms" says
   nothing about a page that calls 40 services.
 
-#### E24. Failures are a rate: budget for them
+#### E20. Failures are a rate: budget for them
 At scale, failure is a steady stream with a known shape, not an event. Count it like any other load,
 and ask whether failures are independent or correlated.
 - Example (Dean, LADIS 2009): a typical first year of a new cluster: about 1,000 machine failures,
@@ -1802,7 +1784,7 @@ and ask whether failures are independent or correlated.
 - Engineering form: fleet size ÷ MTBF = failures per day. If the design assumes "a node rarely
   fails", compute how rarely.
 
-#### E25. Design for about 10x; plan to rewrite before 100x
+#### E21. Design for about 10x; plan to rewrite before 100x
 Parameters grow by orders of magnitude, and the right design at one scale is wrong at another. Make
 the design survive 10x, and don't pay for scale or features nobody has shown are needed.
 > "design for ~10X growth, but plan to rewrite before ~100X" (Dean, WSDM 2009)
@@ -1811,7 +1793,7 @@ the design survive 10x, and don't pay for scale or features nobody has shown are
 - Engineering form: state today's number, the 10x number, and what breaks first between 10x and
   100x. A design for 1000x today's load needs a reason.
 
-#### E26. Price the fix in numbers, then show it worked
+#### E22. Price the fix in numbers, then show it worked
 A mitigation is a claim too: it has a cost and a gain, and both should be numbers. Small, cheap
 redundancy often beats hunting every root cause. Once it ships, the gain is still a claim until it
 is measured: re-measure with the same metric, percentile, load and instrument that showed the
@@ -1878,7 +1860,7 @@ short quotes for citation; no full texts are reproduced here. Read or watch the 
 | StarTalk 2017 | Science Literacy in the Misinformation Age | 2017-05-19 | https://startalkmedia.com/show/science-literacy-misinformation-age-lmasa/ |
 | Big Think | How science literacy can save us from the internet | — | https://bigthink.com/the-present/disinformation/ |
 
-### Gregg (quotes cited as "Gregg, <id>"; mostly Part B, also E2, E3, E5-E7, E9, E10)
+### Gregg (quotes cited as "Gregg, <id>"; mostly Part B, also E1, E2, E4, E5, E7)
 
 | Id used in principles | Source | Date | Link |
 |---|---|---|---|
@@ -1915,10 +1897,10 @@ Not used as a source: the popular "Latency numbers every programmer should know"
 ### Ideas borrowed from other agent skills
 
 Three steps of the mode were inspired by skills in four public repositories; no text from them is reproduced here.
-- A rival explanation and a High/Medium/Low confidence for every claimed cause (E10): `confidence-honesty`
+- A rival explanation and a High/Medium/Low confidence for every claimed cause (E7): `confidence-honesty`
   in [ntcoding/claude-skillz](https://github.com/ntcoding/claude-skillz) and `fact-checker` in
   [NickCrew/Claude-Cortex](https://github.com/NickCrew/Claude-Cortex).
 - Checking an estimate by a second route, and stopping when the decision holds across the range
-  (E19): `estimation-fermi` in [lyndonkl/claude](https://github.com/lyndonkl/claude).
-- Confirming a fix with the same measurement before and after (E26):
+  (E15): `estimation-fermi` in [lyndonkl/claude](https://github.com/lyndonkl/claude).
+- Confirming a fix with the same measurement before and after (E22):
   [thecsdoctor/brendangregg-use-tsa-skill](https://github.com/thecsdoctor/brendangregg-use-tsa-skill) (MIT).

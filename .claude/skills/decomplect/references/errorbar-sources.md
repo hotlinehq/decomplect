@@ -19,7 +19,7 @@ short quotes for citation; no full texts are reproduced here. Read or watch the 
 | StarTalk 2017 | Science Literacy in the Misinformation Age | 2017-05-19 | https://startalkmedia.com/show/science-literacy-misinformation-age-lmasa/ |
 | Big Think | How science literacy can save us from the internet | — | https://bigthink.com/the-present/disinformation/ |
 
-## Gregg (quotes cited as "Gregg, <id>"; mostly Part B, also E2, E3, E5-E7, E9, E10)
+## Gregg (quotes cited as "Gregg, <id>"; mostly Part B, also E1, E2, E4, E5, E7)
 
 | Id used in principles | Source | Date | Link |
 |---|---|---|---|
@@ -56,10 +56,10 @@ Not used as a source: the popular "Latency numbers every programmer should know"
 ## Ideas borrowed from other agent skills
 
 Three steps of the mode were inspired by skills in four public repositories; no text from them is reproduced here.
-- A rival explanation and a High/Medium/Low confidence for every claimed cause (E10): `confidence-honesty`
+- A rival explanation and a High/Medium/Low confidence for every claimed cause (E7): `confidence-honesty`
   in [ntcoding/claude-skillz](https://github.com/ntcoding/claude-skillz) and `fact-checker` in
   [NickCrew/Claude-Cortex](https://github.com/NickCrew/Claude-Cortex).
 - Checking an estimate by a second route, and stopping when the decision holds across the range
-  (E19): `estimation-fermi` in [lyndonkl/claude](https://github.com/lyndonkl/claude).
-- Confirming a fix with the same measurement before and after (E26):
+  (E15): `estimation-fermi` in [lyndonkl/claude](https://github.com/lyndonkl/claude).
+- Confirming a fix with the same measurement before and after (E22):
   [thecsdoctor/brendangregg-use-tsa-skill](https://github.com/thecsdoctor/brendangregg-use-tsa-skill) (MIT).
