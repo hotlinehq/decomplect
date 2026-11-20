@@ -18,7 +18,6 @@ short quotes for citation; no full texts are reproduced here. Read or watch the 
 | Freakonomics 2024 | People I (Mostly) Admire #145 | 2024-11-22 | https://freakonomics.com/podcast/neil-degrasse-tyson-is-still-starstruck |
 | StarTalk 2017 | Science Literacy in the Misinformation Age | 2017-05-19 | https://startalkmedia.com/show/science-literacy-misinformation-age-lmasa/ |
 | Big Think | How science literacy can save us from the internet | — | https://bigthink.com/the-present/disinformation/ |
-| MasterClass ch.N | Scientific Thinking and Communication (preview excerpts) | — | https://www.masterclass.com/classes/neil-degrasse-tyson-teaches-scientific-thinking-and-communication |
 
 ## Gregg (quotes cited as "Gregg, <id>"; mostly Part B, also E2, E3, E5-E7, E9, E10)
 
@@ -49,7 +48,7 @@ Not used as a source: the popular "Latency numbers every programmer should know"
 (SSD, 2026 LLM timings) that are not Dean's. Cite the slides or Perf Hints instead.
 
 ## Further reading not used directly
-- Tyson (paid): Starry Messenger (2022), Death by Black Hole (2007), Letters from an Astrophysicist (2019), the full MasterClass.
+- Tyson (paid): Starry Messenger (2022), Death by Black Hole (2007), Letters from an Astrophysicist (2019).
 - Gregg (free): LISA 2012 methodologies slides (https://www.brendangregg.com/Slides/LISA2012_methodologies.pdf), Linux Performance (https://www.brendangregg.com/linuxperf.html), Off-CPU Analysis (https://www.brendangregg.com/offcpuanalysis.html), TSA method (https://www.brendangregg.com/tsamethod.html), "Linux Performance Analysis in 60,000 Milliseconds" (Netflix tech blog, 2015).
 - Dean (free): the video recordings of the talks above (no official transcripts found); Spanner (OSDI 2012).
 - Gregg (paid): Systems Performance 2nd ed. (2020), BPF Performance Tools (2019).

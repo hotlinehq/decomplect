@@ -1590,7 +1590,6 @@ Accepting a claim without question and rejecting it without question are equally
 The skeptic's questions: what is the source, what is the mechanism, what test was run, did it test
 the thing claimed, has anyone else reproduced it? For a benchmark, ask what limited it: a result
 nobody can explain ("why X and not 2X?") hasn't been understood yet.
-> "Was that research result verified by others?" (MasterClass ch.4)
 > "you benchmark A, but actually measure B, and conclude you've measured C." (Gregg, Active Benchmarking)
 > "Can they explain why the benchmark result was X, and not 2X (twice as fast)?" (Gregg, Active Benchmarking)
 - Engineering form: a load test against a warm cache does not test cold-start latency. "The new JSON
@@ -1600,16 +1599,16 @@ nobody can explain ("why X and not 2X?") hasn't been understood yet.
 #### E4. Hypothesis is not theory
 An idea about how something works is a hypothesis until it has made a prediction that was tested.
 Say which one you have.
-> "If you have an idea about how something works, it's not a theory; it's a hypothesis." (Freakonomics 2024)
+> "If you have an idea about how something works, it's not a theory; it's a hypothesis." (Tyson, Freakonomics 2024)
 - Engineering form: label premises in a design doc as **measured**, **inferred**, or **assumed**. A design resting on assumed premises must say what would falsify them.
 
 #### E5. One result is weak; replication is strong; negative results count
 A single experiment, or two or three, can be a false positive from bias or bad design. Independent
 reproduction is what makes a result solid. Null results count: in a system, a resource with low
 utilization, no saturation and no errors is exonerated, which narrows the search.
-> "Consistency and repeatability are the hallmarks of a genuine scientific finding" (Certain Uncertainties I)
-> "if they get the same result, then it means you've transcended the bias." (Harbinger #327)
-> "Null results matter too." (Certain Uncertainties II)
+> "Consistency and repeatability are the hallmarks of a genuine scientific finding" (Tyson, Certain Uncertainties I)
+> "if they get the same result, then it means you've transcended the bias." (Tyson, Harbinger #327)
+> "Null results matter too." (Tyson, Certain Uncertainties II)
 - Engineering form: rerun the benchmark on a different machine or by a different person; record the experiments that showed no effect, and the components they ruled out.
 
 #### E6. Every measurement has uncertainty; precision is not accuracy; averages hide the shape
@@ -1617,7 +1616,7 @@ utilization, no saturation and no errors is exonerated, which narrows the search
 errors (wrong instrument, wrong population) are worse than noise because they don't average out.
 Interval averages hide bursts, and many latency distributions have more than one peak: ask for the
 distribution and the time series at a resolution that fits the problem.
-> "Ordinary uncertainties almost always lead to correct (and meaningful) answers, but systematic uncertainties are insidious." (Certain Uncertainties II)
+> "Ordinary uncertainties almost always lead to correct (and meaningful) answers, but systematic uncertainties are insidious." (Tyson, Certain Uncertainties II)
 > "a five-minute average can disguise short periods of 100-percent utilization and, therefore, saturation." (Gregg, Queue 2012)
 > "Many distributions aren't normal, gaussian, or unimodal" (Gregg, Velocity 2013)
 - Engineering form: "p99 = 212.4 ms" from one 30-second run on a laptop is precise and probably not
@@ -1628,8 +1627,8 @@ distribution and the time series at a resolution that fits the problem.
 Most bad claims are off by orders of magnitude, and a quick estimate catches them. Raw totals mislead;
 normalise per user, per request, per year, and compare with something familiar. Then size a suspect
 against the whole: a plausible cause that explains a small share of the cost is not the answer.
-> "you would think that $1-million equals $1-billion equals $1-trillion." (Fear of Numbers)
-> "What matters is the budget per year, all right?" (Ferriss #389)
+> "you would think that $1-million equals $1-billion equals $1-trillion." (Tyson, Fear of Numbers)
+> "What matters is the budget per year, all right?" (Tyson, Ferriss #389)
 > "showing that it was responsible for only 1.6 percent of the CPU time." (Gregg, Flame Graph 2016)
 - Engineering form: before designing for "a lot of traffic", write the back-of-envelope: users ×
   actions/day ÷ 86,400 = requests/s, × payload = bytes/s. Compare with what one box does. "Logging is
@@ -1642,7 +1641,7 @@ One vivid case is not data. Check the base rate, and compare like with like befo
 traffic, the base rate comes from characterising the workload: who causes the load, why, what it
 consists of, and how it changes over time.
 > Helfand on StarTalk 2017: "recognizing that the plural of anecdote is not data"
-> "You want to compare neighborhoods of equal income." (Ferriss #389)
+> "You want to compare neighborhoods of equal income." (Tyson, Ferriss #389)
 - Engineering form: "three customers complained": out of how many, and how many complained last
   month? "Service B is slower": on the same hardware, same data size, same time of day? "Traffic
   tripled": from whom?
@@ -1652,7 +1651,7 @@ Where understanding runs out, say so. "We can't explain it, so it must be X" is 
 ignorance. Also don't declare a problem unsolvable just because you haven't solved it. A metric you
 can't currently collect is still a question: write it down, with the instrumentation that would
 answer it.
-> "how presumptuous it would be for me to claim that if I can't solve a problem, neither can any other person" (Perimeter of Ignorance)
+> "how presumptuous it would be for me to claim that if I can't solve a problem, neither can any other person" (Tyson, Perimeter of Ignorance)
 > "Take note of metrics that are not currently available: these are the "known unknowns."" (Gregg, Queue 2012)
 - Engineering form: "probably a network blip" closing a postmortem is a god-of-the-gaps. Write "cause
   unknown" and the next test instead. "We have no per-tenant latency" belongs in the design's risks.
@@ -1664,7 +1663,7 @@ necessarily the problem. So for every claimed cause, name at least one rival exp
 the same evidence, and the observation that would tell them apart. Then say how sure you are:
 **High** (direct evidence, rivals ruled out), **Medium** (evidence points this way, a rival is still
 open), **Low** (one possibility among several). Say what would raise it.
-> "Lord Kelvin was off by a factor of fifty." (Certain Uncertainties I)
+> "Lord Kelvin was off by a factor of fifty." (Tyson, Certain Uncertainties I)
 > "the first one you find may be *a* problem but not *the* problem." (Gregg, USE)
 - Engineering form: "root cause: the connection pool is too small" (Medium). Rival: a slow query
   holds connections longer. They differ in query time per connection; one trace settles it. A
@@ -1673,13 +1672,13 @@ open), **Low** (one possibility among several). Say what would raise it.
 #### E11. Bias can't be removed, only exposed
 You can't live without bias, but you can be aware of it and invite people who don't share it.
 Echo chambers hide the critique.
-> "you never see a critique of your thoughts because your search engine never takes you there." (Harbinger #327)
+> "you never see a critique of your thoughts because your search engine never takes you there." (Tyson, Harbinger #327)
 - Engineering form: ask the team that will be hurt by the change to try to break the claim.
 
 #### E12. Being right is half the job; the impression must be right too
 A correct fact that leaves the wrong impression has failed. Meet the audience most of the way: use
 a familiar comparison, and scale numbers to something they can feel.
-> "If the impression isn't accurate, it doesn't matter that the fact is correct." (Freakonomics 2024)
+> "If the impression isn't accurate, it doesn't matter that the fact is correct." (Tyson, Freakonomics 2024)
 - Engineering form: "adds 40 ms" means nothing to a PM; "checkout feels as slow as it did last spring" does.
 
 ### Part B. Measuring a system
@@ -1878,7 +1877,6 @@ short quotes for citation; no full texts are reproduced here. Read or watch the 
 | Freakonomics 2024 | People I (Mostly) Admire #145 | 2024-11-22 | https://freakonomics.com/podcast/neil-degrasse-tyson-is-still-starstruck |
 | StarTalk 2017 | Science Literacy in the Misinformation Age | 2017-05-19 | https://startalkmedia.com/show/science-literacy-misinformation-age-lmasa/ |
 | Big Think | How science literacy can save us from the internet | — | https://bigthink.com/the-present/disinformation/ |
-| MasterClass ch.N | Scientific Thinking and Communication (preview excerpts) | — | https://www.masterclass.com/classes/neil-degrasse-tyson-teaches-scientific-thinking-and-communication |
 
 ### Gregg (quotes cited as "Gregg, <id>"; mostly Part B, also E2, E3, E5-E7, E9, E10)
 
@@ -1909,7 +1907,7 @@ Not used as a source: the popular "Latency numbers every programmer should know"
 (SSD, 2026 LLM timings) that are not Dean's. Cite the slides or Perf Hints instead.
 
 ### Further reading not used directly
-- Tyson (paid): Starry Messenger (2022), Death by Black Hole (2007), Letters from an Astrophysicist (2019), the full MasterClass.
+- Tyson (paid): Starry Messenger (2022), Death by Black Hole (2007), Letters from an Astrophysicist (2019).
 - Gregg (free): LISA 2012 methodologies slides (https://www.brendangregg.com/Slides/LISA2012_methodologies.pdf), Linux Performance (https://www.brendangregg.com/linuxperf.html), Off-CPU Analysis (https://www.brendangregg.com/offcpuanalysis.html), TSA method (https://www.brendangregg.com/tsamethod.html), "Linux Performance Analysis in 60,000 Milliseconds" (Netflix tech blog, 2015).
 - Dean (free): the video recordings of the talks above (no official transcripts found); Spanner (OSDI 2012).
 - Gregg (paid): Systems Performance 2nd ed. (2020), BPF Performance Tools (2019).
