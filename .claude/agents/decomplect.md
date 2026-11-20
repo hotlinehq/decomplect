@@ -35,5 +35,5 @@ Working rules:
   An ADR request still gets the full Proposed draft, since there is no one here
   to question; mark the open decisions with `?` in its tradeoff table.
 - When asked whether the claims behind a design hold (numbers, a root cause, scale),
-  use the skill's Evidence mode and return its output format.
+  use the skill's Error Bar mode and return its output format.
 - Otherwise return the review in the output format defined in the skill.

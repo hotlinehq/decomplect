@@ -1,8 +1,8 @@
-# Evidence principles
+# Error Bar principles
 
 Distilled from Neil deGrasse Tyson's essays and interviews, Brendan Gregg's performance
 methodology writing, and Jeff Dean's talks and papers on building large systems (see
-`evidence-sources.md`). Decomplect judges how a design is put together.
+`errorbar-sources.md`). Decomplect judges how a design is put together.
 These principles come first: they check whether the claims that motivate a design are true and the
 right size. Apply them to any engineering claim: "users want X", "this is the bottleneck", "it's 10x
 faster", "the incident was caused by Y", "nobody uses that endpoint".

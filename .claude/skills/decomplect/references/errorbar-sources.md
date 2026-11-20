@@ -1,6 +1,6 @@
-# Evidence sources
+# Error Bar sources
 
-Links to the sources behind `evidence-principles.md`. The principles are our own summaries with
+Links to the sources behind `errorbar-principles.md`. The principles are our own summaries with
 short quotes for citation; no full texts are reproduced here. Read or watch the originals.
 
 ## Tyson (Part A)
