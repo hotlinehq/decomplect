@@ -128,4 +128,7 @@ The principles come from Neil deGrasse Tyson (judging claims), Brendan Gregg
   `references/sources.md`; no text is copied.
 - Evidence mode's principles are our summaries with short quotes for citation; the
   linked essays, talks and papers are in `references/evidence-sources.md`. Three of its
-  steps were inspired by public agent skills, credited there; no text is copied.
+  steps were inspired by skills in four public repositories, credited there; no text is
+  copied.
+- The Apache-2.0 license covers this repository's own text only. Quoted passages stay
+  the copyright of their authors; see [NOTICE](NOTICE).

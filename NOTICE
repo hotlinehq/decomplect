@@ -1,0 +1,8 @@
+Decomplect
+Copyright the Decomplect contributors. Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The license covers this repository's own text only. Short quotations from third-party works
+(talks, essays, articles, papers and podcast interviews by Rich Hickey, Neil deGrasse Tyson,
+Brendan Gregg, Jeff Dean and others) are included for citation, each with its author and source.
+They remain the copyright of their respective owners and are not licensed under Apache-2.0.
+Sources are listed in .claude/skills/decomplect/references/sources.md and evidence-sources.md.

@@ -46,16 +46,16 @@ talk it comes from. Talk names map to links in `sources.md`.
   (order).
 
 ### 1.4 Incidental vs essential complexity
-- **Idea:** Essential complexity belongs to the problem. Incidental complexity comes
-  from how we formulate solutions, tools, and languages. It is worst when it is a side
-  effect of making things *appear* simple (same syntax for mutable and immutable
-  references; same syntax for heap and stack).
+- **Idea:** Essential complexity belongs to the problem. Incidental complexity is
+  what our solutions, tools and languages add on top. The worst kind comes from making
+  things *look* simple: one syntax for mutable and immutable references, or for heap
+  and stack.
 - **Source:** Are We There Yet?; Simple Made Easy.
 
 ### 1.5 Modularity is not simplicity
-- **Idea:** Partitioning and layering don't imply simplicity, but are enabled by it.
-  Don't be fooled by code organization: two modules that each know about the other's
-  internals are still one tangle.
+- **Idea:** A simple design makes splitting into modules and layers easy, but the
+  split alone doesn't make it simple. Folders and packages can hide a tangle: two
+  modules that each know the other's internals are still one tangle.
 - **Spot it:** a "clean" folder structure where every module imports every other;
   encapsulation around state that still leaks through shared mutation.
 - **Source:** Simple Made Easy.
@@ -72,16 +72,17 @@ talk it comes from. Talk names map to links in `sources.md`.
 - **Source:** Simple Made Easy; Clojure Made Simple.
 
 ### 1.8 Abstraction is drawing away, not hiding
-- **Idea:** Abstract (drawn away) rather than abstraction as complexity hiding.
-  Separate the who, what, when, where, why and how:
-  - **What:** small sets of operations; specify inputs, outputs, semantics in terms
-    of values and other abstractions; don't complect with how.
-  - **Who:** entities implementing abstractions, built from injected subcomponents;
-    prefer many subcomponents (e.g. policy).
-  - **How:** implementation logic, connected via polymorphism; prefer abstractions
-    that don't dictate how (declarative).
-  - **When/where:** strenuously avoid complecting with anything; use queues.
-  - **Why:** policy and rules; usually strewn through conditionals. Pull into rules.
+- **Idea:** To abstract is to draw a concern away from the others, not to hide
+  complexity behind a facade. Pull these questions apart:
+  - **What:** a small set of operations, defined by their inputs, outputs and meaning
+    in terms of values; it says nothing about how.
+  - **Who:** the components that implement it, assembled from parts passed in;
+    favour many small parts (policy among them).
+  - **How:** the implementation, chosen through polymorphism; favour declarative
+    interfaces that leave the how open.
+  - **When/where:** keep these out of everything else; put a queue between them.
+  - **Why:** policy and rules, which tend to scatter through conditionals. Gather
+    them into explicit rules.
 - **Source:** Simple Made Easy.
 
 ---
@@ -91,7 +92,7 @@ talk it comes from. Talk names map to links in `sources.md`.
 ### 2.1 Information is simple; don't ruin it
 - **Idea:** Don't hide information behind a micro-language (a class with
   information-specific getters). It thwarts generic composition and ties logic to
-  the representation du jour. Represent data as data. Encapsulation is for
+  whatever representation is current. Keep data as plain data. Encapsulation is for
   implementation details, and information has no implementation unless you added it.
 - **Spot it:** `CustomerInfo` with 30 getters and no behavior; DTO-to-domain-to-DTO
   mapping layers that only copy fields; a request object with dozens of bespoke
@@ -126,8 +127,8 @@ talk it comes from. Talk names map to links in `sources.md`.
 ### 2.4 Optionality belongs to context, not to the schema
 - **Idea:** "Maybe" fields bake context into the shape. Separate the *schema* (what
   attributes can travel together and what each means) from the *selection* (what a
-  given operation requires or provides). When something is missing from a set,
-  leave it out rather than storing a null in a slot.
+  given operation requires or provides). An absent value is simply not in the map;
+  don't store a null for it.
 - **Spot it:** one `User` type with most fields nullable because different calls
   fill different parts; `Optional<>` on fields that are required in some flows and
   not others; making an argument optional breaks existing callers' types, or
@@ -138,19 +139,19 @@ talk it comes from. Talk names map to links in `sources.md`.
 - **Source:** Maybe Not.
 
 ### 2.5 Values over places (PLOP)
-- **Idea:** Place-oriented programming (new information replaces old, in memory or
-  storage) was born of tiny RAM and disks. Values are immutable and give: free
+- **Idea:** Overwriting in place (new information replaces old, in memory or
+  storage) is a habit from when RAM and disks were tiny. Immutable values give: free
   sharing, reproducible results, easy fabrication for tests, language independence,
   generic handling, aggregation to larger values, and they are the best interfaces
-  between subsystems. Place has no role in an information model.
+  between subsystems. An information model is about facts, not storage locations.
 - **Spot it:** `UPDATE` destroying history the business later wants; caches and
   defensive copies to make shared objects safe; tests needing elaborate setup to
   reproduce state.
 - **Source:** The Value of Values; Effective Programs.
 
 ### 2.6 Facts incorporate time; accrete, don't overwrite
-- **Idea:** A fact is something that happened; you can't update it any more than you
-  can change the past. Information systems are about facts and should support
+- **Idea:** A fact records something that happened, and the past doesn't change, so
+  a fact is never updated. Information systems are about facts and should support
   decisions, which needs comparison over time. Records should be enduring and
   accreting, like source control and logs.
 - **Spot it:** no created/valid-from timestamps; status columns overwritten with no
@@ -160,8 +161,8 @@ talk it comes from. Talk names map to links in `sources.md`.
 - **Source:** The Value of Values; Deconstructing the Database; The Functional Database.
 
 ### 2.7 Data as the interface between subsystems
-- **Idea:** Subsystems need well-defined boundaries, an abstracted operational
-  interface (verbs), general error handling, and they take and return *data*, not
+- **Idea:** A subsystem needs a clear boundary, a small set of verbs as its
+  interface, uniform error handling, and it accepts and returns *data*, not
   objects. Litmus test: could you move this subsystem out of process, to another
   language, or another thread without changing much?
 - **Spot it:** passing ORM entities, live connections, or callbacks across module or
@@ -174,10 +175,10 @@ talk it comes from. Talk names map to links in `sources.md`.
 
 ### 3.1 Value, identity, state, time are distinct
 - **Value:** immutable magnitude or composite.
-- **Identity:** a stable logical entity associated with a series of causally related
-  values over time.
-- **State:** the value of an identity at a moment.
-- **Time:** relative before/after ordering of causal values.
+- **Identity:** a stable name for something whose value changes over time, each new
+  value caused by the previous one.
+- **State:** which value an identity has at a given point.
+- **Time:** the order of those values: which came before which.
 - Conventional objects conflate all four, so perception becomes fragile.
 - **Source:** Are We There Yet?; Persistent Data Structures and Managed References.
 
@@ -223,8 +224,8 @@ talk it comes from. Talk names map to links in `sources.md`.
 ### 4.1 Program the inside like the outside
 - **Idea:** Successful systems are independent parts connected by plain data over
   RPC and queues, tolerant in what they accept. Program the insides of systems the
-  same way: communicate via immutable data, for the same reasons (loose coupling,
-  independence, flexibility).
+  same way, passing immutable data between parts, because it buys the same loose
+  coupling, independence and flexibility.
 - **Source:** Clojure Made Simple; The Language of the System.
 
 ### 4.2 Queues decouple; call chains make poor machines
@@ -310,8 +311,8 @@ talk it comes from. Talk names map to links in `sources.md`.
 
 ### 6.1 Solve problems, not features
 - **Idea:** Features are results, not objectives. A sum of features does not
-  guarantee any problem is solved. Don't let users specify answers. Avoiding a
-  problem isn't solving it. "We don't have feature X" is never a valid problem
+  guarantee any problem is solved. Users describe problems; don't let them dictate
+  solutions. Avoiding a problem isn't solving it. A missing feature is not a problem
   statement; ask what objective it serves and what is in the way.
 - **Source:** Hammock Driven Development; Design in Practice.
 
@@ -321,25 +322,26 @@ talk it comes from. Talk names map to links in `sources.md`.
 - **Source:** Hammock Driven Development; Effective Programs; Clojure Made Simple.
 
 ### 6.3 State and understand the problem
-- **Idea:** Say it, write it down. What do you know (facts, context, constraints)?
-  What don't you know? Related problems? Find the problems in your solutions too. No
-  tradeoffs listed? Unlikely. No questions? Who knows everything?
+- **Idea:** Write the problem down. List what you know (facts, context,
+  constraints), what you don't, and similar problems already solved. Look for the
+  problems in your own solutions too. A design with no tradeoffs or no open questions
+  hasn't been examined yet.
 - **Source:** Hammock Driven Development.
 
 ### 6.4 Tradeoffs require alternatives
-- **Idea:** Everyone says design is about tradeoffs, but you need two or more
-  candidate solutions and the attributes and deficits of each to make one.
+- **Idea:** A tradeoff needs at least two candidate solutions, each with its
+  strengths and weaknesses written down. With one option there is nothing to trade.
 - **Source:** Hammock Driven Development; Design in Practice (decision matrix).
 
 ### 6.5 Feed the background mind
 - **Idea:** Load the problem up (write it down, review it from different angles),
   then step away: sleep, walk. Analysis is waking-mind work; synthesis comes from the
-  background. Don't build something the same day you think of it.
+  background. Let an idea sit overnight before you build it.
 - **Source:** Hammock Driven Development; Design in Practice.
 
 ### 6.6 Design is making decisions
-- **Idea:** The value conveyed is in decisions made, and why. Leaving all options
-  open is avoiding design. Constraints drive creativity; don't fidget, agglomerate,
+- **Idea:** A design's value is the decisions it records and the reasons for them.
+  Keeping every option open means no design was done. Constraints drive creativity; don't fidget, agglomerate,
   tweak.
 - **Source:** Design, Composition and Performance; Design in Practice.
 
