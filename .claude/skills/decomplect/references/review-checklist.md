@@ -63,6 +63,10 @@ endpoint, event, message, table, config, CLI flag):
 
 ## G. Words (6.7)
 - [ ] Do names say what things are? Any codenames or puns hiding meaning?
+- [ ] Is a new name so general it would fit many things in this codebase (`items`,
+      `ending`, `data`, `state`, `manager`, `handle`)? A reader should know what it
+      holds without opening its definition: name what it is here (`ItemSchema`,
+      `streamsEnded`, `streamItem`).
 - [ ] Is the same concept named differently, or one name used for two concepts?
 - [ ] Would a glossary entry help reviewers and newcomers?
 - [ ] If the repo keeps a glossary: does the change use a word it lists under
