@@ -350,7 +350,10 @@ talk it comes from. Talk names map to links in `sources.md`.
   carry no meaning and hide fuzziness. Keep a glossary; when a term breaks, fix or
   abandon it. A good name later feeling wrong means your intent has drifted.
 - **Spot it:** components named after superheroes or puns; one concept with three
-  names across the codebase; the same name for two concepts.
+  names across the codebase; the same name for two concepts; a new name so general
+  it fits half the codebase (`items`, `ending`, `data`, `info`), so the reader
+  must open its definition to learn what it holds. A vague name is as unclear as a
+  wrong one, only harder to spot, because nothing in it is false.
 - **Source:** Design in Practice.
 
 ### 6.8 Design progress is understanding
