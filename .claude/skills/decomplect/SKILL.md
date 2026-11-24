@@ -1,6 +1,6 @@
 ---
 name: decomplect
-description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, when shaping a problem before building, for checking the claims, numbers and estimates a design rests on (evidence), and for writing architecture decision records (ADRs) or reviewing changes against them.
+description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, when shaping a problem before building, for checking the claims, numbers and estimates a design rests on (evidence), for writing architecture decision records (ADRs) or reviewing changes against them, and for writing RFCs (requests for change), specs, requirements or plans for a feature before it is built.
 ---
 
 # Decomplect
@@ -61,6 +61,8 @@ first time you use this skill in a session, and whenever a finding needs a citat
 
 Pick the mode from the request. If unclear, use **Review**. If you are handed a
 question with options, use **Advise**. If asked to record a decision, use **ADR**.
+If asked to propose a change for others to review, or to write a spec, requirements
+or a plan for a feature, use **RFC**.
 If the person wants to shape a problem before building, or to reach a decision in a
 dialog ("hammock this", "question me", "help me think this through"), or a decision
 they have not made yet blocks ADR, use **Hammock**. If the question is whether the
@@ -178,9 +180,10 @@ The `/hammock` command starts it. Follow `references/hammock.md` for the dialog 
    (`references/glossary.md`).
 8. At the end, list every decision made (including those that won't be ADRs) and
    wait for the person to confirm the list before acting on it. Then offer ADRs for
-   the decisions that pass the ADR test in `references/adr.md`.
+   the decisions that pass the ADR test in `references/adr.md`, and an RFC
+   (`references/rfc.md`) if the decisions add up to a change others must agree to.
 9. **No docs.** If the person says "no docs", write no files at all: no glossary
-   entries and no ADRs. Settled terms and ADR-worthy decisions go into the decision
+   entries, no ADRs and no RFC. Settled terms and ADR-worthy decisions go into the decision
    list instead, so nothing is lost.
 
 ### Error Bar (check the claims behind a design)
@@ -230,6 +233,29 @@ asks for a draft anyway. Follow
    `Supersedes: NNNN`, starting from the old tradeoff table.
 
 Review mode does not write ADRs; it only reads them.
+
+### RFC (propose a change for feedback)
+
+Use when asked for an RFC, a proposal, a spec, requirements or a plan for a feature
+or change, and whenever you are about to write such a document on your own: never
+invent another layout for it. The `/rfc` command starts it. Follow `references/rfc.md`:
+
+1. Find the repo's RFC folder and conventions; default to `docs/rfc/NNNN-slug.md`.
+2. Look up what the code, docs and tickets can answer. Ask the person only for the
+   problem, the goals and their targets, and what is out of scope, one question per
+   turn (Hammock style), unless they said "draft".
+3. Fill every section of the template, in order: Introduction, Problem Statement
+   (with a picture of the current solution), Goals (metrics, Out of scope),
+   Solution, Abandoned Solutions (a tradeoff table, status quo first), Implementation
+   & rollout (phases, rollback, observability, stakeholders), Risk (with mitigations),
+   Cost (TCO for the next few months), Conclusion (key points and feedback wanted).
+   Mark unknowns `?`; never fill a gap with a guess.
+4. Write it as Draft. Keep the language open to feedback.
+
+RFC or ADR: an RFC proposes a whole change before it is built and asks every
+stakeholder for feedback; it is edited until approved. An ADR records one decision
+after it is made and is never edited. Once an RFC is approved, offer ADRs for the
+decisions in it that pass the ADR test.
 
 ## Output format
 

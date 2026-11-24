@@ -27,7 +27,8 @@
 Decomplect is a language-agnostic architect for Claude Code. Its principles are distilled from Rich Hickey's conference talks (credited in references/sources.md).
 It reviews PRs, design docs, APIs and schemas for complecting, place-oriented data,
 hidden state and time, breaking changes, and missing problem statements, and it can
-walk a team through problem-first design and record the decisions as ADRs.
+walk a team through problem-first design, write the change up as an RFC for
+stakeholders to review, and record the decisions as ADRs.
 
 ## Install
 
@@ -36,8 +37,8 @@ into the repository root and commit.
 
 **Personal (all projects):** copy `.claude/skills/decomplect` to `~/.claude/skills/`,
 `.claude/agents/decomplect.md` to `~/.claude/agents/`, and
-`.claude/commands/hammock.md`, `.claude/commands/untangle.md` and
-`.claude/commands/errorbar.md` to `~/.claude/commands/`.
+`.claude/commands/hammock.md`, `.claude/commands/untangle.md`,
+`.claude/commands/errorbar.md` and `.claude/commands/rfc.md` to `~/.claude/commands/`.
 
 ## Commands
 
@@ -96,6 +97,29 @@ the cheapest test for each weak claim and the decision in plain words.
 The principles come from Neil deGrasse Tyson (judging claims), Brendan Gregg
 (measuring running systems) and Jeff Dean (sizing designs); sources are in
 `references/errorbar-sources.md`.
+
+### `/rfc`: propose a change for feedback
+
+Writes an RFC (Request For Change) for a feature or change, in one fixed template
+instead of an ad-hoc requirements file: Introduction, Problem Statement (with a
+picture of today's solution), Goals (a metric each, and Out of scope), Solution,
+Abandoned Solutions (status quo first, with why each lost), Implementation & rollout
+(phases, rollback, observability, stakeholders), Risk, Cost (TCO for the next few
+months) and Conclusion. It reads the code for what it can find and asks you only for
+the problem, the goals and what is out of scope. Anything still unknown is marked `?`
+and listed as feedback wanted.
+
+```
+/rfc stream billing events to the ledger
+/rfc docs/notes/billing-requirements.md    # convert an existing requirements file
+/rfc draft move sessions to Redis           # no questions; ? for what only you know
+```
+
+It goes to `docs/rfc/NNNN-slug.md` (or the repo's RFC folder) as Draft. Use an RFC to
+get agreement on a whole change before it is built; use an ADR to record one decision
+once it is made. After an RFC is approved, it offers ADRs for its hard-to-reverse
+decisions. See [docs/rfc-instead-of-requirements.md](docs/rfc-instead-of-requirements.md)
+to make it the format Claude uses for every plan or requirements file.
 
 ## Other ways to use it
 

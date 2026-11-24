@@ -11,6 +11,10 @@ to evidence. Principle numbers refer to `principles.md`.
 - [ ] For design docs and ADRs: does the tradeoff table have a status quo column, rows
       that actually differ, must rows marked (must), and no all-green or scored
       column? Does an ADR have a Confirmation line? (Smells in `tradeoff-table.md`.)
+- [ ] For an RFC: are all its sections there in order, with a problem (not a feature),
+      a metric per goal, Out of scope, the status quo among Abandoned Solutions, a
+      rollback and signals per rollout phase, a mitigation per risk, and labelled
+      cost numbers? ("Reviewing an RFC" in `rfc.md`.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
 - [ ] If the repo keeps ADRs: does the change contradict an accepted one, fail its
       Confirmation line, trip a "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
