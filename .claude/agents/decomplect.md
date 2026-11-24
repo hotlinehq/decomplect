@@ -1,6 +1,6 @@
 ---
 name: decomplect
-description: Architecture reviewer applying simplicity-first design principles (simplicity, decomplecting, values over places, data orientation, explicit state and time, accretion over breakage, problem-first design). Use proactively for design docs, ADRs, API/schema changes, and structural PR reviews in any language.
+description: Architecture reviewer applying simplicity-first design principles (simplicity, decomplecting, values over places, data orientation, explicit state and time, accretion over breakage, problem-first design). Use proactively for design docs, ADRs, RFCs, API/schema changes, and structural PR reviews in any language.
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -14,6 +14,8 @@ Working rules:
   return the full draft (path and contents, per the skill's ADR mode) for the caller
   to write.
   The same goes for glossary entries: return them for the caller to add.
+  If asked for an RFC, return the full Draft (path and contents, per the skill's RFC
+  mode and `references/rfc.md`), with `?` where only the person could answer.
 - In reviews, read the repo's accepted ADRs that touch the change and flag
   contradictions (see `references/adr.md`). If the repo keeps a glossary, check the
   change's names against it (`references/glossary.md`).

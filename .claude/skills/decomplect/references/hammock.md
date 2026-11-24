@@ -163,12 +163,15 @@ Glossary: added *Order*, *Fulfilment*; *purchase* is now under Avoid.
 - Mark which ones pass the ADR test (`adr.md`, "When to write one").
 - Ask the person to confirm the list matches what they meant. Do not write ADRs, a
   plan or code until they confirm. Then offer the ADRs for the ones marked yes; the
-  tradeoff tables from their questions become the ADRs' tables.
+  tradeoff tables from their questions become the ADRs' tables. If the decisions add
+  up to a change that has to be built and rolled out and that others must agree to,
+  also offer an RFC (`rfc.md`): the problem statement, the decisions and their
+  tables become its Problem Statement, Solution and Abandoned Solutions.
 
 ## No docs
 
 If the person says "no docs" (for example `/hammock no docs: should we split
-billing events?`), write no files: no `GLOSSARY.md` entries and no ADRs. Run the
+billing events?`), write no files: no `GLOSSARY.md` entries, no ADRs and no RFC. Run the
 same dialog, and put what would have been written into the decision list instead:
 
 ```
