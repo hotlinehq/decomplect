@@ -249,8 +249,14 @@ invent another layout for it. The `/rfc` command starts it. Follow `references/r
    Solution, Abandoned Solutions (a tradeoff table, status quo first), Implementation
    & rollout (phases, rollback, observability, stakeholders), Risk (with mitigations),
    Cost (TCO for the next few months), Conclusion (key points and feedback wanted).
-   Mark unknowns `?`; never fill a gap with a guess.
-4. Write it as Draft. Keep the language open to feedback.
+   Mark unknowns `?`; never fill a gap with a guess. The Solution's picture is the
+   current one after the change, with `[NEW]`, `[CHANGED]` and `[REMOVED]` marked.
+4. Before handing it over, check it: run **Error Bar** on the claims it rests on
+   (problem cost, goal baselines and targets, risk, cost) and **Review** on the
+   Solution's system split (what it tangles, growth or breakage). Fix the draft from
+   both, and move anything only the person can settle to "Feedback wanted". See
+   "Check it before handing it over" in `references/rfc.md`.
+5. Write it as Draft. Keep the language open to feedback.
 
 RFC or ADR: an RFC proposes a whole change before it is built and asks every
 stakeholder for feedback; it is edited until approved. An ADR records one decision

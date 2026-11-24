@@ -249,8 +249,14 @@ invent another layout for it. The `/rfc` command starts it. Follow the Appendix:
    Solution, Abandoned Solutions (a tradeoff table, status quo first), Implementation
    & rollout (phases, rollback, observability, stakeholders), Risk (with mitigations),
    Cost (TCO for the next few months), Conclusion (key points and feedback wanted).
-   Mark unknowns `?`; never fill a gap with a guess.
-4. Write it as Draft. Keep the language open to feedback.
+   Mark unknowns `?`; never fill a gap with a guess. The Solution's picture is the
+   current one after the change, with `[NEW]`, `[CHANGED]` and `[REMOVED]` marked.
+4. Before handing it over, check it: run **Error Bar** on the claims it rests on
+   (problem cost, goal baselines and targets, risk, cost) and **Review** on the
+   Solution's system split (what it tangles, growth or breakage). Fix the draft from
+   both, and move anything only the person can settle to "Feedback wanted". See
+   "Check it before handing it over" in the Appendix: RFCs section below.
+5. Write it as Draft. Keep the language open to feedback.
 
 RFC or ADR: an RFC proposes a whole change before it is built and asks every
 stakeholder for feedback; it is edited until approved. An ADR records one decision
@@ -1244,7 +1250,10 @@ the gap with a guess that reads like a fact.
   subsection: what this change will not do, so nobody reviews it for something it
   never promised.
 - **Solution.** The proposed design: a picture of the new flow (sequence or
-  component diagram), the data model or schema changes, API changes (classify each
+  component diagram), drawn as the Problem Statement's picture after the change:
+  the same components in the same layout, with what is added marked `[NEW]`, what
+  changes marked `[CHANGED]` and what goes away marked `[REMOVED]`, so a reader
+  sees the difference at a glance. Then the data model or schema changes, API changes (classify each
   change to a published interface as accretion or breakage; prefer accretion), the
   infrastructure needed, and UI/UX flows if users see it. Link specs rather than
   pasting them. Keep it simple, keep it short.
@@ -1327,8 +1336,9 @@ flowchart LR
 <The proposal in a few sentences, then the details that apply.>
 
 ```mermaid
-sequenceDiagram
-  <the new flow>
+flowchart LR
+  A[<component>] --> C["<component> [NEW]"]
+  C --> B["<component> [CHANGED]"]
 ```
 
 - Data model: <tables, fields, events added or changed>
@@ -1379,6 +1389,33 @@ Feedback wanted:
 - <open question or ?, and who can answer it>
 ````
 
+### Check it before handing it over
+
+An RFC is a set of claims and a proposed split of the system. Before you show the
+draft, check both, the way a careful reviewer would, and fix what you can:
+
+1. **Check the reasoning with Error Bar** (the Appendix: Error Bar section). List the claims the RFC
+   rests on: the cost of the problem today, the baselines and targets in Goals, why
+   the Solution will reach them, the likelihoods in Risk, every number in Cost.
+   Label each measured, inferred or assumed; for a claimed cause, name a rival
+   explanation; size the numbers a second way. Then fix the draft: give a source for
+   measured numbers, show the arithmetic for inferred ones, and mark assumed ones as
+   assumed, with the cheapest test that would prove them wrong under "Feedback
+   wanted". If a goal cannot be measured, rewrite it until it can, or mark it `?`.
+2. **Check the system split with Review** (the Appendix: Review checklist section). Walk the Solution
+   for what it tangles together: one component taking on two jobs, policy mixed
+   into mechanism, a new synchronous call where a queue or a value would do, state
+   hidden in a place that gets overwritten, two services sharing one table. Classify
+   every change to a published interface as growth or breakage. If a finding changes
+   the design, change the Solution and move the tangled version to Abandoned
+   Solutions with the reason. If it is a real tradeoff the person should decide, put
+   it under "Feedback wanted".
+
+Do both passes yourself; they change the draft, not add sections to it. When you
+hand the RFC over, say in two or three lines what the passes changed and which weak
+claims are still open. With "draft", still run both passes; only the questions to
+the person are skipped.
+
 ### After approval
 
 - Offer ADRs for the decisions in it that pass the ADR test, and add them to Linked
@@ -1389,7 +1426,8 @@ Feedback wanted:
 
 ### Reviewing an RFC
 
-`/untangle path/to/rfc.md` reviews it like any design doc. In addition, check:
+`/untangle path/to/rfc.md` reviews it like any design doc, and `/errorbar
+path/to/rfc.md` checks its claims. In addition, check:
 
 - every section is present and in the template's order, and a missing answer is
   marked `?` rather than left out;
@@ -1397,6 +1435,8 @@ Feedback wanted:
 - each goal has a metric, and Out of scope is written down;
 - Abandoned Solutions includes the status quo and gives a reason per option;
 - the rollout avoids a big bang, has a rollback per phase and names its signals;
+- the Solution's picture is the current one after the change, with `[NEW]`,
+  `[CHANGED]` and `[REMOVED]` marked;
 - every risk has a mitigation, and the cost numbers are labelled and add up.
 
 ---

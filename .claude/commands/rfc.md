@@ -19,5 +19,8 @@ Topic: `$ARGUMENTS`
   of scope), one question per turn, as `references/rfc.md` describes.
 
 Write it to the repo's RFC folder, or `docs/rfc/NNNN-slug.md`, with every section of
-the template in order and Status: Draft. End with the path, the open `?`s, and an
-offer of ADRs for the decisions in it that pass the ADR test.
+the template in order and Status: Draft. Before handing it over, run an Error Bar
+pass on its claims and a Review pass on the Solution's system split, and fix the
+draft from both ("Check it before handing it over" in `references/rfc.md`). End with
+the path, what the two passes changed, the open `?`s, and an offer of ADRs for the
+decisions in it that pass the ADR test.

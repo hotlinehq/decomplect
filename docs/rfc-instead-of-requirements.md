@@ -20,6 +20,12 @@ template in [`references/rfc.md`](../.claude/skills/decomplect/references/rfc.md
 8. **Cost**: total cost of ownership for the next few months, with the arithmetic.
 9. **Conclusion**: the key points, and the feedback wanted.
 
+Before handing an RFC over, Claude checks it twice and fixes the draft: an Error Bar
+pass on its reasoning (are the problem's cost, the goals, the risks and the cost
+measured, inferred or assumed?) and a decomplect review of the Solution (are the
+systems split properly, or does one part take on two jobs? does any change break a
+consumer?).
+
 Each RFC has a Status (Draft, In Review, Approved, Rejected, Withdrawn) and a Linked
 Tickets line, and goes to `docs/rfc/NNNN-slug.md` unless the repo keeps RFCs elsewhere.
 
@@ -42,5 +48,6 @@ When you write a requirements, spec, plan or proposal document for a feature or
 change, write it as an RFC with the `decomplect` skill's RFC mode
 (`references/rfc.md`): its sections in order, Status: Draft, in `docs/rfc/` unless
 this repo keeps RFCs elsewhere. Do not invent another layout. Mark what you don't
-know with `?` instead of guessing.
+know with `?` instead of guessing. Before showing it, check its claims with Error Bar
+mode and its system split with Review mode, and fix the draft from both.
 ```

@@ -107,7 +107,10 @@ Abandoned Solutions (status quo first, with why each lost), Implementation & rol
 (phases, rollback, observability, stakeholders), Risk, Cost (TCO for the next few
 months) and Conclusion. It reads the code for what it can find and asks you only for
 the problem, the goals and what is out of scope. Anything still unknown is marked `?`
-and listed as feedback wanted.
+and listed as feedback wanted. The Solution's diagram is today's picture with the new,
+changed and removed parts marked. Before handing it over, it checks its own reasoning
+with an Error Bar pass (every number and cause labelled measured, inferred or assumed)
+and its system split with an `/untangle`-style review, and fixes the draft from both.
 
 ```
 /rfc stream billing events to the ledger
