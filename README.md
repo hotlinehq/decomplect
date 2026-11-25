@@ -38,7 +38,8 @@ into the repository root and commit.
 **Personal (all projects):** copy `.claude/skills/decomplect` to `~/.claude/skills/`,
 `.claude/agents/decomplect.md` to `~/.claude/agents/`, and
 `.claude/commands/hammock.md`, `.claude/commands/untangle.md`,
-`.claude/commands/errorbar.md` and `.claude/commands/rfc.md` to `~/.claude/commands/`.
+`.claude/commands/errorbar.md`, `.claude/commands/rfc.md` and
+`.claude/commands/adr-check.md` to `~/.claude/commands/`.
 
 ## Commands
 
@@ -65,16 +66,27 @@ no ADRs. What it would have written goes into the final decision list instead.
 Say "ask in rounds" to get every independent question at once instead of one per
 turn.
 
-### `/untangle`: review a change
+### `/untangle`: review a change, or survey a whole repo
 
 Reviews a branch, a PR or a design doc for things tangled together, hidden state and
-time, breaking changes and missing problem statements.
+time, breaking changes and missing problem statements. It reads the code the change
+touches, not only the diff (every caller and reader of what changed), and says which
+load it assumed. Every finding needs a concrete case: the caller, input or next change
+that goes wrong. Findings are numbered so you can say "fix 2 and 5", and the review
+ends with `Verdict: Ship.` or `Verdict: fix 1 and 3 first.` and a `Not checked:` line.
 
 ```
 /untangle                            # current branch against origin/main
 /untangle 123                        # PR #123
 /untangle docs/adr/0007-events.md    # a design doc or ADR
+/untangle repo                       # survey the whole repo
+/untangle services/billing           # survey one folder
 ```
+
+With `repo` or a folder it runs a survey instead of a review: it maps the parts, the
+state holders, the boundaries and the main flows, goes deep where a tangle costs the
+most, ranks at most 10 findings by change cost, and ends with what to untangle first
+and which parts it did not read. It changes no code.
 
 ### `/errorbar`: check the claims behind a design
 
@@ -97,6 +109,21 @@ the cheapest test for each weak claim and the decision in plain words.
 The principles come from Neil deGrasse Tyson (judging claims), Brendan Gregg
 (measuring running systems) and Jeff Dean (sizing designs); sources are in
 `references/errorbar-sources.md`.
+
+### `/adr-check`: are the recorded decisions still true?
+
+Takes every accepted ADR and checks it against the code today. It searches for each
+ADR's Confirmation signal (followed, drifted, or no signal), looks for evidence that
+its "Revisit if" trigger has fired, and tags ADRs with neither as `no-tripwire`,
+because those are the ones that rot unnoticed. It ends with a numbered ledger, drifted
+and fired first, with an action per row. It never edits an accepted ADR; it offers a
+superseding one instead.
+
+```
+/adr-check                  # every current ADR
+/adr-check 4 7              # ADRs 0004 and 0007
+/adr-check docs/decisions   # a different ADR folder
+```
 
 ### `/rfc`: propose a change for feedback
 
@@ -144,18 +171,4 @@ to make it the format Claude uses for every plan or requirements file.
 
 ## Notes
 
-- Principles are synthesized, not copied. Run `transcripts/fetch.sh` to download the
-  source transcripts from matthiasn/talk-transcripts. They carry no license grant, so
-  they are not committed here.
-- The skill avoids Lisp/Clojure framing and translates every idea into the idioms of
-  the code under review.
-- Some workflow ideas in Hammock mode and the glossary (rounds, the closing decision
-  list, the ADR test) were inspired by Matt Pocock's
-  [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Credited in
-  `references/sources.md`; no text is copied.
-- Error Bar mode's principles are our summaries with short quotes for citation; the
-  linked essays, talks and papers are in `references/errorbar-sources.md`. Three of its
-  steps were inspired by skills in four public repositories, credited there; no text is
-  copied.
-- The Apache-2.0 license covers this repository's own text only. Quoted passages stay
-  the copyright of their authors; see [NOTICE](NOTICE).
+Sources, credits and licensing are in [docs/notes.md](docs/notes.md).

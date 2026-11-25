@@ -167,3 +167,59 @@ In Review mode, before walking the checklist:
 
 A contradiction is not automatically wrong: the decision may deserve to change.
 The finding asks for the change to be recorded as a new ADR, so the reason is kept.
+
+## Checking the ADR log (ADR check mode)
+
+Review checks one change against the ADRs. ADR check goes the other way: it takes
+every accepted decision and asks whether it still holds in the code today. The
+Confirmation line and the "Revisit if" line are the tripwires; this mode checks
+both, so a decision cannot quietly drift or quietly outlive its reason.
+`/adr-check` starts it. It is a one-shot report and edits no files.
+
+1. Find the ADR folder (see Where it goes). If there is none, say so and stop.
+   Check what the person names (one ADR, a few, a folder); nothing named: all of them.
+2. List the current decisions: every Accepted ADR that no later Accepted ADR
+   supersedes. Skip Proposed, Rejected and Superseded ones, but say how many.
+3. **Confirmation.** Search the code for each signal (`git grep`, the files and
+   services the Decision names). Mark it:
+   - **followed**: the chosen pattern is there and the rejected one is not;
+   - **drifted**: the rejected pattern is back, or the chosen path is bypassed.
+     Give file:line and, from `git log`, when it came in;
+   - **no signal**: `Confirmation: ?`, missing, or too vague to search for.
+4. **Revisit if.** For each trigger, look for evidence that it has fired: the code
+   (a second writer, a new consumer, a feature the ADR said we didn't need), docs,
+   tickets, and any numbers the repo keeps. Mark it **fired** (with the evidence),
+   **not fired**, or **can't tell**, and for can't tell name the one fact that would
+   settle it. Don't guess a number; that is an Error Bar question (`errorbar.md`).
+5. **No tripwire.** An ADR with neither a searchable Confirmation signal nor a
+   Revisit-if trigger gets a `no-tripwire` tag. These are the ones that rot without
+   anyone noticing. Propose the two lines it is missing, in the code's real names.
+6. Check the log itself: an accepted ADR whose body was edited after acceptance
+   (`git log -p` on the file), two accepted ADRs that decide the same thing, a
+   Supersedes link to a missing number.
+
+Output:
+
+```
+<Verdict in one or two sentences: is the log still true?>
+
+| # | ADR | Confirmation | Revisit if | Action |
+|---|---|---|---|---|
+| 1 | 0004 Record invoice changes as events | 🔴 drifted: `UPDATE invoices SET status` in `billing/fix.ts:30` (since a1b2c3d, 2026-09) | 🟢 not fired | Fix the drift, or write an ADR that supersedes 0004 |
+| 2 | 0007 One writer per table | 🟢 followed | 🟡 fired: `reports` now writes `orders` (`reports/sync.go:88`) | Hammock the decision again, then supersede |
+| 3 | 0009 Use Postgres for search | no signal | no trigger | `no-tripwire`: add "Confirmation: no search client outside `search/`" and "Revisit if: search p99 > 200 ms" |
+
+<N> current ADRs: <a> followed, <b> drifted, <c> due for revisit, <d> no-tripwire.
+Verdict: <log holds | fix 1 first | revisit 2 first>
+Not checked: <ADRs or triggers you could not check, and why>
+```
+
+Number the rows, so the person can say "supersede 2". Order them: drifted, then
+fired, then no-tripwire, then the rest. A row that is followed and not fired can be
+folded into the count when there are many.
+
+Never edit an accepted ADR. A drift is fixed in the code or recorded by a new ADR
+that supersedes the old one; a fired trigger goes back to Hammock (or Advise) and
+then to a superseding ADR; missing tripwire lines go into the next ADR that touches
+the decision, or into a superseding ADR if the team wants them now. Offer the
+drafts in one line; write them only when asked.

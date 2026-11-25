@@ -98,4 +98,5 @@ For a full check of the claims, use Error Bar mode (`errorbar.md`).
 - Proportionality: small changes get a short review.
 - Don't flag essential complexity of the domain.
 - Prefer one high-leverage finding over ten nitpicks.
+- No concrete case, no finding: name the caller, input or next change that goes wrong (Review step 4).
 - Always offer a concrete next step in the language and frameworks the repo already uses.

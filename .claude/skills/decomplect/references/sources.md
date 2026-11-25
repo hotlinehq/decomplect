@@ -11,6 +11,14 @@ Pocock's `grilling`, `grill-with-docs` and `domain-modeling` skills in
 [mattpocock/skills](https://github.com/mattpocock/skills) (MIT License). No text
 from them is reproduced here.
 
+Some review and audit ideas (no concrete case, no finding; reading the callers of
+everything a change touches and stating the load assumed; numbered findings ending
+in a Verdict and a Not checked line; a ranked whole-repo survey that says what it
+did not read; a ledger of deferred decisions that flags the ones with no trigger)
+were inspired by Dietrich Gebert's `ponytail-review`, `ponytail-audit` and
+`ponytail-debt` skills in [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
+(MIT License). No text from them is reproduced here.
+
 | Talk | Year | Main themes used | Video |
 |---|---|---|---|
 | Design in Practice | 2023 | phases, problem statement, decision matrix, words, glossary | https://www.youtube.com/watch?v=c5QF2HjHLSE |

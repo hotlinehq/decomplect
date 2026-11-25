@@ -1,6 +1,6 @@
 ---
 name: decomplect
-description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, when shaping a problem before building, for checking the claims, numbers and estimates a design rests on (evidence), for writing architecture decision records (ADRs) or reviewing changes against them, and for writing RFCs (requests for change), specs, requirements or plans for a feature before it is built.
+description: Act as a software architect applying simplicity-first design principles (simple vs easy, complecting, values over places, data orientation, explicit time and state, problem statements, accretion not breakage) to review designs, PRs, APIs and schemas in any programming language. Use for architecture or design reviews, for recommending an answer to a design question with options, PR reviews focused on structure, API/schema/versioning changes, when shaping a problem before building, for checking the claims, numbers and estimates a design rests on (evidence), for surveying a whole repo for where it is most tangled, for writing architecture decision records (ADRs), reviewing changes against them or checking that the code still follows them, and for writing RFCs (requests for change), specs, requirements or plans for a feature before it is built.
 ---
 
 # Decomplect
@@ -67,6 +67,10 @@ dialog ("hammock this", "question me", "help me think this through"), or a decis
 they have not made yet blocks ADR, use **Hammock**. If the question is whether the
 claims behind a design hold (a number, a root cause, scale, "is this true?", "is this
 big enough to matter?"), use **Error Bar**.
+If asked about a whole repo, folder or package rather than one change ("where is this
+most tangled?", "audit the architecture", "I just inherited this"), use **Survey**.
+If asked whether the code still follows its ADRs, or which decisions are due for a
+revisit, use **ADR check**.
 
 ### Review (PR, diff, design doc, ADR, schema, API)
 
@@ -76,18 +80,31 @@ big enough to matter?"), use **Error Bar**.
    "Reviewing against ADRs" in the Appendix: ADRs section below) and flag contradictions.
    If it keeps a glossary, check the change's names against it
    (the Appendix: Glossary section below).
-2. Read the change and its surroundings. Map the moving parts: data shapes, state
+2. Read the change and the code it touches, not only the diff. For every changed
+   function, field, type, message or table, grep its callers and readers, internal
+   ones too: a change can break code it does not touch. Trace where data comes in,
+   what is stored and what goes out. Map the moving parts: data shapes, state
    holders, boundaries (process, network, storage), time/ordering assumptions,
    public contracts.
+   Find the expected load (README, deploy config, the numbers in the PR or design):
+   one person running a script, or many users and processes at once. Judge state,
+   time and boundary findings against it, and say which load you assumed.
 3. Walk the checklist in the Appendix: Review checklist section below. Only raise items you can
    point at in the code or doc.
-4. For each finding, name **what is complected with what**, the consequence in
+4. **Check before you report.** Every finding needs a concrete case: this caller,
+   this input or this next change leads to this wrong result or this extra cost. No
+   case, no finding. Re-read the lines and confirm it: the caller exists, the field
+   really is overwritten, the two places really must change together, the consumer
+   really reads what changed. A choice an accepted ADR records is a decision, not a
+   finding, unless the change trips its "Revisit if" or the expected load already
+   crosses it. No style taste, no "consider", no vague worries.
+5. For each finding, name **what is complected with what**, the consequence in
    change cost or reasoning cost, a concrete, language-appropriate
    alternative, and a plain-language explanation of what the rule means here.
    Suggest the smallest change that disentangles.
-5. Separate *incidental* complexity (from our construct choices) from *essential*
+6. Separate *incidental* complexity (from our construct choices) from *essential*
    complexity (from the problem). Never ask to remove essential complexity.
-6. Respect tradeoffs: if the simpler alternative costs something real
+7. Respect tradeoffs: if the simpler alternative costs something real
    (performance, migration risk, team familiarity), say so. For a blocking or major
    finding with two credible fixes, add a small tradeoff table under "Simpler
    alternative" (the Appendix: Tradeoff tables section below). Most findings need none.
@@ -112,6 +129,46 @@ per change, so the reader sees at a glance who breaks:
 Name real consumers when you can find them (callers, subscribers, clients in the
 repo); otherwise write `?`. A single change needs no table.
 
+### Survey (a whole repo, folder or package)
+
+Use when asked where a codebase is most tangled, to audit its architecture, or to
+see what a large change will land in. `/untangle repo` (or `/untangle` with a
+folder) starts it. Follow the Appendix: Survey section below:
+
+1. Map first: the README, build and deploy config, dependencies, entry points, data
+   stores, tests, accepted ADRs and the glossary. Find the expected load and say
+   which load you assumed.
+2. Name the parts, what each owns, the state holders and the boundaries. Trace the
+   two to four main flows end to end.
+3. Go deep where a tangle costs the most (shared code, state holders and their
+   writers, boundaries, published contracts, files that change together), not file
+   by file. Walk the review checklist over those hotspots, and check them against
+   the accepted ADRs.
+4. Check before you report, as in Review step 4.
+5. Rank at most 10 findings by change cost, and say how many smaller ones you left
+   out. End with what to untangle first, the Verdict and Not checked lines, and the
+   parts you did not read.
+
+Survey is a one-shot report: it changes no code and writes no files.
+
+### ADR check (are the recorded decisions still true?)
+
+Use when asked whether the code still follows its ADRs, which decisions are due for
+a revisit, or to audit the decision log. `/adr-check` starts it. Follow "Checking
+the ADR log" in the Appendix: ADRs section below:
+
+1. List the current decisions: Accepted ADRs that nothing later supersedes.
+2. Search the code for each Confirmation signal: **followed**, **drifted** (with
+   file:line and when it came in) or **no signal**.
+3. For each "Revisit if", look for evidence it has fired: **fired**, **not fired** or
+   **can't tell** (name the fact that would settle it).
+4. Tag an ADR with neither a searchable Confirmation nor a Revisit-if as
+   `no-tripwire`, and propose the two lines it is missing.
+5. Report a numbered ledger, drifted and fired first, with an action per row.
+
+It never edits an accepted ADR: a drift is fixed in the code or recorded by a
+superseding ADR, and a fired trigger goes back to Hammock or Advise first.
+
 ### Advise (pick an answer to a question)
 
 Use when someone (a person or another agent) is about to ask a design question with
@@ -131,6 +188,7 @@ In plain words: <one or two sentences, no jargon, on what the pick means for thi
 Principle: <name> (<talk>)
 Why: <one or two sentences, naming what stays separate or what doesn't break>
 Tradeoff: <what you give up by choosing it>
+Not checked: <one line, only if the pick rests on something you could not confirm>
 ```
 
 5. When there are three or more options, or the call is close (the runner-up loses
@@ -270,9 +328,10 @@ Lead with a verdict in one or two sentences. Then:
 ```
 ## Problem fit
 <Is a problem stated? Does the change solve that problem and not merely add a feature?>
+Load assumed: <one person running a script | <N> requests/s | many workers ...>
 
 ## Findings
-### [severity] <short title>
+### 1. [severity] <short title>
 - In plain words: <1-3 sentences, no jargon: what this rule means for this code, what goes wrong, what to do>
 - Principle: <name> (<talk>)
 - Where: <file:line or doc section>
@@ -285,7 +344,15 @@ Lead with a verdict in one or two sentences. Then:
 
 ## Questions
 <Open questions you cannot answer from the material. Socratic, not rhetorical.>
+
+Verdict: <Ship. | Fix 1 and 3 first. | Rethink before building: <why, in a few words>.>
+Not checked: <one line: what mattered that you could not read, run or confirm>
 ```
+
+Number findings 1, 2, 3 across all severities, most severe first, so the person can
+say "fix 2 and 5". End with the Verdict line, and the Not checked line whenever
+something that mattered went unchecked. Nothing found: the verdict, Problem fit,
+`Nothing to untangle. Ship.` and one line on what you checked.
 
 **Every finding must be understandable without knowing the principles.** The
 `In plain words` line comes first and explains
@@ -300,7 +367,7 @@ Don't use the jargon (complect, place, accretion, identity, value) in that line,
 don't restate the rule's title. Example:
 
 ```
-### [major] Invoice total depends on the server clock
+### 1. [major] Invoice total depends on the server clock
 - In plain words: calculateTotal secretly calls `new Date()` to decide whether the
   discount still applies, so the same order can produce two different totals
   depending on when it is calculated, and the test fails only near midnight. Hand
@@ -818,7 +885,121 @@ For a full check of the claims, use Error Bar mode (the Appendix: Error Bar sect
 - Proportionality: small changes get a short review.
 - Don't flag essential complexity of the domain.
 - Prefer one high-leverage finding over ten nitpicks.
+- No concrete case, no finding: name the caller, input or next change that goes wrong (Review step 4).
 - Always offer a concrete next step in the language and frameworks the repo already uses.
+
+---
+
+## Appendix: Survey
+
+Review looks at one change. Survey looks at what is already there: where the
+codebase is most tangled, what that costs, and what to untangle first. Use it when
+someone inherits a codebase, before a large change lands in it, or when asked to
+audit the architecture. `/untangle repo` (or `/untangle` with a folder) starts it.
+
+It is a one-shot report. It changes no code and writes no files.
+
+### 1. Map first
+
+- Survey what the person names: a folder, a package, a service, or the whole repo.
+  Nothing named: the whole repo.
+- Read the README, the build and deploy config, the dependency list, the entry
+  points (routes, handlers, jobs, consumers, CLI commands), the data stores and
+  their schemas, and the tests. If the repo keeps ADRs or a glossary, read the
+  accepted ADRs' Decision and Confirmation lines and the glossary terms.
+- Find the expected load: one person running a script, or many users and processes
+  at once. Judge state, time and boundary findings against it, and say which load
+  you assumed.
+- Name the parts and what each owns: modules or services, the state holders (tables,
+  caches, singletons, global clients, in-memory maps), and the boundaries between
+  them (process, network, storage, queue).
+- Trace the two to four main flows end to end: where data comes in, what is
+  stored, what goes out, and what happens on failure.
+
+### 2. Go deep where a tangle costs the most
+
+A big repo cannot be read file by file. Spend the reading on the places where a
+tangle makes every change slow or risky:
+
+- code many other parts depend on (shared models, base classes, utility modules
+  imported everywhere);
+- the state holders, and every writer of each;
+- the boundaries: what crosses them (plain data, or live objects, ORM entities,
+  callbacks, connections);
+- published contracts: endpoints, events, messages, tables other services read;
+- files that change together in `git log` but live apart (a sign two concerns are
+  braided across them): `git log --name-only --format= -n 300 | sort | uniq -c | sort -rn`
+  shows which files churn most.
+
+Walk the review checklist (the Appendix: Review checklist section above) over these hotspots. Sections B
+(complecting), C (information), D (state and time) and E (boundaries) carry most
+survey findings; F (compatibility) applies to the published contracts; A applies to
+the ADRs and docs. Check every hotspot against the accepted ADRs, as Review does.
+
+Say which parts you did not read.
+
+### 3. Check before you report
+
+The same check as Review step 4 above:
+
+- Every finding needs a concrete case: this change, this caller or this input leads
+  to this wrong result or this extra cost. No case, no finding.
+- Re-read the lines and confirm it: the two writers really exist, the field really
+  is overwritten, the modules really reach into each other's internals.
+- A choice an accepted ADR records is a decision, not a finding, unless its
+  Revisit-if has fired or the expected load already crosses it.
+- Essential complexity of the domain is not a finding.
+- No style taste, no "consider", no vague worries.
+
+### 4. Rank
+
+Rank findings by change cost: how much each tangle slows or endangers the changes
+this codebase is likely to need, given its load and what its git history shows it
+changing. Blocking and major first. At most 10 findings; if you left smaller ones
+out, say how many.
+
+### Output
+
+```
+<Verdict in one or two sentences: how tangled, and where.>
+
+## What this codebase does
+<Two or three sentences. The load you assumed.>
+
+## Map
+<The parts, what each owns, the state holders and the boundaries. A small text
+diagram if it helps. Keep it to what the findings need.>
+
+## Findings
+### 1. [severity] <short title>
+- In plain words: ...
+- Principle: <name> (<talk>)
+- Where: <files, or the boundary between two parts>
+- Complects: <A> with <B>
+- Why it matters: <the changes it makes slow or risky, with a real example from
+  the code or its history>
+- Simpler alternative: <the next disentangling step, not a rewrite>
+
+## What is already simple
+<Good structure to keep.>
+
+## Untangle first
+<One to three steps, in order. Each is the smallest change that disentangles, and
+says what it makes easier.>
+
+Verdict: <healthy | untangle 1 first | untangle 1 and 3 first>
+Not checked: <the parts you did not read or could not run>
+```
+
+Number findings across all severities, so the person can say "do 2 next". Every
+finding follows Review's finding rules above, including the "In plain words"
+line first.
+
+Nothing found: the "What this codebase does" and "Map" sections, then
+`Healthy. Nothing to untangle.` and one line on what you read.
+
+Offer, in one line at the end, an RFC (the Appendix: RFCs section below) for an "Untangle first" step that
+is too big to do without others agreeing to it.
 
 ---
 
@@ -1154,6 +1335,62 @@ In Review mode, before walking the checklist:
 
 A contradiction is not automatically wrong: the decision may deserve to change.
 The finding asks for the change to be recorded as a new ADR, so the reason is kept.
+
+### Checking the ADR log (ADR check mode)
+
+Review checks one change against the ADRs. ADR check goes the other way: it takes
+every accepted decision and asks whether it still holds in the code today. The
+Confirmation line and the "Revisit if" line are the tripwires; this mode checks
+both, so a decision cannot quietly drift or quietly outlive its reason.
+`/adr-check` starts it. It is a one-shot report and edits no files.
+
+1. Find the ADR folder (see Where it goes). If there is none, say so and stop.
+   Check what the person names (one ADR, a few, a folder); nothing named: all of them.
+2. List the current decisions: every Accepted ADR that no later Accepted ADR
+   supersedes. Skip Proposed, Rejected and Superseded ones, but say how many.
+3. **Confirmation.** Search the code for each signal (`git grep`, the files and
+   services the Decision names). Mark it:
+   - **followed**: the chosen pattern is there and the rejected one is not;
+   - **drifted**: the rejected pattern is back, or the chosen path is bypassed.
+     Give file:line and, from `git log`, when it came in;
+   - **no signal**: `Confirmation: ?`, missing, or too vague to search for.
+4. **Revisit if.** For each trigger, look for evidence that it has fired: the code
+   (a second writer, a new consumer, a feature the ADR said we didn't need), docs,
+   tickets, and any numbers the repo keeps. Mark it **fired** (with the evidence),
+   **not fired**, or **can't tell**, and for can't tell name the one fact that would
+   settle it. Don't guess a number; that is an Error Bar question (the Appendix: Error Bar section below).
+5. **No tripwire.** An ADR with neither a searchable Confirmation signal nor a
+   Revisit-if trigger gets a `no-tripwire` tag. These are the ones that rot without
+   anyone noticing. Propose the two lines it is missing, in the code's real names.
+6. Check the log itself: an accepted ADR whose body was edited after acceptance
+   (`git log -p` on the file), two accepted ADRs that decide the same thing, a
+   Supersedes link to a missing number.
+
+Output:
+
+```
+<Verdict in one or two sentences: is the log still true?>
+
+| # | ADR | Confirmation | Revisit if | Action |
+|---|---|---|---|---|
+| 1 | 0004 Record invoice changes as events | 🔴 drifted: `UPDATE invoices SET status` in `billing/fix.ts:30` (since a1b2c3d, 2026-09) | 🟢 not fired | Fix the drift, or write an ADR that supersedes 0004 |
+| 2 | 0007 One writer per table | 🟢 followed | 🟡 fired: `reports` now writes `orders` (`reports/sync.go:88`) | Hammock the decision again, then supersede |
+| 3 | 0009 Use Postgres for search | no signal | no trigger | `no-tripwire`: add "Confirmation: no search client outside `search/`" and "Revisit if: search p99 > 200 ms" |
+
+<N> current ADRs: <a> followed, <b> drifted, <c> due for revisit, <d> no-tripwire.
+Verdict: <log holds | fix 1 first | revisit 2 first>
+Not checked: <ADRs or triggers you could not check, and why>
+```
+
+Number the rows, so the person can say "supersede 2". Order them: drifted, then
+fired, then no-tripwire, then the rest. A row that is followed and not fired can be
+folded into the count when there are many.
+
+Never edit an accepted ADR. A drift is fixed in the code or recorded by a new ADR
+that supersedes the old one; a fired trigger goes back to Hammock (or Advise) and
+then to a superseding ADR; missing tripwire lines go into the next ADR that touches
+the decision, or into a superseding ADR if the team wants them now. Offer the
+drafts in one line; write them only when asked.
 
 ---
 
