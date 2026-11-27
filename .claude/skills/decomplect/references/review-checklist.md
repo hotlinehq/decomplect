@@ -16,11 +16,15 @@ to evidence. Principle numbers refer to `principles.md`.
       rollback and signals per rollout phase, a mitigation per risk, and labelled
       cost numbers? ("Reviewing an RFC" in `rfc.md`.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
+- [ ] For bug fixes: can the author say *why* the fix works? A fix that relies on
+      behaviour nobody promised (a sleep or retry that makes it pass, the order two
+      async jobs happen to finish in, map iteration order, an undocumented library
+      default) works by coincidence: the cause is not diagnosed yet.
 - [ ] If the repo keeps ADRs: does the change contradict an accepted one, fail its
       Confirmation line, trip a "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
       (See "Reviewing against ADRs" in `adr.md`.)
 
-## B. Complecting (1.2–1.8)
+## B. Complecting (1.2–1.9)
 - [ ] Does any unit mix *what* with *how* (business rule with iteration, I/O, or framework calls)?
 - [ ] Is policy (*why*) buried in conditionals across multiple places?
 - [ ] Is *when/where* (scheduling, threading, location) hardwired into logic that could be handed a queue?
@@ -29,6 +33,10 @@ to evidence. Principle numbers refer to `principles.md`.
 - [ ] Are there switch/match statements on type repeated in several places?
 - [ ] Do positional parameters, tuples, or column order carry meaning that names should carry?
 - [ ] Are modules "separated" in folders but mutually dependent on internals?
+- [ ] Is one piece of knowledge (a rule, limit, format, mapping or schema) written in
+      more than one place (code, SQL, config, client, docs), so changing it means finding
+      every copy? Name the copies. Where a copy can't be removed (client and server), is
+      it generated from one source or checked against it? (1.9)
 
 ## C. Information and data (2.x)
 - [ ] Is information represented as plain, inspectable data at boundaries?
@@ -79,6 +87,8 @@ endpoint, event, message, table, config, CLI flag):
 ## H. Size and generality (4.6)
 - [ ] Is new code specific where a generic function over data exists already?
 - [ ] Is a new abstraction justified by more than one use?
+- [ ] Is the change merging code that only *looks* alike but encodes different rules
+      that change for different reasons? Similar text is not shared knowledge (1.9).
 - [ ] Could the change be smaller and more general?
 
 ## I. Evidence (`errorbar-principles.md`)

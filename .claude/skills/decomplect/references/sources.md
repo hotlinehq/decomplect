@@ -19,6 +19,11 @@ were inspired by Dietrich Gebert's `ponytail-review`, `ponytail-audit` and
 `ponytail-debt` skills in [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
 (MIT License). No text from them is reproduced here.
 
+Principle 1.9 (one home for each piece of knowledge) and the review line on fixes
+that work by coincidence draw on *The Pragmatic Programmer* by Andrew Hunt and David
+Thomas ([pragprog.com](https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/)),
+its DRY and "don't program by coincidence" tips. No text from it is reproduced here.
+
 | Talk | Year | Main themes used | Video |
 |---|---|---|---|
 | Design in Practice | 2023 | phases, problem statement, decision matrix, words, glossary | https://www.youtube.com/watch?v=c5QF2HjHLSE |
