@@ -169,6 +169,12 @@ to make it the format Claude uses for every plan or requirements file.
   rewritten. Reviews flag changes that contradict an accepted ADR. See
   [docs/tradeoff-table.md](docs/tradeoff-table.md) for why the table matters.
 
+## Evals
+
+`evals/` holds 17 cases, each a pitfall the skill should avoid, and a runner
+that runs each one with and without the skill, grades the answers and counts
+tokens. Run `python3 evals/run.py`; see [evals/README.md](evals/README.md).
+
 ## Notes
 
 Sources, credits and licensing are in [docs/notes.md](docs/notes.md).
