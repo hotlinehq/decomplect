@@ -486,6 +486,20 @@ talk it comes from.
     them into explicit rules.
 - **Source:** Simple Made Easy.
 
+#### 1.9 One home for each piece of knowledge
+- **Idea:** Each piece of knowledge (a business rule, a limit, a format, a mapping, a
+  schema) should have one authoritative home. The same rule restated in a form
+  check, an API validator, a column constraint and a doc will drift: one copy gets
+  changed and the others don't. This is about knowledge, not text. Two pieces of code
+  that look the same but encode different rules are not duplication; merging them
+  braids together things that change for different reasons. When a copy must exist
+  (client and server, two languages), generate it from one source or check one
+  against the other.
+- **Language translation:** shared constants or schema modules, a schema or spec that
+  generates validators and client types, a contract test between copies.
+- **Source:** The Pragmatic Programmer (Hunt and Thomas), "DRY"; the merging caution
+  follows Simple Made Easy.
+
 ---
 
 ### 2. Information, data, and values
@@ -807,11 +821,15 @@ to evidence. Principle numbers refer to the Appendix: Principles section above.
       rollback and signals per rollout phase, a mitigation per risk, and labelled
       cost numbers? ("Reviewing an RFC" in the Appendix: RFCs section below.)
 - [ ] For bug fixes: is the cause diagnosed, or is this whack-a-mole on a symptom?
+- [ ] For bug fixes: can the author say *why* the fix works? A fix that relies on
+      behaviour nobody promised (a sleep or retry that makes it pass, the order two
+      async jobs happen to finish in, map iteration order, an undocumented library
+      default) works by coincidence: the cause is not diagnosed yet.
 - [ ] If the repo keeps ADRs: does the change contradict an accepted one, fail its
       Confirmation line, trip a "Revisit if" trigger, or edit an accepted ADR's body instead of superseding it?
       (See "Reviewing against ADRs" in the Appendix: ADRs section below.)
 
-### B. Complecting (1.2–1.8)
+### B. Complecting (1.2–1.9)
 - [ ] Does any unit mix *what* with *how* (business rule with iteration, I/O, or framework calls)?
 - [ ] Is policy (*why*) buried in conditionals across multiple places?
 - [ ] Is *when/where* (scheduling, threading, location) hardwired into logic that could be handed a queue?
@@ -820,6 +838,10 @@ to evidence. Principle numbers refer to the Appendix: Principles section above.
 - [ ] Are there switch/match statements on type repeated in several places?
 - [ ] Do positional parameters, tuples, or column order carry meaning that names should carry?
 - [ ] Are modules "separated" in folders but mutually dependent on internals?
+- [ ] Is one piece of knowledge (a rule, limit, format, mapping or schema) written in
+      more than one place (code, SQL, config, client, docs), so changing it means finding
+      every copy? Name the copies. Where a copy can't be removed (client and server), is
+      it generated from one source or checked against it? (1.9)
 
 ### C. Information and data (2.x)
 - [ ] Is information represented as plain, inspectable data at boundaries?
@@ -866,6 +888,8 @@ endpoint, event, message, table, config, CLI flag):
 ### H. Size and generality (4.6)
 - [ ] Is new code specific where a generic function over data exists already?
 - [ ] Is a new abstraction justified by more than one use?
+- [ ] Is the change merging code that only *looks* alike but encodes different rules
+      that change for different reasons? Similar text is not shared knowledge (1.9).
 - [ ] Could the change be smaller and more general?
 
 ### I. Evidence

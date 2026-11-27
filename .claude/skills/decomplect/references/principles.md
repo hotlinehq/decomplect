@@ -85,6 +85,20 @@ talk it comes from. Talk names map to links in `sources.md`.
     them into explicit rules.
 - **Source:** Simple Made Easy.
 
+### 1.9 One home for each piece of knowledge
+- **Idea:** Each piece of knowledge (a business rule, a limit, a format, a mapping, a
+  schema) should have one authoritative home. The same rule restated in a form
+  check, an API validator, a column constraint and a doc will drift: one copy gets
+  changed and the others don't. This is about knowledge, not text. Two pieces of code
+  that look the same but encode different rules are not duplication; merging them
+  braids together things that change for different reasons. When a copy must exist
+  (client and server, two languages), generate it from one source or check one
+  against the other.
+- **Language translation:** shared constants or schema modules, a schema or spec that
+  generates validators and client types, a contract test between copies.
+- **Source:** The Pragmatic Programmer (Hunt and Thomas), "DRY"; the merging caution
+  follows Simple Made Easy.
+
 ---
 
 ## 2. Information, data, and values
