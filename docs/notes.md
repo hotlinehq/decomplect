@@ -20,5 +20,9 @@ Where decomplect's ideas come from, what it borrows, and what the license covers
   linked essays, talks and papers are in [references/errorbar-sources.md](../.claude/skills/decomplect/references/errorbar-sources.md). Three of its
   steps were inspired by skills in four public repositories, credited there; no text is
   copied.
+- The eval format in `evals/` (prompt, expected output, assertions, expected mode)
+  and running each case with and without the skill follow NVIDIA's
+  [auto-ontology](https://github.com/NVIDIA/auto-ontology) skill evals (Apache-2.0).
+  No text is copied.
 - The Apache-2.0 license covers this repository's own text only. Quoted passages stay
   the copyright of their authors; see [NOTICE](../NOTICE).

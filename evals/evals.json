@@ -1,0 +1,253 @@
+{
+  "skill_name": "decomplect",
+  "format": "Each case: a prompt, the expected output in words, assertions a grader marks pass or fail, the mode decomplect should use, an optional fixture repo, and optional file checks. Format adapted from NVIDIA/auto-ontology skills/*/evals/evals.json (Apache-2.0).",
+  "evals": [
+    {
+      "id": "review-001-hidden-clock",
+      "expected_mode": "Review",
+      "prompt": "Review this change for structure before I merge it.\n\nPR: \"Apply the spring sale discount at checkout\"\n\n```ts\n// billing/invoice.ts\nconst SALE_END = new Date(\"2026-05-31T23:59:59Z\");\n\nexport function calculateTotal(subtotalCents: number): number {\n  const discount = new Date() <= SALE_END ? 0.1 : 0;\n  return Math.round(subtotalCents * (1 - discount));\n}\n```\n\nCallers: `checkout.ts` calls it when the order is placed, and `invoice-pdf.ts` calls it again when the invoice PDF is generated, which can be days later.",
+      "expected_output": "Flags that calculateTotal reads the current time hidden inside the pricing rule, so the order and its invoice PDF (generated days later) can show different totals, and tests depend on the date they run. Suggests passing the date in (for example `asOf`) and having the PDF use the order's placed-at time. Findings are numbered, start with an In plain words line, and the review ends with a Verdict line.",
+      "assertions": [
+        "Identifies the hidden `new Date()` call as the problem: the pricing rule depends on when it runs",
+        "Names the concrete consequence: checkout and the invoice PDF can compute different totals for the same order",
+        "Suggests passing the date or time in as an argument, with the PDF using the time the order was placed",
+        "Each finding has an 'In plain words' line without jargon such as complect, place or accretion",
+        "Ends with a 'Verdict:' line"
+      ]
+    },
+    {
+      "id": "review-002-clean-control",
+      "expected_mode": "Review",
+      "prompt": "Review this PR for architecture problems.\n\nPR: \"Format prices with the customer's locale\". Problem: German customers see prices as 1,234.50 instead of 1.234,50, and support gets tickets about it.\n\n```ts\n// format/price.ts\nexport function formatPrice(cents: number, currency: string, locale: string): string {\n  return new Intl.NumberFormat(locale, { style: \"currency\", currency }).format(cents / 100);\n}\n```\n\n```ts\n// views/order-summary.ts (changed line)\n- const price = `$${(order.totalCents / 100).toFixed(2)}`;\n+ const price = formatPrice(order.totalCents, order.currency, customer.locale);\n```",
+      "expected_output": "No real structural problem here: a pure function with its inputs passed in, and a stated problem. The review says so (for example 'Nothing to untangle. Ship.') and does not invent findings, 'consider' suggestions or style nits.",
+      "assertions": [
+        "Verdict is to ship; it does not ask for changes before merging",
+        "Reports no blocking or major findings",
+        "Does not pad the review with speculative 'consider ...' suggestions or style nits presented as findings",
+        "Notes something already simple (for example that formatPrice is pure and gets the locale as an argument)"
+      ]
+    },
+    {
+      "id": "review-003-no-problem-statement",
+      "expected_mode": "Review",
+      "prompt": "Review this PR.\n\nTitle: \"Add Redis cache for product lookups\"\nBody: \"Adds a Redis cache in front of ProductRepository.getById with a 10 minute TTL.\"\n\n```ts\nexport class CachedProductRepository {\n  constructor(private redis: Redis, private inner: ProductRepository) {}\n  async getById(id: string) {\n    const hit = await this.redis.get(`product:${id}`);\n    if (hit) return JSON.parse(hit);\n    const p = await this.inner.getById(id);\n    await this.redis.set(`product:${id}`, JSON.stringify(p), \"EX\", 600);\n    return p;\n  }\n}\n```\n\nThere is no linked issue and no latency numbers in the PR.",
+      "expected_output": "The first point is that the PR states no problem: no slow page, no measured latency, no load that the cache answers. It asks what is slow and for the measurement. It may also note that product edits stay stale for up to 10 minutes, as a cost the missing problem statement can't justify.",
+      "assertions": [
+        "Raises the missing problem statement (what is slow or failing, and how it was measured) before or as the first finding",
+        "Asks for the measurement or the load that justifies the cache, rather than assuming one",
+        "Does not approve the cache as is without a stated problem"
+      ]
+    },
+    {
+      "id": "review-004-fix-by-coincidence",
+      "expected_mode": "Review",
+      "prompt": "Review this bug fix.\n\nPR: \"Fix flaky 'order not found' after checkout\". Body: \"The confirmation page sometimes says the order doesn't exist. Adding a short wait fixes it; I ran it 50 times locally with no failure.\"\n\n```ts\n  await queue.publish(\"order.created\", order);\n+ await sleep(300);\n  res.redirect(`/orders/${order.id}/confirmation`);\n```\n\nThe order row is written by a worker that consumes `order.created`.",
+      "expected_output": "Flags that the fix works by coincidence: it relies on the worker usually finishing within 300 ms, which nothing promises, so under load or a slow worker the bug returns. The cause (the page reads before the asynchronous write happens) is not fixed. Suggests writing the order before redirecting, or having the confirmation page wait for or poll the order's state explicitly.",
+      "assertions": [
+        "Says the sleep makes the bug rarer but does not fix the cause: the page reads the order before the worker has written it",
+        "Gives a concrete case where it still fails (worker slower than 300 ms, for example under load or a backlog)",
+        "Proposes a fix that does not rely on timing, such as writing the order synchronously before redirecting or showing a pending state until the order exists",
+        "Does not accept 50 passing local runs as evidence the race is gone"
+      ]
+    },
+    {
+      "id": "review-005-knowledge-in-several-places",
+      "expected_mode": "Review",
+      "prompt": "Review this change: \"Allow longer order notes (500 characters instead of 280)\".\n\n```ts\n// api/validate.ts\n- if (note.length > 280) throw new BadRequest(\"note too long\");\n+ if (note.length > 500) throw new BadRequest(\"note too long\");\n```\n\nOther files in the repo, not touched by the PR:\n\n```sql\n-- migrations/0012_order_notes.sql\nALTER TABLE orders ADD COLUMN note VARCHAR(280);\n```\n\n```tsx\n// web/OrderForm.tsx\n<textarea maxLength={280} name=\"note\" />\n```\n\n```md\n<!-- docs/api.md -->\n`note`: optional, up to 280 characters.\n```",
+      "expected_output": "Flags that the note length limit is written in four places (API validation, the database column, the web form, the API docs) and the PR changed only one, so a 400-character note passes validation and then fails at the database, while the form still stops at 280. Names every copy, and suggests one source for the limit (a shared constant, or generating or checking the copies against one value) plus a migration for the column.",
+      "assertions": [
+        "Names the copies of the limit the PR did not change: the VARCHAR(280) column, the form's maxLength and the docs",
+        "Gives the concrete failure: a note between 281 and 500 characters passes the API check and then fails at the database (or is blocked by the form)",
+        "Suggests keeping the limit in one place, or generating or checking the other copies against it",
+        "Notes that the column needs a migration for the change to work"
+      ]
+    },
+    {
+      "id": "compat-001-change-ledger",
+      "expected_mode": "Compatibility",
+      "prompt": "We're releasing v2 of our orders API, so breaking changes are fine, right? Changes:\n\n1. `GET /orders/{id}` no longer returns `total`; clients should add `subtotal` and `tax` themselves.\n2. `POST /orders` accepts a new optional field `note`.\n3. `status` value `\"done\"` now means \"delivered\" (it used to mean \"paid\").\n4. `POST /orders` now requires a `currency` field (it used to default to EUR).\n\nKnown consumers: the web shop, the billing service, and a partner export job.",
+      "expected_output": "Does not accept the version bump as an excuse for breakage. Lists the four changes in a change ledger: 1, 3 and 4 are breakage, 2 is accretion. Reusing `done` for a different meaning is the worst one, because old clients keep working but are now wrong. For each breaking change proposes a way to make it growth: keep `total` and add new fields, add a new status value instead of reusing `done`, keep defaulting `currency` to EUR when it is missing.",
+      "assertions": [
+        "Pushes back on the idea that a major version makes breaking changes fine",
+        "Classifies 2 as accretion and 1, 3 and 4 as breakage",
+        "Singles out reusing `done` for a new meaning as especially harmful, because old clients silently misread it",
+        "Proposes a growth alternative for each breaking change (keep `total`, a new status name, keep the EUR default when `currency` is missing)",
+        "Shows the changes in a table with the affected consumers"
+      ]
+    },
+    {
+      "id": "advise-001-pick-one",
+      "expected_mode": "Advise",
+      "prompt": "What would decomplect pick? We need to show customers the full history of an order's status (placed, paid, shipped, delivered, returned), and support wants to see who changed it and when.\n\nA) keep the `status` column on `orders` and add `updated_by` and `updated_at` columns\nB) add an append-only `order_status_events` table (order_id, status, at, by), and derive the current status from the latest event\nC) turn on audit logging in the database and query the audit log",
+      "expected_output": "Picks exactly one option, B, in the Advise block: decomplect's pick, In plain words, Principle, Why, Tradeoff. Explains that A overwrites the history the feature needs, and that C hides business facts in an operational log. With three options it adds a tradeoff table with the status quo first.",
+      "assertions": [
+        "Picks exactly one option, and it is B",
+        "Uses the Advise block with lines for the pick, In plain words, Principle, Why and Tradeoff",
+        "Explains that option A overwrites earlier statuses, so the history the feature needs is lost",
+        "Includes a tradeoff table whose first option column is the status quo"
+      ]
+    },
+    {
+      "id": "advise-002-not-a-design-question",
+      "expected_mode": "none",
+      "prompt": "What would decomplect pick: should the team offsite be in Lisbon or in Prague?",
+      "expected_output": "This is not a design question. Answers 'decomplect has no opinion here' (or equivalent) and does not invent a pick based on simplicity principles.",
+      "assertions": [
+        "Says decomplect has no opinion on this, or that it is not a design question",
+        "Does not present Lisbon or Prague as decomplect's pick",
+        "Does not stretch software design principles to justify a choice"
+      ]
+    },
+    {
+      "id": "advise-003-no-language-switch",
+      "expected_mode": "Advise",
+      "prompt": "Our Java order service keeps a `static HashMap<String, Order>` cache that request threads read and write, and we get ConcurrentModificationException and stale reads. A teammate says we should rewrite the service in Clojure because it has immutable data. What would decomplect pick: rewrite in Clojure, or fix it in Java?",
+      "expected_output": "Keeps the fix in Java and does not recommend switching languages. Proposes a Java-idiomatic way to stop sharing a mutable map across threads, such as replacing the map with an immutable snapshot swapped atomically (AtomicReference holding an immutable Map), or a ConcurrentHashMap with immutable Order values, and asks what the cache is for.",
+      "assertions": [
+        "Picks fixing it in Java and does not recommend the rewrite or any language switch",
+        "Gives a Java-idiomatic fix (for example an AtomicReference to an immutable Map, or ConcurrentHashMap with immutable values)",
+        "Does not phrase the advice in Clojure or Lisp terms"
+      ]
+    },
+    {
+      "id": "hammock-001-one-question",
+      "expected_mode": "Hammock",
+      "prompt": "/hammock customers keep asking for order history, what should we build?",
+      "baseline_prompt": "Customers keep asking for order history, what should we build? Help me think it through: ask me one question at a time.",
+      "expected_output": "Starts with the problem, not a solution: asks one question to find out what customers are actually trying to do or what is wrong today. Gives context first, a pick and a small tradeoff table with the status quo first. Asks only one question in this turn and proposes no design yet.",
+      "assertions": [
+        "Asks exactly one question in this turn",
+        "The question is about the problem (who asks, what they are trying to do, what is wrong today), not about a solution detail",
+        "Does not propose a design or data model yet",
+        "Offers its own pick for the answer, worded so the person can reply 'yes'"
+      ],
+      "checks": {
+        "no_new_files": true
+      }
+    },
+    {
+      "id": "hammock-002-no-docs",
+      "expected_mode": "Hammock",
+      "fixture": "orders-service",
+      "prompt": "/hammock no docs: we use the term 'order' for both the cart before payment and the paid order. Should we split these into two terms?",
+      "baseline_prompt": "We use the term 'order' for both the cart before payment and the paid order. Should we split these into two terms? Ask me one question at a time, and don't write any files.",
+      "expected_output": "Runs the Hammock dialog (one question, problem first) and writes no files at all: no GLOSSARY.md, no ADR. Settled terms go into the conversation instead.",
+      "assertions": [
+        "Asks one question in this turn rather than delivering a full answer",
+        "Does not say it has written or will write a glossary, ADR or other file"
+      ],
+      "checks": {
+        "no_new_files": true,
+        "unchanged": [
+          "docs/adr/0001-database-access-through-repository.md"
+        ]
+      }
+    },
+    {
+      "id": "errorbar-001-label-claims",
+      "expected_mode": "Error Bar",
+      "prompt": "/errorbar \"The new product cache will cut checkout p99 by half. We measured it: average latency on staging dropped 40% with the cache on, so it will easily halve p99 in production.\"\n\nStaging has 1 instance and synthetic traffic from a load script that requests the same 50 products. Production has 12 instances and about 40,000 products.",
+      "baseline_prompt": "Check the claims behind this: \"The new product cache will cut checkout p99 by half. We measured it: average latency on staging dropped 40% with the cache on, so it will easily halve p99 in production.\"\n\nStaging has 1 instance and synthetic traffic from a load script that requests the same 50 products. Production has 12 instances and about 40,000 products.",
+      "expected_output": "Lists the claims and labels them: the 40% average drop is measured (on staging), the p99 halving in production is inferred or assumed. Points out that an average says nothing about p99, and that 50 hot products on staging hit the cache far more than 40,000 in production would. Names a rival explanation, and proposes the cheapest test: measure p99 with a production-like key spread, or a canary on one production instance.",
+      "assertions": [
+        "Labels the claims measured, inferred or assumed, with the 40% average drop as measured and the p99 halving in production as not measured",
+        "Points out that an average latency change does not show what happens at p99",
+        "Points out that 50 repeated products on staging give a far higher cache hit rate than 40,000 products in production",
+        "Proposes a cheap test that would confirm or refute the p99 claim, such as measuring p99 with a realistic product mix or a canary"
+      ]
+    },
+    {
+      "id": "errorbar-002-size-it",
+      "expected_mode": "Error Bar",
+      "prompt": "/errorbar We need to put Kafka between the shop and billing because the current direct HTTP call won't scale. We take about 200 orders a day, all during shop hours (9:00 to 18:00), and the billing call takes about 150 ms.",
+      "baseline_prompt": "Check the claims behind this: We need to put Kafka between the shop and billing because the current direct HTTP call won't scale. We take about 200 orders a day, all during shop hours (9:00 to 18:00), and the billing call takes about 150 ms.",
+      "expected_output": "Sizes it: 200 orders over 9 hours is roughly one order every 2 to 3 minutes, about 0.006 per second, so the HTTP call is far from any limit, even at 10x or 100x growth. Says that the scale claim does not hold and that scale is not a reason for Kafka. If there is a real problem (lost orders when billing is down), names it as a separate question. Stays proportional and does not invent doubt.",
+      "assertions": [
+        "Works out the rate (about 200 orders in 9 hours, well under one per minute) and shows the arithmetic",
+        "Concludes that load is not a reason to add Kafka, even with 10x growth",
+        "Separates scale from other possible reasons (such as billing being down) and asks or names what the real problem is"
+      ]
+    },
+    {
+      "id": "survey-001-orders-service",
+      "expected_mode": "Survey",
+      "fixture": "orders-service",
+      "prompt": "/untangle repo",
+      "baseline_prompt": "Survey this repository's architecture: where is it most tangled? Don't change any code.",
+      "expected_output": "Maps the service (orders.ts rules, handlers.ts, repository.ts, one ADR, about 200 orders a day) and ranks a few findings: calculateTotal reads the clock inside the pricing rule; status is overwritten in place so the history is lost and `recentShipmentsHandler` relies on `updated_at`, which any later status change overwrites; `recentShipmentsHandler` runs SQL in a handler against ADR 0001. Ends with what to untangle first, a Verdict and a Not checked line. Writes no files.",
+      "assertions": [
+        "Finds that calculateTotal depends on the current time inside the pricing rule",
+        "Finds that the status update overwrites the previous status, so history is lost and the 'shipped in the last 7 days' query can be wrong after a later status change",
+        "Finds that recentShipmentsHandler queries the database directly, contrary to ADR 0001",
+        "Ranks the findings and says what to untangle first",
+        "Ends with a Verdict line and a Not checked line"
+      ],
+      "checks": {
+        "no_new_files": true,
+        "unchanged": [
+          "src/orders.ts",
+          "src/handlers.ts",
+          "src/repository.ts"
+        ]
+      }
+    },
+    {
+      "id": "adrcheck-001-drift",
+      "expected_mode": "ADR check",
+      "fixture": "orders-service",
+      "prompt": "/adr-check",
+      "baseline_prompt": "Check whether the code still follows the accepted ADRs in docs/adr/, and which decisions are due for a revisit.",
+      "expected_output": "Checks ADR 0001's Confirmation line (no `db.query(` outside `src/repository.ts`) and reports it as drifted, with `src/handlers.ts` and the line of `recentShipmentsHandler`. Reports its Revisit if (a second database) as not fired. Proposes fixing the drift in code (move the query into repository.ts) or a superseding ADR, and does not edit ADR 0001.",
+      "assertions": [
+        "Reports ADR 0001 as drifted, pointing to the db.query call in src/handlers.ts",
+        "Reports the Revisit if trigger (a second database) as not fired",
+        "Proposes moving the query into repository.ts, or a superseding ADR if the rule should change",
+        "Does not edit or offer to edit the body of ADR 0001"
+      ],
+      "checks": {
+        "unchanged": [
+          "docs/adr/0001-database-access-through-repository.md"
+        ]
+      }
+    },
+    {
+      "id": "adr-001-write-proposed",
+      "expected_mode": "ADR",
+      "fixture": "orders-service",
+      "prompt": "Write an ADR: we want order status changes recorded as events in an append-only order_status_events table instead of overwriting orders.status.",
+      "expected_output": "Writes docs/adr/0002-....md following the existing ADR's style, with Status Proposed (the person said 'we want', not that it is decided), a Problem section, a tradeoff table with the status quo first, a Decision with a Confirmation line, and Consequences with a Revisit if line. Does not edit ADR 0001.",
+      "assertions": [
+        "Writes the ADR as Proposed, not Accepted",
+        "The ADR has a tradeoff table whose first option column is the status quo (overwriting orders.status)",
+        "The ADR has a Confirmation line and a Revisit if line"
+      ],
+      "checks": {
+        "new_files": [
+          "docs/adr/0002-*.md"
+        ],
+        "unchanged": [
+          "docs/adr/0001-database-access-through-repository.md"
+        ]
+      }
+    },
+    {
+      "id": "rfc-001-no-guessing",
+      "expected_mode": "RFC",
+      "fixture": "orders-service",
+      "prompt": "/rfc draft show customers their full order status history",
+      "baseline_prompt": "Write an RFC (request for change) for showing customers their full order status history. Don't ask me questions; draft it.",
+      "expected_output": "Writes a Draft RFC under docs/rfc/ with every template section in order (Introduction, Problem Statement with a picture of today, Goals with metrics and Out of scope, Solution, Abandoned Solutions with the status quo first, Implementation & rollout, Risk, Cost, Conclusion). Marks what only the person knows with `?` instead of inventing numbers, and lists those under feedback wanted.",
+      "assertions": [
+        "The RFC has the sections Introduction, Problem Statement, Goals, Solution, Abandoned Solutions, Implementation & rollout, Risk, Cost and Conclusion, in that order",
+        "Unknown numbers and targets are marked `?` rather than invented",
+        "The status quo is one of the abandoned solutions, in a tradeoff table",
+        "The RFC is marked Draft"
+      ],
+      "checks": {
+        "new_files": [
+          "docs/rfc/*.md"
+        ]
+      }
+    }
+  ]
+}
